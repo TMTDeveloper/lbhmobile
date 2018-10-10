@@ -1,0 +1,7 @@
+{
+  "name": "forumLBH",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
