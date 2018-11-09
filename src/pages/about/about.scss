@@ -1,3 +1,10 @@
 page-about {
-
+    .item-md ion-thumbnail {
+        min-width: 25px;
+        min-height: 25px;
+    }
+.item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
+    width:25px;
+    height:25px;
+}
 }

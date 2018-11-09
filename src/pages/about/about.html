@@ -1,11 +1,32 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      About
+      Documents
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
+
+  <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+  <!-- <button ion-button full (click)="downloadAndOpenPdf()">Download and open PDF</button> -->
+
+  <ion-list *ngIf="documents != null">
+    <ion-item *ngFor="let doc of documents">
+      <ion-thumbnail item-start>
+        <img src="assets/imgs/pdf75.png">
+      </ion-thumbnail>
+      <h2>{{doc.name}}</h2>
+      <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
+      <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.name)">Download</button>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="documents==null">Connection Timeout, Scroll to refresh
+  </div>
 </ion-content>
