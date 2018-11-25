@@ -7,7 +7,11 @@ import { AboutPage } from "../pages/about/about";
 import { ContactPage } from "../pages/contact/contact";
 import { HomePage } from "../pages/home/home";
 import { TabsPage } from "../pages/tabs/tabs";
+import { LoginPage } from "../pages/login/login";
+import { RootPage } from '../pages/root/root';
 import { HttpModule } from "@angular/http";
+import { AuthService } from './../providers/auth-service';
+import { Credentials } from './../providers/credentials.holder';
 
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
@@ -17,10 +21,10 @@ import { FileTransfer } from "@ionic-native/file-transfer";
 import { DocumentViewer } from "@ionic-native/document-viewer";
 import { BackendService } from "../providers/backend.service";
 @NgModule({
-  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage],
+  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage],
   imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpModule],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage],
+  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage],
   providers: [
     StatusBar,
     SplashScreen,
@@ -29,7 +33,9 @@ import { BackendService } from "../providers/backend.service";
     DocumentViewer,
     FileTransfer,
     FileOpener,
-    BackendService
+    BackendService,
+    AuthService,
+    Credentials
   ]
 })
 export class AppModule {}
