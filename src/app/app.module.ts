@@ -9,6 +9,7 @@ import { HomePage } from "../pages/home/home";
 import { TabsPage } from "../pages/tabs/tabs";
 import { LoginPage } from "../pages/login/login";
 import { RootPage } from '../pages/root/root';
+import { PostPage } from "../pages/post/post";
 import { HttpModule } from "@angular/http";
 import { AuthService } from './../providers/auth-service';
 import { Credentials } from './../providers/credentials.holder';
@@ -21,10 +22,10 @@ import { FileTransfer } from "@ionic-native/file-transfer";
 import { DocumentViewer } from "@ionic-native/document-viewer";
 import { BackendService } from "../providers/backend.service";
 @NgModule({
-  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage],
+  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage],
   imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpModule],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage],
+  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage],
   providers: [
     StatusBar,
     SplashScreen,

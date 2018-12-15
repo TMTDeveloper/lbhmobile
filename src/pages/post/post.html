@@ -1,11 +1,90 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>
-        Post
-      </ion-title>
-    </ion-navbar>
-  </ion-header>
-  
-  <ion-content>
-  
-  </ion-content>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+        <ion-icon name="Back"></ion-icon>
+    </button>
+    <ion-title>
+      Post
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="kasus">
+        Kasus
+      </ion-segment-button>
+      <ion-segment-button value="kegiatan">
+        Kegiatan
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
+        <ion-refresher-content>
+    
+        </ion-refresher-content>
+      </ion-refresher>
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'kasus'">
+      <ion-item>
+        <ion-thumbnail item-start>
+          <ion-icon name="person"></ion-icon>
+        </ion-thumbnail>
+        <h2>Nurul</h2>
+        <p>Somasi ke PT Jaya Sentosa</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <ion-icon name="person"></ion-icon>
+        </ion-thumbnail>
+        <h2>Irma</h2>
+        <p>KDRT - Suci</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+        </ion-thumbnail>
+        <h2>Budi</h2>
+        <p>Pendampingan dan bipartid</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+        </ion-thumbnail>
+        <h2>Ivan</h2>
+        <p>Kasus Ibu Siti</p>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'kegiatan'">
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-1.jpg">
+        </ion-thumbnail>
+        <h2>Luna</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-3.jpg">
+        </ion-thumbnail>
+        <h2>Milo</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-4.jpg">
+        </ion-thumbnail>
+        <h2>Bandit</h2>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img src="assets/img/thumbnail-kitten-2.jpg">
+        </ion-thumbnail>
+        <h2>Nala</h2>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
