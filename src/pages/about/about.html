@@ -21,12 +21,13 @@
       <ion-thumbnail item-start>
         <img src="assets/imgs/pdf75.png">
       </ion-thumbnail>
-      <h2>{{doc.name}}</h2>
+      <h2>{{doc.originalfilename}}</h2>
       <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
-      <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.name)">Download</button>
+      <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
     </ion-item>
   </ion-list>
 
   <div *ngIf="documents==null">Connection Timeout, Scroll to refresh
   </div>
+  {{result}}
 </ion-content>

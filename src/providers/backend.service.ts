@@ -9,6 +9,7 @@ export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
   baseurl: string = "http://178.128.212.2:3003/";
+  //178.128.212.2:3003
   moni: boolean = false;
   constructor(public http: Http,
     private creds: Credentials) {}
