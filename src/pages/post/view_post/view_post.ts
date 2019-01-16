@@ -17,6 +17,7 @@ import { Platform } from 'ionic-angular';
 })
 export class PostPage {
   documents = [];
+  jenis = "kasus";
   constructor(
     private document: DocumentViewer,
     private file: File,

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar no-border-bottom>
     <button ion-button menuToggle>
-        <ion-icon name="Back"></ion-icon>
+      <ion-icon name="Back"></ion-icon>
     </button>
     <ion-title>
       Post
@@ -9,7 +9,7 @@
   </ion-navbar>
 
   <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="pet">
+    <ion-segment [(ngModel)]="jenis">
       <ion-segment-button value="kasus">
         Kasus
       </ion-segment-button>
@@ -22,45 +22,47 @@
 
 <ion-content>
 
-    <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
-        <ion-refresher-content>
-    
-        </ion-refresher-content>
-      </ion-refresher>
+  <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
+    <ion-refresher-content>
 
-  <div [ngSwitch]="pet">
-    <ion-list *ngSwitchCase="'kasus'">
-      <ion-item>
+    </ion-refresher-content>
+  </ion-refresher>
+
+
+
+  <div [ngSwitch]="jenis">
+    <ion-list *ngSwitchCase="'kasus'" [virtualScroll]="items" [headerFn]="reqNewestPosts">
+      <ion-item *virtualItem="let item">
         <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail>
-        <h2>Nurul</h2>
-        <p>Somasi ke PT Jaya Sentosa</p>
+        <h2>{{item.nama_korban}}</h2>
+        <p>{{item.nama_pelaku}}</p>
       </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Irma</h2>
-        <p>KDRT - Suci</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-            <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Budi</h2>
-        <p>Pendampingan dan bipartid</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-            <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Ivan</h2>
-        <p>Kasus Ibu Siti</p>
-      </ion-item>
+      <!-- <ion-item>
+            <ion-thumbnail item-start>
+              <ion-icon name="person"></ion-icon>
+            </ion-thumbnail>
+            <h2>Irma</h2>
+            <p>KDRT - Suci</p>
+          </ion-item>
+          <ion-item>
+            <ion-thumbnail item-start>
+              <ion-icon name="person"></ion-icon>
+            </ion-thumbnail>
+            <h2>Budi</h2>
+            <p>Pendampingan dan bipartid</p>
+          </ion-item>
+          <ion-item>
+            <ion-thumbnail item-start>
+              <ion-icon name="person"></ion-icon>
+            </ion-thumbnail>
+            <h2>Ivan</h2>
+            <p>Kasus Ibu Siti</p>
+          </ion-item> -->
     </ion-list>
 
-    <ion-list *ngSwitchCase="'kegiatan'">
+    <ion-list *ngSwitchCase="'kegiatan'" [virtualScroll]="items">
       <ion-item>
         <ion-thumbnail item-start>
           <img src="assets/img/thumbnail-kitten-1.jpg">
