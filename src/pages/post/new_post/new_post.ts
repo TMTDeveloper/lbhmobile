@@ -12,8 +12,8 @@ import { LoadingController } from "ionic-angular";
 import { Platform } from 'ionic-angular';
 
 @Component({
-  selector: "page-post",
-  templateUrl: "post.html"
+  selector: "page-new_post",
+  templateUrl: "new_post.html"
 })
 export class PostPage {
   documents = [];

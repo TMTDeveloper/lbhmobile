@@ -10,6 +10,7 @@ import { TabsPage } from "../pages/tabs/tabs";
 import { LoginPage } from "../pages/login/login";
 import { RootPage } from '../pages/root/root';
 import { PostPage } from "../pages/post/post";
+import { ViewPostPage } from "../pages/view_post/view_post";
 import { HttpModule } from "@angular/http";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { AuthService } from './../providers/auth-service';
@@ -22,11 +23,12 @@ import { File } from "@ionic-native/file";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { DocumentViewer } from "@ionic-native/document-viewer";
 import { BackendService } from "../providers/backend.service";
+
 @NgModule({
-  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage],
+  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage],
   imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpModule,HttpClientModule],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage],
+  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage],
   providers: [
     StatusBar,
     SplashScreen,
