@@ -1,25 +1,25 @@
-import { Component } from "@angular/core";
-import { NavController } from "ionic-angular";
+import { Component, AfterViewInit, OnChanges } from "@angular/core";
+import { NavController, Item } from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
-  DocumentViewer, DocumentViewerOptions
+  DocumentViewer,
+  DocumentViewerOptions
 } from "@ionic-native/document-viewer";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { FileOpener } from "@ionic-native/file-opener";
 import { BackendService } from "../../providers/backend.service";
 import { LoadingController } from "ionic-angular";
 
-import { Platform } from 'ionic-angular';
+import { Platform } from "ionic-angular";
 
 @Component({
   selector: "page-post",
   templateUrl: "post.html"
 })
-export class PostPage {
+export class PostPage implements AfterViewInit {
   documents = [];
   jenis = "kasus";
-  items = [
-  ]
+  items = [];
 
   constructor(
     private document: DocumentViewer,
@@ -27,55 +27,111 @@ export class PostPage {
     private transfer: FileTransfer,
     public navCtrl: NavController,
     private opener: FileOpener,
-    private service: BackendService,
+    public service: BackendService,
     public loadingCtrl: LoadingController
-  ) { }
+  ) {
+    console.log(this.service.baseurl);
+  }
 
-  postLimit = 20;
+  ngAfterViewInit() {
+    this.reqNewestPosts();
+  }
+
+  ionViewDidEnter() {
+    console.log(this.jenis);
+  }
+
+  postLimit = 10;
 
   postQuery = {
-    "where": {},
-    "field":{},
-    "offset":0,
-    "limit":this.postLimit,
-    "skip":0,
-    "order":["no_post ASC"]
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"]
+  };
+
+  resetPostOffset() {
+    this.postQuery["filter[offset]"] = 0;
   }
 
-  resetPostOffset()
-  {
-    this.postQuery.offset = 0;
-  }
-
-  setOrderRule(rules:any[])
-  {
-    this.postQuery.order = rules;
+  setOrderRule(rules: any[]) {
+    this.postQuery["filter[order]"] = rules;
   }
 
   currentPostOffset = 0;
 
-  reqNewestPosts()
-  {
+  reqNewestPostsFake() {}
+
+  reqNewestPosts = () => {
+    console.log(this.service.baseurl);
+
+    // return the tab to null
+    //this.jenis = jenis;
+
+    if (this.items.length > 0) return;
+
     this.service
-      .postreq("postheaders", this.postQuery)
+      .getReqNew("postheaders", this.postQuery)
       .subscribe(response => {
         if (response != null) {
           console.log(response);
 
-          // append the new posts to current array
-          this.items.push(response);
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items.push(newItem);
+          });
+
+          console.log(this.items.length);
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // add the offset
+          this.postQuery["filter[skip]"] += this.postLimit;
         }
       });
+  };
 
-    // populate the list
-    this.populateList(this.items);
+  doInfinite(infiniteScroll) {
+    console.log("Begin async operation");
 
-    // add the offset
-    this.postQuery.offset += this.postLimit;
+    setTimeout(() => {
+      this.service
+        .getReqNew("postheaders", this.postQuery)
+        .subscribe(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+              this.items.push(newItem);
+            });
+
+            console.log(this.items.length);
+
+            // populate the list
+            // this.populateList(this.items);
+
+            // add the offset
+            this.postQuery["filter[skip]"] += this.postLimit;
+
+            // end operation
+            console.log("Async operation has ended");
+            infiniteScroll.complete();
+          }
+        });
+    }, 500);
   }
 
-  populateList(any)
+  viewPost(no_post:string)
   {
-
+    
   }
+
+  populateList(any) {}
 }

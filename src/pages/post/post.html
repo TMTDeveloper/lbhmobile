@@ -22,71 +22,40 @@
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
+  <ion-refresher (ionRefresh)="reqNewestPosts()">
     <ion-refresher-content>
-
+      Tarik untuk Muat Ulang
     </ion-refresher-content>
   </ion-refresher>
 
+  <div style="height:100%">
+    <div style="height:100%">
+      <ion-list>
+        <button ion-item *ngFor="let item of items" (click)="viewPost(item.no_post)" [hidden]="item.type==1&&jenis=='kasus'?false:item.type==2&&jenis=='kegiatan'?false:true">
+          <!-- <ion-thumbnail item-start>
+          <ion-icon name="person"></ion-icon>
+        </ion-thumbnail> -->
+          <h2>{{item.nama_korban}}</h2>
+          <p>{{item.no_post}}</p>
+          <p>{{item.type}}</p>
+        </button>
+      </ion-list>
 
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
 
-  <div [ngSwitch]="jenis">
-    <ion-list *ngSwitchCase="'kasus'" [virtualScroll]="items" [headerFn]="reqNewestPosts">
-      <ion-item *virtualItem="let item">
-        <ion-thumbnail item-start>
+    <!-- <div *ngIf="jenis==='kegiatan'">
+      <ion-list [virtualScroll]="items">
+        <ion-item *virtualItem="let item">
+          <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail>
-        <h2>{{item.nama_korban}}</h2>
-        <p>{{item.nama_pelaku}}</p>
-      </ion-item>
-      <!-- <ion-item>
-            <ion-thumbnail item-start>
-              <ion-icon name="person"></ion-icon>
-            </ion-thumbnail>
-            <h2>Irma</h2>
-            <p>KDRT - Suci</p>
-          </ion-item>
-          <ion-item>
-            <ion-thumbnail item-start>
-              <ion-icon name="person"></ion-icon>
-            </ion-thumbnail>
-            <h2>Budi</h2>
-            <p>Pendampingan dan bipartid</p>
-          </ion-item>
-          <ion-item>
-            <ion-thumbnail item-start>
-              <ion-icon name="person"></ion-icon>
-            </ion-thumbnail>
-            <h2>Ivan</h2>
-            <p>Kasus Ibu Siti</p>
-          </ion-item> -->
-    </ion-list>
-
-    <ion-list *ngSwitchCase="'kegiatan'" [virtualScroll]="items">
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-1.jpg">
-        </ion-thumbnail>
-        <h2>Luna</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-3.jpg">
-        </ion-thumbnail>
-        <h2>Milo</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-4.jpg">
-        </ion-thumbnail>
-        <h2>Bandit</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-2.jpg">
-        </ion-thumbnail>
-        <h2>Nala</h2>
-      </ion-item>
-    </ion-list>
+          <h2>{{item.nama_korban}}</h2>
+          <p>{{item.no_post}}</p>
+        </ion-item>
+      </ion-list>
+    </div> -->
   </div>
 </ion-content>
