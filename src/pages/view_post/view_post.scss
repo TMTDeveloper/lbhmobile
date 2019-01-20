@@ -1,3 +1,31 @@
 page-view_post {
+    ion-list.list.list-md {
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
 
+    ion-label.label.label-md{
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .time-display {
+
+      font-size: 0.7em;
+      color: lightslategray;
+      background-color: #e8e8f3;
+      border-radius: 5px;
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      border: 1px solid lightgray;
+      padding: 10px 10px;
+      font: 14px/22px "Lato", Arial, sans-serif;
+      border-radius: 5px;
+      resize: none;
+      background-color: #fff;
+    }
 }

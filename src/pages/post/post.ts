@@ -1,5 +1,5 @@
-import { Component, AfterViewInit, OnChanges } from "@angular/core";
-import { NavController, Item } from "ionic-angular";
+import { Component, AfterViewInit, OnChanges, ViewChild } from "@angular/core";
+import { NavController, Item, Content } from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
   DocumentViewer,
@@ -14,6 +14,7 @@ import { Platform } from "ionic-angular";
 
 import { ViewPostPage } from "../view_post/view_post";
 import { AppModule } from "../../app/app.module";
+import { NewPostPage } from "./new_post/new_post";
 
 @Component({
   selector: "page-post",
@@ -22,8 +23,12 @@ import { AppModule } from "../../app/app.module";
 export class PostPage implements AfterViewInit {
   documents = [];
   jenis = "kasus";
+  view = "me";
+  items0 = [];
   items1 = [];
   items2 = [];
+
+  userName = "Nurul";
 
   constructor(
     private document: DocumentViewer,
@@ -32,13 +37,17 @@ export class PostPage implements AfterViewInit {
     public navCtrl: NavController,
     private opener: FileOpener,
     public service: BackendService,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
   ) {
     console.log(this.service.baseurl);
   }
+  
+  @ViewChild(Content) content: Content
 
   ngAfterViewInit() {
+    this.reqMyPosts();
     this.reqNewestPosts();
+    this.populateItems2();
   }
 
   ionViewDidEnter() {
@@ -54,6 +63,14 @@ export class PostPage implements AfterViewInit {
     "filter[order]": ["date_modified DESC"]
   };
 
+  postQueryByName = {
+    "filter[where][type]": 1,
+    "filter[where][nama_korban]": "",
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"]
+  };
+
   resetPostOffset() {
     this.postQuery["filter[offset]"] = 0;
   }
@@ -64,7 +81,49 @@ export class PostPage implements AfterViewInit {
 
   currentPostOffset = 0;
 
-  reqNewestPostsFake() {}
+  reqMyPosts = () => {
+    console.log(this.service.baseurl);
+
+    this.timeOut = 0;
+
+    // return the tab to null
+    //this.jenis = jenis;
+
+    // set the query
+    this.postQueryByName["filter[where][type]"] = 1;
+
+    // filter by user's posts
+    this.postQueryByName["filter[where][nama_korban]"] = this.userName;
+
+    // add the offset
+    this.postQueryByName["filter[skip]"] = this.items0.length;
+
+    // resize the view
+    this.content.resize();
+
+    if (this.items0.length > 0) return;
+
+    this.service
+      .getReqNew("postheaders", this.postQueryByName)
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items0.push(newItem);
+          });
+
+          console.log(this.items0.length);
+
+          // populate the list
+          // this.populateList(this.items);
+        }
+      });
+  };
 
   reqNewestPosts = () => {
     console.log(this.service.baseurl);
@@ -73,6 +132,15 @@ export class PostPage implements AfterViewInit {
 
     // return the tab to null
     //this.jenis = jenis;
+
+    // set the query
+    this.postQuery["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items1.length;
+
+    // resize the view
+    this.content.resize();
 
     if (this.items1.length > 0) return;
 
@@ -95,9 +163,6 @@ export class PostPage implements AfterViewInit {
 
           // populate the list
           // this.populateList(this.items);
-
-          // add the offset
-          this.postQuery["filter[skip]"] = this.items1.length + this.postLimit;
         }
       });
   };
@@ -111,6 +176,15 @@ export class PostPage implements AfterViewInit {
 
     // return the tab to null
     //this.jenis = jenis;
+
+    // set the query
+    this.postQuery["filter[where][type]"] = 2;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items2.length;
+
+    // resize the view
+    this.content.resize();
 
     if (this.items2.length > 0) return;
 
@@ -133,35 +207,77 @@ export class PostPage implements AfterViewInit {
 
           // populate the list
           // this.populateList(this.items);
-
-          // add the offset
-          this.postQuery["filter[skip]"] = this.items2.length + this.postLimit;
         }
       });
   };
 
-  purgeList()
+  purgeList(refresh)
   {
     if (this.jenis === "kasus")
     {
       this.items1 = [];
-      this.reqNewestPosts();
+      this.doInfinite(refresh);
     }
 
     if (this.jenis === "kegiatan")
     {
       this.items2 = [];
-      this.populateItems2();
+      this.doInfinite2(refresh);
     }
+  }
+
+  doInfiniteMe(infiniteScroll) {
+    console.log("Begin async operation");
+    console.log(this.postQuery);
+
+    // set the query
+    this.postQueryByName["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQueryByName["filter[skip]"] = this.items0.length;
+
+    // filter by user's posts
+    this.postQueryByName["filter[where][nama_korban]"] = this.userName;
+    
+    this.timeOut = 500;
+
+    setTimeout(() => {
+      this.service
+        .getReqNew("postheaders", this.postQueryByName)
+        .subscribe(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+              this.items0.push(newItem);
+            });
+
+            console.log(this.items0.length);
+
+            // populate the list
+            // this.populateList(this.items);
+
+            // end operation
+            console.log("Async operation has ended");
+            infiniteScroll.complete();
+          }
+        });
+    }, this.timeOut);
   }
 
   doInfinite(infiniteScroll) {
     console.log("Begin async operation");
     console.log(this.postQuery);
 
-    // check the current active tab
-    if (this.jenis === "kasus") this.postQuery["filter[where][type]"] = 1;
-    if (this.jenis === "kegiatan") this.postQuery["filter[where][type]"] = 2;
+    // set the query
+    this.postQuery["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items1.length;
     
     this.timeOut = 500;
 
@@ -177,8 +293,7 @@ export class PostPage implements AfterViewInit {
 
             newItems.forEach(newItem => {
               // append the new posts to current array
-              if (this.jenis === "kasus") this.items1.push(newItem);
-              if (this.jenis === "kegiatan") this.items2.push(newItem);
+              this.items1.push(newItem);
             });
 
             console.log(this.items1.length);
@@ -187,11 +302,46 @@ export class PostPage implements AfterViewInit {
             // populate the list
             // this.populateList(this.items);
 
-            // add the offset
-            let curLen
-            if (this.jenis === "kasus") curLen = this.items1.length;
-            if (this.jenis === "kegiatan") curLen = this.items2.length;
-            this.postQuery["filter[skip]"] = curLen + this.postLimit;
+            // end operation
+            console.log("Async operation has ended");
+            infiniteScroll.complete();
+          }
+        });
+    }, this.timeOut);
+  }
+
+  doInfinite2(infiniteScroll) {
+    console.log("Begin async operation");
+    console.log(this.postQuery);
+
+    // set the query
+    this.postQuery["filter[where][type]"] = 2;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items2.length;
+    
+    this.timeOut = 500;
+
+    setTimeout(() => {
+      this.service
+        .getReqNew("postheaders", this.postQuery)
+        .subscribe(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+              this.items2.push(newItem);
+            });
+
+            console.log(this.items1.length);
+            console.log(this.items2.length);
+
+            // populate the list
+            // this.populateList(this.items);
 
             // end operation
             console.log("Async operation has ended");
@@ -204,6 +354,16 @@ export class PostPage implements AfterViewInit {
   viewPost(no_post:string)
   {
     this.navCtrl.push(ViewPostPage,{post_id:no_post});
+  }
+
+  newKasus()
+  {
+    this.navCtrl.push(NewPostPage,{type:"kasus"});
+  }
+
+  newKegiatan()
+  {
+    this.navCtrl.push(NewPostPage,{type:"kegiatan"});
   }
 
   populateList(any) {}

@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions } from "@angular/http";
-import { HttpClient, HttpHeaders, HttpParams,HttpUrlEncodingCodec } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpUrlEncodingCodec
+} from "@angular/common/http";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Rx";
 import { User } from "./auth-service";
@@ -41,7 +46,7 @@ export class BackendService {
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
     let params = new HttpParams({
       fromObject: body,
-      encoder:new MyCustomHttpUrlEncodingCodec
+      encoder: new MyCustomHttpUrlEncodingCodec()
     });
 
     return this.Http2.get(this.baseurl + url, {
@@ -84,18 +89,24 @@ export class BackendService {
       //console.log("enctyption: " + encrypt.toString());
 
       // GET from server
-      this.getreqAuth("login", encrypt).subscribe(response => {
-        if (response != null) {
-          this.posts = response;
+      this.getreqAuth("login", encrypt).subscribe(
+        response => {
+          if (response != null) {
+            this.posts = response;
 
-          console.log("got response");
-          //console.log(this.posts);
+            console.log("got response");
+            //console.log(this.posts);
 
-          let access = this.validateCredentials(credentials, this.posts);
-          observer.next(true);
-          observer.complete();
+            let access = this.validateCredentials(credentials, this.posts);
+            observer.next(true);
+            observer.complete();
+          }
+        },
+        error => {
+          observer.next();
+          observer.error(error);
         }
-      });
+      );
     });
   }
 

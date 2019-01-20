@@ -23,12 +23,13 @@ import { File } from "@ionic-native/file";
 import { FileTransfer } from "@ionic-native/file-transfer";
 import { DocumentViewer } from "@ionic-native/document-viewer";
 import { BackendService } from "../providers/backend.service";
+import { NewPostPage } from "../pages/post/new_post/new_post";
 
 @NgModule({
-  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage],
+  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
   imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpModule,HttpClientModule],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage],
+  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
   providers: [
     StatusBar,
     SplashScreen,

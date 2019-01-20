@@ -1,92 +1,168 @@
 <ion-header>
-  <ion-navbar no-border-bottom>
-    <button ion-button menuToggle>
-      <ion-icon name="Back"></ion-icon>
-    </button>
-    <ion-title>
-      Post
-      <button (click)="backToPostPage()">
-        Back
+  <div>
+    <ion-navbar no-border-bottom color="primary">
+      <button *ngIf="view=='post'" ion-button menuToggle>
+        <ion-icon name="Back"></ion-icon>
       </button>
-    </ion-title>
-  </ion-navbar>
+      <ion-title>
+        <div class="item item-avatar">
+          <h2>{{post_id}}</h2>
+        </div>
+      </ion-title>
+    </ion-navbar>
+  </div>
 
-  <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="jenis">
-      <ion-segment-button value="kasus">
-        Kasus
-      </ion-segment-button>
-      <ion-segment-button value="kegiatan">
-        Kegiatan
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
+  <div *ngIf="view=='comment'">
+    <div text-center>
+      <ion-card color="primary" (click)="toggleView()">
+        <ion-card-content>
+          <h2>Lihat Kasus</h2>
+        </ion-card-content>
+      </ion-card>
+    </div>
+    <ion-navbar>
+      <ion-title>
+        Pendamping
+      </ion-title>
+    </ion-navbar>
+    <ion-item no-lines>
+      <ion-avatar item-start *ngFor="let user of users">
+        <img src="">
+        <h3 align="center"></h3>
+      </ion-avatar>
+    </ion-item>
+  </div>
 </ion-header>
 
 <ion-content>
-  <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
-    <ion-refresher-content>
-
-    </ion-refresher-content>
-  </ion-refresher>
-
-  <div [ngSwitch]="jenis">
-    <ion-list *ngSwitchCase="'kasus'">
-      <ion-item *ngFor="let item of items">
-        <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>{{item.nama}}</h2>
-        <p>{{item.judul}}</p>
-      </ion-item>
-      <!-- <ion-item>
-        <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Irma</h2>
-        <p>KDRT - Suci</p>
-      </ion-item>
+  <div *ngIf="view=='post'">
+    <ion-title>
       <ion-item>
-        <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Budi</h2>
-        <p>Pendampingan dan bipartid</p>
+        <div class="item item-avatar">
+          <img src="//tutorialsplane.com/runtest/ionic/img/profile.jpg">
+          <h2>John Doe</h2>
+          <p>This is John From Australia...</p>
+        </div>
+
+        <div class="item item-image">
+          <img src="//tutorialsplane.com/runtest/ionic/img/cover.jpg">
+        </div>
       </ion-item>
+    </ion-title>
+
+    <!-- the comment section -->
+    <!-- <div>
+      <ion-refresher (ionRefresh)="purgeList($event)">
+        <ion-refresher-content>
+
+        </ion-refresher-content>
+      </ion-refresher>
+
+      <ion-list>
+        <button ion-item *ngFor="let item of items1" (click)="viewComment(item.no_post)">
+          <ion-card-header>
+            <h3>{{item.nama_korban}}</h3>
+          </ion-card-header>
+
+          <ion-card-content>
+            {{item.no_post}}
+          </ion-card-content>
+        </button>
+      </ion-list>
+
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div> -->
+  </div>
+
+  <div *ngIf="view=='comment'">
+
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" position="top">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <ion-list text-wrap *ngFor="let msg of items1">
       <ion-item>
-        <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail>
-        <h2>Ivan</h2>
-        <p>Kasus Ibu Siti</p>
-      </ion-item> -->
+
+        <!-- my messages -->
+        <ion-grid *ngIf="msg.posted_by==userName">
+          <ion-row>
+            <ion-col>
+              <div style="float:right; text-align: right" color="primary">
+                <h3>{{msg.posted_by}}</h3>
+                <h2>{{msg.message}} </h2>
+                <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
+              </div>
+            </ion-col>
+            <ion-col col-auto>
+              <ion-avatar style="float:right;" color="primary">
+                <img src='' color="blue">
+                <b>{{msg.posted_by[0]}}</b>
+              </ion-avatar>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- other's messages -->
+        <ion-grid *ngIf="msg.posted_by!=userName">
+          <ion-row>
+            <ion-col col-auto>
+              <ion-avatar color="secondary">
+                <img src=''>
+                <b>{{msg.posted_by[0]}}</b>
+              </ion-avatar>
+            </ion-col>
+            <ion-col>
+              <div color="secndary">
+                <h3>{{msg.posted_by}}</h3>
+                <h2> {{msg.message}} </h2>
+                <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- test -->
+        <!-- <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div style="float:right; text-align: center" color="primary">
+                <h1>{{msg.message}}</h1>
+                <h2> <span class="time-display"></span></h2>
+                <p> </p>
+              </div>
+            </ion-col>
+            <ion-col col-auto>
+              <ion-avatar style="float:right;">
+                <img src=''>
+              </ion-avatar>
+            </ion-col>
+          </ion-row>
+        </ion-grid> -->
+
+      </ion-item>
     </ion-list>
 
-    <ion-list *ngSwitchCase="'kegiatan'">
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-1.jpg">
-        </ion-thumbnail>
-        <h2>Luna</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-3.jpg">
-        </ion-thumbnail>
-        <h2>Milo</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-4.jpg">
-        </ion-thumbnail>
-        <h2>Bandit</h2>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-start>
-          <img src="assets/img/thumbnail-kitten-2.jpg">
-        </ion-thumbnail>
-        <h2>Nala</h2>
-      </ion-item>
-    </ion-list>
   </div>
 </ion-content>
+
+<ion-footer>
+  <div text-center *ngIf="view=='post'">
+    <ion-card color="primary" (click)="toggleView()">
+      <ion-card-content>
+        <h2>Komentar</h2>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="view=='comment'">
+    <ion-toolbar>
+      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message" (keyup.enter)="send()">
+      <ion-buttons right>
+        <button (click)="send()" ion-button icon-only item-right class="send-chat-button">
+          <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+</ion-footer>

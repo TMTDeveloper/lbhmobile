@@ -1,64 +1,115 @@
 <ion-header>
-  <ion-navbar no-border-bottom>
+  <ion-navbar no-border-bottom color="primary">
     <button ion-button menuToggle>
       <ion-icon name="Back"></ion-icon>
     </button>
     <ion-title>
-      Post
+      Beranda
     </ion-title>
   </ion-navbar>
 
-  <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="jenis">
-      <ion-segment-button value="kasus" (click)="reqNewestPosts()">
-        Kasus
-      </ion-segment-button>
-      <ion-segment-button value="kegiatan" (click)="populateItems2()">
-        Kegiatan
-      </ion-segment-button>
-    </ion-segment>
+  <!-- top button for create new post -->
+  <ion-toolbar color="primary">
+    <div text-center>
+      <button ion-button round (click)="newKasus()" [hidden]="jenis=='kasus'?false:true" color="primary">
+        Mulai Kasus Baru
+      </button>
+      <button ion-button round (click)="newKegiatan()" [hidden]="jenis=='kegiatan'?false:true" color="primary">
+        Buat Kegiatan Baru
+      </button>
+    </div>
   </ion-toolbar>
+
+  <!-- choose view kasus or kegiatan -->
+  <div>
+    <ion-toolbar color="primary">
+      <ion-segment [(ngModel)]="jenis" color="light">
+        <ion-segment-button value="kasus" (click)="reqMyPosts()" color="primary">
+          Kasus
+        </ion-segment-button>
+        <ion-segment-button value="kegiatan" (click)="populateItems2()" color="primary">
+          Kegiatan
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </div>
+
+  <!-- view all cases or only mine -->
+  <div *ngIf="jenis=='kasus'">
+    <ion-toolbar no-border-top>
+      <ion-segment [(ngModel)]="view">
+        <ion-segment-button value="me" (click)="reqMyPosts()">
+          Kasus Saya
+        </ion-segment-button>
+        <ion-segment-button value="all" (click)="reqNewestPosts()">
+          Semua Kasus
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </div>
 </ion-header>
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="purgeList()">
-    <ion-refresher-content>
-      Tarik untuk Muat Ulang
+  <ion-refresher (ionRefresh)="purgeList($event)">
+    <ion-refresher-content pullingText="Tarik untuk Memuat Ulang">
     </ion-refresher-content>
   </ion-refresher>
 
-  <div style="height:100%">
-    <div *ngIf="jenis=='kasus'">
-      <ion-list>
-        <button ion-item *ngFor="let item of items1" (click)="viewPost(item.no_post)" [hidden]="item.type==1&&jenis=='kasus'?false:item.type==2&&jenis=='kegiatan'?false:true">
-          <!-- <ion-thumbnail item-start>
-          <ion-icon name="person"></ion-icon>
-        </ion-thumbnail> -->
-          <h2>{{item.nama_korban}}</h2>
+  <div>
+    <div *ngIf="jenis=='kasus'&&view=='me'">
+      <!-- <ion-list> -->
+      <ion-card *ngFor="let item of items0" (click)="viewPost(item.no_post)">
+        <!-- <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+          </ion-thumbnail> -->
+        <ion-card-content>
+          <h2><b>{{item.nama_korban}}</b></h2>
           <p>{{item.no_post}}</p>
-          <p>{{item.type}}</p>
-        </button>
-      </ion-list>
+          <i>{{item.type}}</i>
+        </ion-card-content>
+      </ion-card>
+      <!-- </ion-list> -->
+
+      <ion-infinite-scroll (ionInfinite)="doInfiniteMe($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </div>
+
+    <div *ngIf="jenis=='kasus'&&view=='all'">
+      <!-- <ion-list> -->
+      <ion-card *ngFor="let item of items1" (click)="viewPost(item.no_post)">
+        <!-- <ion-thumbnail item-start>
+            <ion-icon name="person"></ion-icon>
+          </ion-thumbnail> -->
+        <ion-card-content>
+          <h2><b>{{item.nama_korban}}</b></h2>
+          <p>{{item.no_post}}</p>
+          <i>{{item.type}}</i>
+        </ion-card-content>
+      </ion-card>
+      <!-- </ion-list> -->
 
       <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </div>
-    
+
     <div *ngIf="jenis=='kegiatan'">
-      <ion-list>
-        <button ion-item *ngFor="let item of items2" (click)="viewPost(item.no_post)">
-          <!-- <ion-thumbnail item-start>
+      <!-- <ion-list> -->
+      <ion-card *ngFor="let item of items2" (click)="viewPost(item.no_post)">
+        <!-- <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail> -->
-          <h2>{{item.nama_korban}}</h2>
+        <ion-card-content>
+          <h2><b>{{item.nama_korban}}</b></h2>
           <p>{{item.no_post}}</p>
-          <p>{{item.type}}</p>
-        </button>
-      </ion-list>
+          <i>{{item.type}}</i>
+        </ion-card-content>
+      </ion-card>
+      <!-- </ion-list> -->
 
-      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll (ionInfinite)="doInfinite2($event)">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </div>

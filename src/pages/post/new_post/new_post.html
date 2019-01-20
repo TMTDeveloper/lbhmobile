@@ -1,90 +1,65 @@
 <ion-header>
-    <ion-navbar no-border-bottom>
-      <button ion-button menuToggle>
-          <ion-icon name="Back"></ion-icon>
-      </button>
-      <ion-title>
-        Post
-      </ion-title>
-    </ion-navbar>
-  
-    <ion-toolbar no-border-top>
-      <ion-segment [(ngModel)]="pet">
-        <ion-segment-button value="kasus">
-          Kasus
-        </ion-segment-button>
-        <ion-segment-button value="kegiatan">
-          Kegiatan
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content>
-  
-      <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
-          <ion-refresher-content>
-      
-          </ion-refresher-content>
-        </ion-refresher>
-  
-    <div [ngSwitch]="pet">
-      <ion-list *ngSwitchCase="'kasus'">
-        <ion-item>
-          <ion-thumbnail item-start>
-            <ion-icon name="person"></ion-icon>
-          </ion-thumbnail>
-          <h2>Nurul</h2>
-          <p>Somasi ke PT Jaya Sentosa</p>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-            <ion-icon name="person"></ion-icon>
-          </ion-thumbnail>
-          <h2>Irma</h2>
-          <p>KDRT - Suci</p>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-              <ion-icon name="person"></ion-icon>
-          </ion-thumbnail>
-          <h2>Budi</h2>
-          <p>Pendampingan dan bipartid</p>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-              <ion-icon name="person"></ion-icon>
-          </ion-thumbnail>
-          <h2>Ivan</h2>
-          <p>Kasus Ibu Siti</p>
-        </ion-item>
-      </ion-list>
-  
-      <ion-list *ngSwitchCase="'kegiatan'">
-        <ion-item>
-          <ion-thumbnail item-start>
-            <img src="assets/img/thumbnail-kitten-1.jpg">
-          </ion-thumbnail>
-          <h2>Luna</h2>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-            <img src="assets/img/thumbnail-kitten-3.jpg">
-          </ion-thumbnail>
-          <h2>Milo</h2>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-            <img src="assets/img/thumbnail-kitten-4.jpg">
-          </ion-thumbnail>
-          <h2>Bandit</h2>
-        </ion-item>
-        <ion-item>
-          <ion-thumbnail item-start>
-            <img src="assets/img/thumbnail-kitten-2.jpg">
-          </ion-thumbnail>
-          <h2>Nala</h2>
-        </ion-item>
-      </ion-list>
-    </div>
-  </ion-content>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon name="Back"></ion-icon>
+    </button>
+    <ion-title>
+      <div *ngIf="type=='kasus'" class="item item-avatar">
+        <h2>Buat Kasus Baru</h2>
+      </div>
+      <div *ngIf="type=='kegiatan'" class="item item-avatar">
+        <h2>Buat Kegiatan Baru</h2>
+      </div>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list height="100%">
+
+    <ion-item>
+      <ion-label stacked no-border-top>Judul</ion-label>
+      <ion-input type="text" no-border-bottom></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Propinsi</ion-label>
+      <ion-select [(ngModel)]="propinsi">
+        <ion-option value="1">Jakarta</ion-option>
+        <ion-option value="2">Yogyakarta</ion-option>
+        <ion-option value="3">Bali</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked no-border-top>Daerah</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked no-border-top>Penggugat</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked no-border-top>Tergugat</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <ion-label stacked no-border-top>Kronologis</ion-label>
+      <ion-textarea class="big-box" style="height:100%" type="text"></ion-textarea>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <div text-center>
+    <ion-card color="primary" (click)="createNewPost()">
+      <ion-card-content>
+        <h2>Kirim</h2>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-footer>
