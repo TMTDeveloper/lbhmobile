@@ -30,8 +30,6 @@ export class ViewPostPage {
 
   images = [{}];
 
-  type;
-
   constructor(
     private document: DocumentViewer,
     private file: File,
