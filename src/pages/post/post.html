@@ -5,6 +5,9 @@
     </button>
     <ion-title>
       Beranda
+      <button style="float:right" ion-button round (click)="askLogout()" [hidden]="jenis=='kasus'?false:true" color="primary">
+        Keluar
+      </button>
     </ion-title>
   </ion-navbar>
 
@@ -41,7 +44,7 @@
         <ion-segment-button value="me" (click)="reqMyPosts()">
           Kasus Saya
         </ion-segment-button>
-        <ion-segment-button value="all" (click)="reqNewestPosts()">
+        <ion-segment-button *ngIf="role==2" value="all" (click)="reqNewestPosts()">
           Semua Kasus
         </ion-segment-button>
       </ion-segment>
@@ -59,14 +62,14 @@
   <div>
     <div *ngIf="jenis=='kasus'&&view=='me'">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items0" (click)="viewPost(item.no_post)">
+      <ion-card *ngFor="let item of items0" (click)="viewPost(item.no_post,item.posted_by,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
-          <h2><b>{{item.nama_korban}}</b></h2>
-          <p>{{item.no_post}}</p>
-          <i>{{item.type}}</i>
+          <h2><b>{{item.title}}</b></h2>
+          <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
+          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->
@@ -76,16 +79,16 @@
       </ion-infinite-scroll>
     </div>
 
-    <div *ngIf="jenis=='kasus'&&view=='all'">
+    <div *ngIf="jenis=='kasus'&&view=='all' && role==2">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items1" (click)="viewPost(item.no_post)">
+      <ion-card *ngFor="let item of items1" (click)="viewPost(item.no_post,item.posted_by,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
-          <h2><b>{{item.nama_korban}}</b></h2>
-          <p>{{item.no_post}}</p>
-          <i>{{item.type}}</i>
+          <h2><b>{{item.title}}</b></h2>
+          <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
+          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->
@@ -102,9 +105,9 @@
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail> -->
         <ion-card-content>
-          <h2><b>{{item.nama_korban}}</b></h2>
-          <p>{{item.no_post}}</p>
-          <i>{{item.type}}</i>
+          <h2><b>{{item.title}}</b></h2>
+          <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
+          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->

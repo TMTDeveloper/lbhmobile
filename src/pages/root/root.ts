@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     templateUrl: 'root.html'
 })
 export class RootPage {
-    constructor(private platform: Platform, private nav: NavController, private creds: Credentials){
+    constructor(private platform: Platform, private nav: NavController, public creds: Credentials){
         platform.ready().then(
             () => {
                 this.InitCredentials();

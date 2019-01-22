@@ -14,6 +14,7 @@ import { Platform } from "ionic-angular";
 import { AppModule } from "../../app/app.module";
 
 import * as moment from "moment";
+import { Credentials } from "../../providers/credentials.holder";
 
 @Component({
   selector: "page-view_post",
@@ -25,6 +26,10 @@ export class ViewPostPage {
   post_id = "";
   view = "post";
 
+  judul = "";
+
+  images = [{}];
+
   constructor(
     private document: DocumentViewer,
     private file: File,
@@ -33,15 +38,26 @@ export class ViewPostPage {
     private opener: FileOpener,
     private service: BackendService,
     public loadingCtrl: LoadingController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public creds:Credentials
   ) {
     this.post_id = navParams.get("post_id");
+    this.judul = navParams.get("judul");
   }
 
   @ViewChild(Content) content: Content;
 
   ngAfterViewInit() {
+    this.getCurrentPostDetails();
     this.reqNewestPosts();
+  }
+
+  role;
+
+  getUserData()
+  {
+    this.userName = this.creds.data["name"];
+    this.role = this.creds.data["role"];
   }
 
   backToPostPage() {
@@ -205,6 +221,50 @@ export class ViewPostPage {
           }
         });
     }, this.timeOut);
+  }
+
+  type: number = 1;
+
+  posted_by;
+  daerah;
+  propinsi;
+  penggugat;
+  tergugat;
+  kronologi;
+
+  getCurrentPostDetails_OLD = () => {
+    console.log(this.service.baseurl);
+
+    this.timeOut = 0;
+
+    // set the query for current post
+    let postQueryCur = {
+      "filter[where][no_post]": this.post_id,
+      "filter[where][type]": this.type
+    };
+
+    this.service.getReqNew("postheaders", postQueryCur).subscribe(response => {
+      if (response != null) {
+        console.log(response);
+
+        this.posted_by = response[0]["posted_by"];
+        this.propinsi = response[0]["province"];
+        this.penggugat = response[0]["nama_korban"];
+        this.tergugat = response[0]["nama_pelaku"];
+        this.kronologi = response[0]["kronologi"];
+
+        // populate the list
+        // this.populateList(this.items);
+      }
+    });
+  };
+
+  getCurrentPostDetails() {
+    this.posted_by = this.navParams.get("posted_by");
+    this.propinsi = this.navParams.get("province");
+    this.penggugat = this.navParams.get("nama_korban");
+    this.tergugat = this.navParams.get("nama_pelaku");
+    this.kronologi = this.navParams.get("kronologi");
   }
 
   purgeList(refresh) {

@@ -6,6 +6,7 @@ import { HomePage } from '../home/home';
 import { PostPage } from '../post/post';
 
 import { Credentials } from '../../providers/credentials.holder';
+import { Events, NavController } from 'ionic-angular';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -17,6 +18,9 @@ export class TabsPage {
   tab3Root = ContactPage;
   tab4Root = PostPage;
 
-  constructor(private creds: Credentials) {
+  constructor(private creds: Credentials, public events:Events, navCtrl:NavController) {
+    events.subscribe('user:logout',()=>{
+      navCtrl.popToRoot();
+    })
   }
 }

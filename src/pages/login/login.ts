@@ -9,7 +9,7 @@ import {
 import { AuthService } from "../../providers/auth-service";
 
 import { TabsPage } from "../tabs/tabs";
-//import { Credentials } from '../../providers/credentials.holder';
+import { Credentials } from "../../providers/credentials.holder";
 
 @Component({
   selector: "page-login",
@@ -26,6 +26,18 @@ export class LoginPage {
     private loadingCtrl: LoadingController
   ) {}
 
+  checkCookie()
+  {
+    // always check if has cookie to continue session
+    // session lasts ~5 mins
+  }
+
+  ionViewWillEnter()
+  {
+    // did we just logout?
+
+  }
+
   public createAccount() {
     this.nav.push("RegisterPage");
   }
@@ -35,7 +47,7 @@ export class LoginPage {
     this.auth.login(this.registerCredentials).subscribe(
       allowed => {
         if (allowed) {
-          this.nav.setRoot(TabsPage);
+          this.nav.push(TabsPage);
         } else {
           this.showError("Email atau Sandi salah!");
           console.log("wrong credentials");
@@ -62,7 +74,7 @@ export class LoginPage {
     this.loading.dismiss();
 
     let alert = this.alertCtrl.create({
-      title: "Fail",
+      title: "Gagal",
       subTitle: text,
       buttons: ["OK"]
     });

@@ -6,7 +6,7 @@
       </button>
       <ion-title>
         <div class="item item-avatar">
-          <h2>{{post_id}}</h2>
+          <h2>{{judul}}</h2>
         </div>
       </ion-title>
     </ion-navbar>
@@ -37,18 +37,72 @@
 <ion-content>
   <div *ngIf="view=='post'">
     <ion-title>
-      <ion-item>
-        <div class="item item-avatar">
-          <img src="//tutorialsplane.com/runtest/ionic/img/profile.jpg">
-          <h2>John Doe</h2>
-          <p>This is John From Australia...</p>
-        </div>
 
-        <div class="item item-image">
-          <img src="//tutorialsplane.com/runtest/ionic/img/cover.jpg">
-        </div>
+      <ion-item>
+        <h2>Nama pendamping</h2>
+        <p>{{posted_by}}</p>
       </ion-item>
+
+      <ion-item>
+        <h2>Propinsi</h2>
+        <p>{{propinsi}}</p>
+      </ion-item>
+
+      <!-- <ion-item>
+          <ion-label stacked no-border-top>Daerah</ion-label>
+          <ion-input [(ngModel)]="daerah" type="text"></ion-input>
+        </ion-item> -->
+
+      <ion-item>
+        <h2>Penggugat</h2>
+        <p>{{penggugat}}</p>
+      </ion-item>
+
+      <ion-item>
+        <h2>Tergugat</h2>
+        <p>{{tergugat}}</p>
+      </ion-item>
+
     </ion-title>
+
+    <div>
+      <ion-navbar color="primary">
+        <ion-title>
+          Kronologi
+        </ion-title>
+      </ion-navbar>
+      <ion-item text-wrap>
+        <h2 class="bigbox">{{kronologi}}</h2>
+      </ion-item>
+
+
+    </div>
+
+    <div *ngIf="images.length>0">
+      <ion-navbar color="primary">
+        <ion-title>
+          Dokuman Pendukung
+        </ion-title>
+      </ion-navbar>
+      
+      <ion-slides>
+        <ion-slide>
+          <div class="item item-avatar">
+            <img src="//tutorialsplane.com/runtest/ionic/img/profile.jpg">
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="item item-image">
+            <img src="//tutorialsplane.com/runtest/ionic/img/cover.jpg">
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div class="item item-image">
+            <img src="//media.istockphoto.com/photos/thirsty-african-american-athlete-drinking-water-in-a-gym-picture-id668203864?k=6&m=668203864&s=612x612&w=0&h=qOKWHN87CQsaGZwF3RCQ4tod58YcStbdozm2xiv6XfM=">
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
 
     <!-- the comment section -->
     <!-- <div>

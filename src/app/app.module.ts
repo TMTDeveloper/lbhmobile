@@ -24,6 +24,8 @@ import { FileTransfer } from "@ionic-native/file-transfer";
 import { DocumentViewer } from "@ionic-native/document-viewer";
 import { BackendService } from "../providers/backend.service";
 import { NewPostPage } from "../pages/post/new_post/new_post";
+import { FileChooser } from "@ionic-native/file-chooser";
+import { FilePath } from "@ionic-native/file-path";
 
 @NgModule({
   declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
@@ -40,7 +42,9 @@ import { NewPostPage } from "../pages/post/new_post/new_post";
     FileOpener,
     BackendService,
     AuthService,
-    Credentials
+    Credentials,
+    FileChooser,
+    FilePath
   ]
 })
 export class AppModule {}

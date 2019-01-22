@@ -1,32 +1,27 @@
-import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+import { Injectable } from "@angular/core";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class Credentials {
-
-  data = "init data";
+  data: any;
   constructor() {
-    console.log('Hello Singleton Provider');
+    console.log("Hello Singleton Provider");
   }
 
-  set(data){
+  set(data) {
     this.data = data;
   }
 
-  log(){
-    console.log("user data:"); 
-    console.log(this.data);   
+  log() {
+    console.log("user data:");
+    console.log(this.data);
   }
 
-  setUsername(name){
-      this.set(name);
+  setUsername(name) {
+    this.set(name);
   }
 
-  getUsername(){
+  getUsername() {}
 
-  }
-
-  getEmail(){
-
-  }
+  getEmail() {}
 }

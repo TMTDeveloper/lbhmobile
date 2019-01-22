@@ -42,7 +42,7 @@ export class BackendService {
     return this.http.get(this.baseurl + url, options).map(res => res.json());
   }
 
-  getReqNew(url: string, body) {
+  getReqNew(url: string, body?) {
     const headers = new HttpHeaders({ "Content-Type": "application/json" });
     let params = new HttpParams({
       fromObject: body,
@@ -58,6 +58,17 @@ export class BackendService {
   postreq(url: string, body) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
+
+    const options = new RequestOptions({
+      headers: headers
+    });
+    return this.http
+      .post(this.baseurl + url, body, options)
+      .map(res => res.json());
+  }
+
+  uploadreq(url: string, body) {
+    const headers = new Headers();
 
     const options = new RequestOptions({
       headers: headers
