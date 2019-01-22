@@ -30,6 +30,8 @@ export class ViewPostPage {
 
   images = [{}];
 
+  type;
+
   constructor(
     private document: DocumentViewer,
     private file: File,
@@ -43,6 +45,7 @@ export class ViewPostPage {
   ) {
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
+    this.type = navParams.get("type");
   }
 
   @ViewChild(Content) content: Content;
@@ -89,7 +92,8 @@ export class ViewPostPage {
 
   sendParams = {
     no_post: this.post_id,
-    posted_by: this.userName,
+    posted_by: this.creds.data.email,
+    posted_name: this.creds.data.name,
     message: this.message,
     date_created: moment().format()
   };
@@ -118,6 +122,7 @@ export class ViewPostPage {
           let newMsg = {
             no_post: this.sendParams.no_post,
             posted_by: this.sendParams.posted_by,
+            posted_name: this.sendParams.posted_name,
             message: this.sendParams.message,
             date_created: this.sendParams.date_created
           };

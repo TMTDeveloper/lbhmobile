@@ -16,7 +16,7 @@
 
 <ion-content>
   <ion-list height="100%">
-    <form [formGroup]="formKasus">
+    <form *ngIf="type=='1'" [formGroup]="formKasus">
       <ion-item>
         <ion-label stacked>Judul</ion-label>
         <ion-input formControlName="judul" type="text"></ion-input>
@@ -74,12 +74,12 @@
         <ion-input formControlName="tergugat" type="text"></ion-input>
       </ion-item>
 
-      <ion-item text-wrap>
-        <ion-label stacked no-border-top>Kronologi</ion-label>
-        <ion-textarea formControlName="kronologi" rows="5" style="height:100%"></ion-textarea>
-      </ion-item>
-
-
+      <div>
+        <ion-item text-wrap>
+          <ion-label stacked no-border-top>Kronologi</ion-label>
+          <ion-textarea formControlName="kronologi" rows="5" style="height:100%"></ion-textarea>
+        </ion-item>
+      </div>
 
       <ion-list>
         <ion-list-header>
@@ -91,18 +91,104 @@
         </ion-item>
       </ion-list>
 
+    </form>
+
+    <form *ngIf="type=='2'" [formGroup]="formKegiatan">
+      <ion-item>
+        <ion-label stacked>Judul</ion-label>
+        <ion-input formControlName="judul" type="text"></ion-input>
+      </ion-item>
+
+      <!-- <ion-item>
+          <ion-label stacked no-border-top>Organisasi</ion-label>
+          <ion-select [(ngModel)]="propinsi">
+            <ion-option value=0>LBH Jakarta</ion-option>
+            <ion-option value=1>LBH Yogyakarta</ion-option>
+            <ion-option value=3>LBH Bali</ion-option>
+          </ion-select>
+        </ion-item> -->
+
+      <ion-item>
+        <ion-label stacked>Propinsi</ion-label>
+        <ion-select formControlName="propinsi" (ionChange)="updateAllAreas(0)">
+          <ion-option *ngFor="let item of propinsiList" [value]="item">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Kabupaten</ion-label>
+        <ion-select formControlName="kabupaten" (ionChange)="updateAllAreas(1)" [disabled]="kabupatenList.length==0">
+          <ion-option *ngFor="let item of kabupatenList" [value]=item>{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Kecamatan</ion-label>
+        <ion-select formControlName="kecamatan" (ionChange)="updateAllAreas(2)" [disabled]="kecamatanList.length==0">
+          <ion-option *ngFor="let item of kecamatanList" [value]=item>{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Kelurahan/Desa</ion-label>
+        <ion-select formControlName="kelurahan" [disabled]="kelurahanList.length==0">
+          <ion-option *ngFor="let item of kelurahanList" [value]=item>{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- <ion-item>
+        <ion-label stacked no-border-top>Daerah</ion-label>
+        <ion-input [(ngModel)]="daerah" type="text"></ion-input>
+      </ion-item> -->
+
+      <ion-item>
+        <ion-label stacked no-border-top>Pelaksana</ion-label>
+        <ion-input formControlName="penggugat" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked no-border-top>Penanggungjawab</ion-label>
+        <ion-input formControlName="tergugat" type="text"></ion-input>
+      </ion-item>
+
+      <div>
+        <ion-item text-wrap>
+          <ion-label stacked no-border-top>Deskripsi Kegiatan</ion-label>
+          <ion-textarea formControlName="kronologi" rows="5" style="height:100%"></ion-textarea>
+        </ion-item>
+      </div>
+
+      <ion-list>
+        <ion-list-header>
+          <button (click)="addFile()" ion-button outline item-end>Tambah Dokumen pendukung</button>
+        </ion-list-header>
+        <ion-item *ngFor="let item of uploads">
+          <ion-label>{{item.substr(item.lastIndexOf("/") + 1)}}</ion-label>
+          <button ion-button outline item-end>Hapus</button>
+        </ion-item>
+      </ion-list>
 
     </form>
+
   </ion-list>
-  
+
 </ion-content>
 
 <ion-footer>
-  <div text-center>
-    <ion-card [color]="formKasus.valid?'primary':'danger'" (click)="createNewPost()">
+  <div *ngIf="type==1" text-center>
+    <ion-card [color]="formKasus.valid?'primary':'danger'" (click)="formKasus.valid?createNewPost():''">
       <ion-card-content>
         <h2 *ngIf="formKasus.valid">Kirim</h2>
         <h2 *ngIf="!formKasus.valid">Isi formulir dengan lengkap</h2>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="type==2" text-center>
+    <ion-card [color]="formKegiatan.valid?'primary':'danger'" (click)="formKegiatan.valid?createNewPost():''">
+      <ion-card-content>
+        <h2 *ngIf="formKegiatan.valid">Kirim</h2>
+        <h2 *ngIf="!formKegiatan.valid">Isi formulir dengan lengkap</h2>
       </ion-card-content>
     </ion-card>
   </div>

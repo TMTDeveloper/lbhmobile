@@ -89,6 +89,17 @@ export class NewPostPage {
       kronologi: ["", Validators.required]
     });
 
+    this.formKegiatan = formBuilder.group({
+      judul: ["", Validators.required],
+      propinsi: [{ id: "", name: "" }, OptionValidator.isValid],
+      kabupaten: [{ id: "", name: "" }, OptionValidator.isValid],
+      kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
+      kelurahan: [{ id: "", name: "" }, OptionValidator.isValid],
+      penggugat: ["", Validators.required],
+      tergugat: ["", Validators.required],
+      kronologi: ["", Validators.required]
+    });
+
     this.type = navParams.get("type");
     console.log(this.type);
     this.userName = navParams.get("userName");
@@ -97,6 +108,7 @@ export class NewPostPage {
   }
 
   formKasus: any;
+  formKegiatan: any;
 
   submitAttempt: boolean;
 
@@ -121,13 +133,17 @@ export class NewPostPage {
 
   updateAllAreas(index) {
     if (index == 0) {
-      let query = {
-        "filter[where][province_id]": this.formKasus.controls.propinsi.value.id,
-        "filter[order]": "name asc"
-      };
       this.kabupatenList = [];
       this.kecamatanList = [];
       this.kelurahanList = [];
+
+      let query = {
+        "filter[where][province_id]":
+          this.type == 1
+            ? this.formKasus.controls.propinsi.value.id
+            : this.formKegiatan.controls.propinsi.value.id,
+        "filter[order]": "name asc"
+      };
 
       this.service.getReqNew("regencies", query).subscribe(
         response => {
@@ -149,7 +165,10 @@ export class NewPostPage {
 
     if (index == 1) {
       let query = {
-        "filter[where][regency_id]": this.formKasus.controls.kabupaten.value.id,
+        "filter[where][regency_id]":
+          this.type == 1
+            ? this.formKasus.controls.kabupaten.value.id
+            : this.formKegiatan.controls.kabupaten.value.id,
         "filter[order]": "name asc"
       };
       this.kecamatanList = [];
@@ -175,8 +194,10 @@ export class NewPostPage {
 
     if (index == 2) {
       let query = {
-        "filter[where][district_id]": this.formKasus.controls.kecamatan.value
-          .id,
+        "filter[where][district_id]":
+          this.type == 1
+            ? this.formKasus.controls.kecamatan.value.id
+            : this.formKegiatan.controls.kecamatan.value.id,
         "filter[order]": "name asc"
       };
       this.kelurahanList = [];
@@ -223,27 +244,48 @@ export class NewPostPage {
 
   items1 = [];
 
-  createNewPost = () => {
+  createNewPost = async () => {
     this.sendParams["no_post"] = "";
     this.sendParams["posted_by"] = this.userName;
     this.sendParams["date_created"] = moment().format();
     this.sendParams["pembelajaran"] = "";
 
-    this.sendParams.title = this.formKasus.controls.judul.value;
-    this.sendParams.province = this.formKasus.controls.propinsi.value.name;
-    this.sendParams.province_id = this.formKasus.controls.propinsi.value.id;
-    this.sendParams.regency = this.formKasus.controls.kabupaten.value.name;
-    this.sendParams.regency_id = this.formKasus.controls.kabupaten.value.id;
-    this.sendParams.district = this.formKasus.controls.kecamatan.value.name;
-    this.sendParams.district_id = this.formKasus.controls.kecamatan.value.id;
-    this.sendParams.village = this.formKasus.controls.kelurahan.value.name;
-    this.sendParams.village_id = this.formKasus.controls.kelurahan.value.id;
-    this.sendParams.nama_korban = this.formKasus.controls.penggugat.value;
-    this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
-    this.sendParams.kronologi = this.formKasus.controls.kronologi.value;
+    // kasus
+    if (this.type == 1) {
+      this.sendParams.title = this.formKasus.controls.judul.value;
+      this.sendParams.province = this.formKasus.controls.propinsi.value.name;
+      this.sendParams.province_id = this.formKasus.controls.propinsi.value.id;
+      this.sendParams.regency = this.formKasus.controls.kabupaten.value.name;
+      this.sendParams.regency_id = this.formKasus.controls.kabupaten.value.id;
+      this.sendParams.district = this.formKasus.controls.kecamatan.value.name;
+      this.sendParams.district_id = this.formKasus.controls.kecamatan.value.id;
+      this.sendParams.village = this.formKasus.controls.kelurahan.value.name;
+      this.sendParams.village_id = this.formKasus.controls.kelurahan.value.id;
+      this.sendParams.nama_korban = this.formKasus.controls.penggugat.value;
+      this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
+      this.sendParams.kronologi = this.formKasus.controls.kronologi.value;
+    }
+
+    // kegiatan
+    if (this.type == 2) {
+      this.sendParams.title = this.formKegiatan.controls.judul.value;
+      this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
+      this.sendParams.province_id = this.formKegiatan.controls.propinsi.value.id;
+      this.sendParams.regency = this.formKegiatan.controls.kabupaten.value.name;
+      this.sendParams.regency_id = this.formKegiatan.controls.kabupaten.value.id;
+      this.sendParams.district = this.formKegiatan.controls.kecamatan.value.name;
+      this.sendParams.district_id = this.formKegiatan.controls.kecamatan.value.id;
+      this.sendParams.village = this.formKegiatan.controls.kelurahan.value.name;
+      this.sendParams.village_id = this.formKegiatan.controls.kelurahan.value.id;
+      this.sendParams.nama_korban = this.formKegiatan.controls.penggugat.value;
+      this.sendParams.nama_pelaku = this.formKegiatan.controls.tergugat.value;
+      this.sendParams.kronologi = this.formKegiatan.controls.kronologi.value;
+    }
+
     this.sendParams.organisasi = this.creds.data.organisasi;
     this.sendParams.status = 1;
     this.sendParams.type = this.type;
+
     // empty the chat bar
     this.kronologi = "";
 
@@ -256,35 +298,47 @@ export class NewPostPage {
       subTitle: "Pengirimin formulir gagal",
       buttons: ["Ok"]
     });
+
+    // check fail
+    let fail = false;
+
     // post to server. upon success, add to list
-    this.service.postreq("postheaders", this.sendParams).subscribe(
-      response => {
+    await this.service.postreq("postheaders", this.sendParams).subscribe(
+      async response => {
         if (response != null) {
           console.log(response);
 
-          // append the new posts to current array
-          let newMsg = {
-            no_post: this.sendParams.no_post,
-            posted_by: this.sendParams.posted_by,
-            message: this.sendParams.kronologi,
-            date_created: this.sendParams.date_created
+          let blankReq = {
+            no_post: response.no_post,
+            posted_by: this.creds.data.email
           };
 
-          this.items1.push(newMsg);
-
-          this.uploadImage(response.no_post).subscribe(response => {
-            if (response) {
-              loading.dismiss();
-              this.navCtrl.remove(1).then(response=>{
-                this.navCtrl.push(ViewPostPage, {
-                  "post_id": "response.no_post",
-                  "judul": this.formKasus.controls.judul.value
-                });
-              })
+          // add a blank message to show this is user's post
+          await this.service.postreq("postdetails", blankReq).subscribe(
+            response => {
+              console.log(response);
+            },
+            error => {
+              if (error != null) {
+                fail = true;
+                console.log("failed to send message!");
+              }
             }
-          });
+          );
 
-          console.log(this.items1.length);
+          if (this.uploads.length > 0)
+            this.uploadImage(response.no_post).subscribe(response => {
+              if (response) {
+                loading.dismiss();
+                this.viewCreatedPost(response);
+              }
+            });
+          else {
+            loading.dismiss();
+            this.viewCreatedPost(response);
+          }
+
+          //if (!fail)
 
           // populate the list
           // this.populateList(this.items);
@@ -302,10 +356,26 @@ export class NewPostPage {
     );
   };
 
-  viewCreatedPost(no_post) {
-    this.navCtrl.getPrevious().data.waitingNewPost = true;
-    this.navCtrl.pop();
-    this.navCtrl.push(ViewPostPage, { post_id: no_post });
+  viewCreatedPost(response) {
+    // this.navCtrl.getPrevious().data.waitingNewPost = true;
+    // this.navCtrl.pop();
+    // this.navCtrl.push(ViewPostPage, { post_id: no_post });
+
+    this.navCtrl.remove(1).then(response => {
+      this.navCtrl.push(ViewPostPage, {
+        type: this.sendParams.type,
+        post_id: this.sendParams.no_post,
+        judul:
+          this.type == 1
+            ? this.formKasus.controls.judul.value
+            : this.formKegiatan.controls.judul.value,
+        posted_by: this.sendParams.posted_by,
+        province: this.sendParams.province,
+        nama_korban: this.sendParams.nama_korban,
+        nama_pelaku: this.sendParams.nama_pelaku,
+        kronologi: this.sendParams.kronologi
+      });
+    });
   }
 
   private prepareSave(no_post): any {

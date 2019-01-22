@@ -40,9 +40,11 @@ export class PostPage implements AfterViewInit {
   items1 = [];
   items2 = [];
 
-  userName = "Nurul";
+  userName;
   role;
   organisasi;
+
+  visibleName;
 
   constructor(
     private document: DocumentViewer,
@@ -55,7 +57,7 @@ export class PostPage implements AfterViewInit {
     public navParams: NavParams,
     public alert: AlertController,
     public events: Events,
-    public creds:Credentials
+    public creds: Credentials
   ) {
     console.log(this.service.baseurl);
   }
@@ -70,11 +72,12 @@ export class PostPage implements AfterViewInit {
     this.populateItems2();
   }
 
-  getUserData()
-  {
-    this.userName = this.creds.data["name"];
-    this.role = this.creds.data["role"];
-    this.organisasi = this.creds.data["organisasi"];
+  getUserData() {
+    this.userName = this.creds.data.email;
+    this.role = this.creds.data.role;
+    this.organisasi = this.creds.data.organisasi;
+
+    this.visibleName = this.creds.data.name;
   }
 
   ionViewDidEnter() {
@@ -88,7 +91,7 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]":this.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi
   };
 
   postQueryByName = {
@@ -97,7 +100,7 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]":this.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi
   };
 
   postQueryByPostIds = {
@@ -106,7 +109,14 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]":this.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+  };
+
+  postQueryAll = {
+    "filter[where][and][0][type]": 2,
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"]
   };
 
   resetPostOffset() {
@@ -124,8 +134,9 @@ export class PostPage implements AfterViewInit {
 
     this.timeOut = 0;
 
+    // first we get the post details
     await this.service
-      .getReqNew("postdetails/postedby", { email: "Nurul" })
+      .getReqNew("postdetails/postedby", {email : this.creds.data.email})
       .subscribe(response => {
         console.log(response);
         this.myPost = response;
@@ -137,13 +148,13 @@ export class PostPage implements AfterViewInit {
           console.log(element);
           let postQueryByName = [];
           postQueryByName["filter[where][no_post]"] = element;
-          postQueryByName["filter[or"]
 
           // resize the view
           this.content.resize();
 
           if (this.items0.length > 0) return;
 
+          // finally get all the post headers here
           await this.service
             .getReqNew("postheaders", postQueryByName)
             .subscribe(response => {
@@ -226,21 +237,24 @@ export class PostPage implements AfterViewInit {
     //this.jenis = jenis;
 
     // set the query
-    this.postQuery["filter[where][type]"] = 2;
+    this.postQueryAll["filter[where][type]"] = 2;
 
     // add the offset
-    this.postQuery["filter[skip]"] = this.items2.length;
-    
+    this.postQueryAll["filter[skip]"] = this.items2.length;
+
     // order by latest
-    this.postQuery["filter[order]"] = ["no_post DESC"];
+    this.postQueryAll["filter[order]"] = ["no_post DESC"];
 
     // resize the view
     this.content.resize();
 
+    console.log(this.organisasi);
+    console.log();
+
     if (this.items2.length > 0) return;
 
     this.service
-      .getReqNew("postheaders", this.postQuery)
+      .getReqNew("postheaders", this.postQueryAll)
       .subscribe(response => {
         if (response != null) {
           console.log(response);
@@ -464,22 +478,22 @@ export class PostPage implements AfterViewInit {
 
   doInfinite2(infiniteScroll) {
     console.log("Begin async operation");
-    console.log(this.postQuery);
+    console.log(this.postQueryAll);
 
     // set the query
-    this.postQuery["filter[where][type]"] = 2;
+    this.postQueryAll["filter[where][type]"] = 2;
 
     // add the offset
-    this.postQuery["filter[skip]"] = this.items2.length;
+    this.postQueryAll["filter[skip]"] = this.items2.length;
 
     // order by latest
-    this.postQuery["filter[order]"] = ["no_post DESC"];
+    this.postQueryAll["filter[order]"] = ["no_post DESC"];
 
     this.timeOut = 500;
 
     setTimeout(() => {
       this.service
-        .getReqNew("postheaders", this.postQuery)
+        .getReqNew("postheaders", this.postQueryAll)
         .subscribe(response => {
           if (response != null) {
             console.log(response);
@@ -521,6 +535,7 @@ export class PostPage implements AfterViewInit {
   }
 
   viewPost(
+    type,
     no_post,
     posted_by,
     title,
@@ -530,6 +545,7 @@ export class PostPage implements AfterViewInit {
     kronologi
   ) {
     this.navCtrl.push(ViewPostPage, {
+      type: type,
       post_id: no_post,
       posted_by: posted_by,
       judul: title,
@@ -547,7 +563,7 @@ export class PostPage implements AfterViewInit {
 
   newKegiatan() {
     this.navCtrl.push(NewPostPage, {
-      type: "kegiatan",
+      type: 2,
       userName: this.userName
     });
     this.waitingNewPost = true;

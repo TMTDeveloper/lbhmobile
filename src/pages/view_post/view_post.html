@@ -53,19 +53,33 @@
           <ion-input [(ngModel)]="daerah" type="text"></ion-input>
         </ion-item> -->
 
-      <ion-item>
-        <h2>Penggugat</h2>
-        <p>{{penggugat}}</p>
-      </ion-item>
+      <div *ngIf="type==1">
+        <ion-item>
+          <h2>Penggugat</h2>
+          <p>{{penggugat}}</p>
+        </ion-item>
 
-      <ion-item>
-        <h2>Tergugat</h2>
-        <p>{{tergugat}}</p>
-      </ion-item>
+        <ion-item>
+          <h2>Tergugat</h2>
+          <p>{{tergugat}}</p>
+        </ion-item>
+      </div>
+
+      <div *ngIf="type==2">
+        <ion-item>
+          <h2>Pelaksana</h2>
+          <p>{{penggugat}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Penanggungjawab</h2>
+          <p>{{tergugat}}</p>
+        </ion-item>
+      </div>
 
     </ion-title>
 
-    <div>
+    <div *ngIf="type==1">
       <ion-navbar color="primary">
         <ion-title>
           Kronologi
@@ -74,17 +88,26 @@
       <ion-item text-wrap>
         <h2 class="bigbox">{{kronologi}}</h2>
       </ion-item>
+    </div>
 
-
+    <div *ngIf="type==2">
+      <ion-navbar color="primary">
+        <ion-title>
+          Deskripsi Kegiatan
+        </ion-title>
+      </ion-navbar>
+      <ion-item text-wrap>
+        <h2 class="bigbox">{{kronologi}}</h2>
+      </ion-item>
     </div>
 
     <div *ngIf="images.length>0">
       <ion-navbar color="primary">
         <ion-title>
-          Dokuman Pendukung
+          Dokumen Pendukung
         </ion-title>
       </ion-navbar>
-      
+
       <ion-slides>
         <ion-slide>
           <div class="item item-avatar">
@@ -137,14 +160,14 @@
     </ion-infinite-scroll>
 
     <ion-list text-wrap *ngFor="let msg of items1">
-      <ion-item>
+      <ion-item *ngIf="msg.posted_name!=null">
 
         <!-- my messages -->
-        <ion-grid *ngIf="msg.posted_by==userName">
+        <ion-grid *ngIf="msg.posted_by==creds.data.email">
           <ion-row>
             <ion-col>
               <div style="float:right; text-align: right" color="primary">
-                <h3>{{msg.posted_by}}</h3>
+                <h3>{{msg.posted_name}}</h3>
                 <h2>{{msg.message}} </h2>
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
               </div>
@@ -159,17 +182,17 @@
         </ion-grid>
 
         <!-- other's messages -->
-        <ion-grid *ngIf="msg.posted_by!=userName">
+        <ion-grid *ngIf="msg.posted_by!=creds.data.email">
           <ion-row>
             <ion-col col-auto>
               <ion-avatar color="secondary">
                 <img src=''>
-                <b>{{msg.posted_by[0]}}</b>
+                <b>{{msg.posted_name[0]}}</b>
               </ion-avatar>
             </ion-col>
             <ion-col>
-              <div color="secndary">
-                <h3>{{msg.posted_by}}</h3>
+              <div color="secondary">
+                <h3>{{msg.posted_name}}</h3>
                 <h2> {{msg.message}} </h2>
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
               </div>
