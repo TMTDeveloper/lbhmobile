@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { NavController, NavParams, Content } from "ionic-angular";
+import { NavController, NavParams, Content, ToastController } from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
   DocumentViewer,
@@ -28,7 +28,7 @@ export class ViewPostPage {
 
   judul = "";
 
-  images = [{}];
+  images = [];
 
   constructor(
     private document: DocumentViewer,
@@ -39,7 +39,8 @@ export class ViewPostPage {
     private service: BackendService,
     public loadingCtrl: LoadingController,
     public navParams: NavParams,
-    public creds:Credentials
+    public creds: Credentials,
+    public toastCtrl:ToastController
   ) {
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
@@ -55,8 +56,7 @@ export class ViewPostPage {
 
   role;
 
-  getUserData()
-  {
+  getUserData() {
     this.userName = this.creds.data["name"];
     this.role = this.creds.data["role"];
   }
@@ -100,6 +100,10 @@ export class ViewPostPage {
 
   dateToTime(time) {
     return moment(time).format("DD/MM/YY hh:mm");
+  }
+
+  dateToDate(time) {
+    return moment(time).format("DD/MM/YY");
   }
 
   send = () => {
@@ -229,7 +233,9 @@ export class ViewPostPage {
   type: number = 1;
 
   posted_by;
+  posted_name;
   daerah;
+  waktu;
   propinsi;
   penggugat;
   tergugat;
@@ -251,6 +257,8 @@ export class ViewPostPage {
         console.log(response);
 
         this.posted_by = response[0]["posted_by"];
+        this.posted_name = response[0]["posted_by"];
+        this.waktu = response[0]["tanggal_kejadian"];
         this.propinsi = response[0]["province"];
         this.penggugat = response[0]["nama_korban"];
         this.tergugat = response[0]["nama_pelaku"];
@@ -264,10 +272,85 @@ export class ViewPostPage {
 
   getCurrentPostDetails() {
     this.posted_by = this.navParams.get("posted_by");
+    this.posted_name = this.navParams.get("posted_name");
+    this.waktu = this.navParams.get("tanggal");
     this.propinsi = this.navParams.get("province");
     this.penggugat = this.navParams.get("nama_korban");
     this.tergugat = this.navParams.get("nama_pelaku");
     this.kronologi = this.navParams.get("kronologi");
+
+    // append the file links
+    this.getFileAttachments();
+  }
+
+  getFileAttachments() {
+    this.service
+      .postreq("findupload", { where: { no_post: this.post_id } })
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.images.push(newItem);
+          });
+
+          console.log(this.items1.length);
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // end operation
+          console.log("Async operation has ended");
+        }
+      });
+  }
+
+  result: any;
+  downloadAndOpenPdf(file, name) {
+    console.log(this.service.baseurl + "download?filename=" + file);
+    let path = this.file.dataDirectory;
+
+    const transfer = this.transfer.create();
+    transfer
+      .download(
+        this.service.baseurl + "download?filename=" + file,
+        this.file.externalRootDirectory +
+          "/Download/" +
+          name.split(" ").join("_")
+      )
+      .then(entry => {
+        this.presentToast(
+          "File berhasil diunduh"
+        );
+        // get the file name and split at the end
+        // file;
+
+        // this.result = JSON.stringify(entry);
+        // let url = entry.toURL();
+        // this.opener
+        //   .open(url, "application/pdf")
+        //   .then(() => console.log("success"));
+        // this.document.viewDocument(url, "application/pdf", {});
+      });
+  }
+
+  presentToast(msg)
+  {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 3000,
+      position: 'bottom'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
 
   purgeList(refresh) {

@@ -112,6 +112,14 @@ export class PostPage implements AfterViewInit {
     "filter[where][and][1][organisasi]": this.creds.data.organisasi
   };
 
+  postQuery2 = {
+    "filter[where][and][0][type]": 2,
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"],
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+  };
+
   postQueryAll = {
     "filter[where][and][0][type]": 2,
     "filter[limit]": this.postLimit,
@@ -134,9 +142,12 @@ export class PostPage implements AfterViewInit {
 
     this.timeOut = 0;
 
+    // resize the view
+    this.content.resize();
+
     // first we get the post details
     await this.service
-      .getReqNew("postdetails/postedby", {email : this.creds.data.email})
+      .getReqNew("postdetails/postedby", { email: this.creds.data.email })
       .subscribe(response => {
         console.log(response);
         this.myPost = response;
@@ -237,13 +248,13 @@ export class PostPage implements AfterViewInit {
     //this.jenis = jenis;
 
     // set the query
-    this.postQueryAll["filter[where][type]"] = 2;
+    this.postQuery2["filter[where][type]"] = 2;
 
     // add the offset
-    this.postQueryAll["filter[skip]"] = this.items2.length;
+    this.postQuery2["filter[skip]"] = this.items2.length;
 
     // order by latest
-    this.postQueryAll["filter[order]"] = ["no_post DESC"];
+    this.postQuery2["filter[order]"] = ["no_post DESC"];
 
     // resize the view
     this.content.resize();
@@ -254,7 +265,7 @@ export class PostPage implements AfterViewInit {
     if (this.items2.length > 0) return;
 
     this.service
-      .getReqNew("postheaders", this.postQueryAll)
+      .getReqNew("postheaders", this.postQuery2)
       .subscribe(response => {
         if (response != null) {
           console.log(response);
@@ -478,22 +489,22 @@ export class PostPage implements AfterViewInit {
 
   doInfinite2(infiniteScroll) {
     console.log("Begin async operation");
-    console.log(this.postQueryAll);
+    console.log(this.postQuery2);
 
     // set the query
-    this.postQueryAll["filter[where][type]"] = 2;
+    this.postQuery2["filter[where][type]"] = 2;
 
     // add the offset
-    this.postQueryAll["filter[skip]"] = this.items2.length;
+    this.postQuery2["filter[skip]"] = this.items2.length;
 
     // order by latest
-    this.postQueryAll["filter[order]"] = ["no_post DESC"];
+    this.postQuery2["filter[order]"] = ["no_post DESC"];
 
     this.timeOut = 500;
 
     setTimeout(() => {
       this.service
-        .getReqNew("postheaders", this.postQueryAll)
+        .getReqNew("postheaders", this.postQuery2)
         .subscribe(response => {
           if (response != null) {
             console.log(response);
@@ -534,10 +545,57 @@ export class PostPage implements AfterViewInit {
     return description.slice(0, 40) + "...";
   }
 
+  jenisKejadian(jenis) {
+    if (jenis == 0) {
+      return "Pelanggaran HAM";
+    }
+    if (jenis == 1) {
+      return "Pidana";
+    }
+    if (jenis == 2) {
+      return "Perdata";
+    }
+    if (jenis == 3) {
+      return "Lain-lain";
+    }
+  }
+
+  namaOrganisasi(organisasi) {
+    if (organisasi == 0) {
+      return "LBH Jakarta";
+    }
+    if (organisasi == 1) {
+      return "LBH Apik Jakarta";
+    }
+    if (organisasi == 2) {
+      return "LBH Yogyakarta";
+    }
+    if (organisasi == 3) {
+      return "LBH Bali";
+    }
+    if (organisasi == 4) {
+      return "LBH Apik Bali";
+    }
+    if (organisasi == 5) {
+      return "LKBH UII";
+    }
+  }
+
+  getRole(role) {
+    if (role == 1) {
+      return "Aplikasi Pendukung untuk Paralegal";
+    }
+    if (role == 2) {
+      return "Aplikasi Pendukung untuk Bantan Hukum";
+    }
+  }
+
   viewPost(
     type,
     no_post,
     posted_by,
+    posted_name,
+    tanggal,
     title,
     province,
     nama_korban,
@@ -547,7 +605,9 @@ export class PostPage implements AfterViewInit {
     this.navCtrl.push(ViewPostPage, {
       type: type,
       post_id: no_post,
+      posted_name: posted_name,
       posted_by: posted_by,
+      tanggal: tanggal,
       judul: title,
       province: province,
       nama_korban: nama_korban,

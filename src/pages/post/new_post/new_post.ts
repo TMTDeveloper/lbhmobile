@@ -28,6 +28,7 @@ import { OptionValidator } from "./option_validator";
 import { Credentials } from "../../../providers/credentials.holder";
 import { Observable } from "rxjs";
 import { onErrorResumeNext } from "rxjs/operator/onErrorResumeNext";
+import { DatePicker } from "@ionic-native/date-picker";
 
 @Component({
   selector: "page-new_post",
@@ -39,6 +40,7 @@ export class NewPostPage {
     no_post: "string",
     type: 1,
     posted_by: "string",
+    posted_name: "string",
     title: "string",
     organisasi: 0,
     status: 0,
@@ -76,10 +78,13 @@ export class NewPostPage {
     public filePath: FilePath,
     public formBuilder: FormBuilder,
     public creds: Credentials,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public datePicker: DatePicker
   ) {
     this.formKasus = formBuilder.group({
       judul: ["", Validators.required],
+      tanggal_kejadian: ["", Validators.required],
+      jenis_kejadian: ["", Validators.required],
       propinsi: [{ id: "", name: "" }, OptionValidator.isValid],
       kabupaten: [{ id: "", name: "" }, OptionValidator.isValid],
       kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
@@ -91,6 +96,7 @@ export class NewPostPage {
 
     this.formKegiatan = formBuilder.group({
       judul: ["", Validators.required],
+      tanggal_kejadian: ["", Validators.required],
       propinsi: [{ id: "", name: "" }, OptionValidator.isValid],
       kabupaten: [{ id: "", name: "" }, OptionValidator.isValid],
       kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
@@ -125,6 +131,13 @@ export class NewPostPage {
   penggugat;
   tergugat;
   kronologi;
+
+  kejadianList = [
+    {value:"Pelanggaran Ham",id:0},
+    {value:"Pidana",id:1},
+    {value:"Perdata",id:2},
+    {value:"Lain-lain",id:3},
+  ]
 
   propinsiList = [];
   kabupatenList = [];
@@ -247,11 +260,14 @@ export class NewPostPage {
   createNewPost = async () => {
     this.sendParams["no_post"] = "";
     this.sendParams["posted_by"] = this.userName;
+    this.sendParams["posted_name"] = this.creds.data.name;
     this.sendParams["date_created"] = moment().format();
     this.sendParams["pembelajaran"] = "";
 
     // kasus
     if (this.type == 1) {
+      this.sendParams.tanggal_kejadian = moment(this.formKasus.controls.tanggal_kejadian.value, moment.ISO_8601).format();
+      this.sendParams.jenis_kejadian = this.formKasus.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKasus.controls.judul.value;
       this.sendParams.province = this.formKasus.controls.propinsi.value.name;
       this.sendParams.province_id = this.formKasus.controls.propinsi.value.id;
@@ -268,6 +284,8 @@ export class NewPostPage {
 
     // kegiatan
     if (this.type == 2) {
+      this.sendParams.tanggal_kejadian = moment(this.formKegiatan.controls.tanggal_kejadian.value, moment.ISO_8601).format();
+      this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKegiatan.controls.judul.value;
       this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
       this.sendParams.province_id = this.formKegiatan.controls.propinsi.value.id;
@@ -370,6 +388,8 @@ export class NewPostPage {
             ? this.formKasus.controls.judul.value
             : this.formKegiatan.controls.judul.value,
         posted_by: this.sendParams.posted_by,
+        posted_name: this.sendParams.posted_name,
+        tanggal_kejadian: this.sendParams.tanggal_kejadian,
         province: this.sendParams.province,
         nama_korban: this.sendParams.nama_korban,
         nama_pelaku: this.sendParams.nama_pelaku,
@@ -437,5 +457,24 @@ export class NewPostPage {
       .catch(e => {
         // alert
       });
+  }
+
+  insertDate() {
+    this.datePicker
+      .show({
+        date: new Date(),
+        mode: "date",
+        androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
+      })
+      .then(
+        date => {
+          let dateString = moment(date).format();
+          if (this.type == 1)
+            this.formKasus.controls["tanggal_kejadian"].setValue(dateString);
+          if (this.type == 1)
+            this.formKegiatan.controls["tanggal_kejadian"].setValue(dateString);
+        },
+        err => console.log("Error occurred while getting date: ", err)
+      );
   }
 }

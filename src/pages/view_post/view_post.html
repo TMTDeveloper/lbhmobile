@@ -16,7 +16,8 @@
     <div text-center>
       <ion-card color="primary" (click)="toggleView()">
         <ion-card-content>
-          <h2>Lihat Kasus</h2>
+          <h2 *ngIf="type=='1'">Lihat Kasus</h2>
+          <h2 *ngIf="type=='2'">Lihat Kegiatan</h2>
         </ion-card-content>
       </ion-card>
     </div>
@@ -26,9 +27,9 @@
       </ion-title>
     </ion-navbar>
     <ion-item no-lines>
+      <h2 align="center"><b>{{posted_name}}</b></h2>
       <ion-avatar item-start *ngFor="let user of users">
-        <img src="">
-        <h3 align="center"></h3>
+        <h3 align="center"><b>{{posted_name}}</b></h3>
       </ion-avatar>
     </ion-item>
   </div>
@@ -39,13 +40,18 @@
     <ion-title>
 
       <ion-item>
-        <h2>Nama pendamping</h2>
-        <p>{{posted_by}}</p>
+        <h2>Nama Paralegal</h2>
+        <p>{{posted_name}}</p>
       </ion-item>
 
       <ion-item>
         <h2>Propinsi</h2>
         <p>{{propinsi}}</p>
+      </ion-item>
+
+      <ion-item>
+        <h2>Waktu Kejadian</h2>
+        <p>{{dateToDate(waktu)}}</p>
       </ion-item>
 
       <!-- <ion-item>
@@ -82,7 +88,7 @@
     <div *ngIf="type==1">
       <ion-navbar color="primary">
         <ion-title>
-          Kronologi
+          Kronologi (5W + 1H)
         </ion-title>
       </ion-navbar>
       <ion-item text-wrap>
@@ -108,7 +114,17 @@
         </ion-title>
       </ion-navbar>
 
-      <ion-slides>
+      <!-- the list of files -->
+      <ion-list *ngFor="let doc of images">
+          <ion-thumbnail item-start>
+            <img src="assets/imgs/pdf75.png">
+          </ion-thumbnail>
+          <h2>{{doc.originalfilename}}</h2>
+          <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
+          <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+      </ion-list>
+
+      <!-- <ion-slides>
         <ion-slide>
           <div class="item item-avatar">
             <img src="//tutorialsplane.com/runtest/ionic/img/profile.jpg">
@@ -124,7 +140,8 @@
             <img src="//media.istockphoto.com/photos/thirsty-african-american-athlete-drinking-water-in-a-gym-picture-id668203864?k=6&m=668203864&s=612x612&w=0&h=qOKWHN87CQsaGZwF3RCQ4tod58YcStbdozm2xiv6XfM=">
           </div>
         </ion-slide>
-      </ion-slides>
+      </ion-slides> -->
+
     </div>
 
     <!-- the comment section -->
@@ -160,41 +177,41 @@
     </ion-infinite-scroll>
 
     <ion-list text-wrap *ngFor="let msg of items1">
-      <ion-item *ngIf="msg.posted_name!=null">
+      <ion-item *ngIf="msg.posted_name!=null" class="item-content">
 
-        <!-- my messages -->
-        <ion-grid *ngIf="msg.posted_by==creds.data.email">
+        <!-- messages appearing on the right -->
+        <ion-grid *ngIf="msg.posted_by!=creds.data.email && creds.data.role ==1||msg.posted_by==creds.data.email && creds.data.role>=2">
           <ion-row>
             <ion-col>
-              <div style="float:right; text-align: right" color="primary">
-                <h3>{{msg.posted_name}}</h3>
-                <h2>{{msg.message}} </h2>
+              <div outline style="float:right; text-align: right;" color="primary">
+                <h3><b>{{msg.posted_name}}</b></h3>
+                <p>{{msg.message}}</p>
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
               </div>
             </ion-col>
-            <ion-col col-auto>
-              <ion-avatar style="float:right;" color="primary">
+            <!-- <ion-col col-auto>
+              <ion-avatar style="float:none;" color="primary">
                 <img src='' color="blue">
                 <b>{{msg.posted_by[0]}}</b>
               </ion-avatar>
-            </ion-col>
+            </ion-col> -->
           </ion-row>
         </ion-grid>
 
-        <!-- other's messages -->
-        <ion-grid *ngIf="msg.posted_by!=creds.data.email">
+        <!-- messages appearing on the left -->
+        <ion-grid *ngIf="msg.posted_by==creds.data.email && creds.data.role==1|| msg.posted_by!=creds.data.email && creds.data.role>=2">
           <ion-row>
-            <ion-col col-auto>
+            <!-- <ion-col col-auto>
               <ion-avatar color="secondary">
                 <img src=''>
                 <b>{{msg.posted_name[0]}}</b>
-              </ion-avatar>
-            </ion-col>
-            <ion-col>
-              <div color="secondary">
                 <h3>{{msg.posted_name}}</h3>
-                <h2> {{msg.message}} </h2>
+              </ion-avatar>
+            </ion-col> -->
+            <ion-col>
+              <div outline color="secondary">
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
+                <p> {{msg.message}} </p>
               </div>
             </ion-col>
           </ion-row>

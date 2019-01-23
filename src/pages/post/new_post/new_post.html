@@ -22,6 +22,18 @@
         <ion-input formControlName="judul" type="text"></ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label stacked>Tanggal Kejadian</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" formControlName="tanggal_kejadian"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Jenis Kejadian</ion-label>
+        <ion-select formControlName="jenis_kejadian">
+          <ion-option *ngFor="let item of kejadianList" [value]="item.id">{{item.value}}</ion-option>
+        </ion-select>
+      </ion-item>
+
       <!-- <ion-item>
         <ion-label stacked no-border-top>Organisasi</ion-label>
         <ion-select [(ngModel)]="propinsi">
@@ -76,8 +88,8 @@
 
       <div>
         <ion-item text-wrap>
-          <ion-label stacked no-border-top>Kronologi</ion-label>
-          <ion-textarea formControlName="kronologi" rows="5" style="height:100%"></ion-textarea>
+          <ion-label stacked no-border-top>Deskripsi kasus</ion-label>
+          <ion-textarea formControlName="kronologi" rows="5" style="height:100%" placeholder="[Kronologi]\n-\n\n[5W + 1H]\n-"></ion-textarea>
         </ion-item>
       </div>
 
@@ -97,6 +109,11 @@
       <ion-item>
         <ion-label stacked>Judul</ion-label>
         <ion-input formControlName="judul" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Tanggal Acara</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" formControlName="tanggal_kejadian"></ion-datetime>
       </ion-item>
 
       <!-- <ion-item>

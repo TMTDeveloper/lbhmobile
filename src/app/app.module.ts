@@ -26,6 +26,7 @@ import { BackendService } from "../providers/backend.service";
 import { NewPostPage } from "../pages/post/new_post/new_post";
 import { FileChooser } from "@ionic-native/file-chooser";
 import { FilePath } from "@ionic-native/file-path";
+import { DatePicker } from '@ionic-native/date-picker';
 
 @NgModule({
   declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
@@ -44,7 +45,8 @@ import { FilePath } from "@ionic-native/file-path";
     AuthService,
     Credentials,
     FileChooser,
-    FilePath
+    FilePath,
+    DatePicker
   ]
 })
 export class AppModule {}

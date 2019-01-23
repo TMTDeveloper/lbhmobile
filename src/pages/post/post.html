@@ -5,9 +5,19 @@
     </button>
     <ion-grid>
       <ion-row>
-        <ion-col>
+        <ion-item no-lines color="primary" style="font-size:12px">
+          {{getRole(role)}}
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <!-- <ion-col>
           <ion-title>
             Beranda
+          </ion-title>
+        </ion-col> -->
+        <ion-col>
+          <ion-title>
+            {{namaOrganisasi(organisasi)}}
           </ion-title>
         </ion-col>
         <ion-col>
@@ -20,7 +30,7 @@
   </ion-navbar>
 
   <!-- top button for create new post -->
-  <ion-toolbar color="primary">
+  <ion-toolbar [hidden]="role==2?true:false" color="primary">
     <div text-center>
       <button ion-button round (click)="newKasus()" [hidden]="jenis=='kasus'?false:true" color="primary">
         Mulai Kasus Baru
@@ -47,10 +57,13 @@
 
   <!-- view all cases or only mine -->
   <div *ngIf="jenis=='kasus'">
-    <ion-toolbar no-border-top>
+    <ion-toolbar [hidden]="role==1?true:false" no-border-top>
       <ion-segment [(ngModel)]="view">
-        <ion-segment-button value="me" (click)="reqMyPosts()">
+        <ion-segment-button [hidden]="role==1?false:true" value="me" (click)="reqMyPosts()">
           Kasus Saya
+        </ion-segment-button>
+        <ion-segment-button [hidden]="role==2?false:true" value="me" (click)="reqMyPosts()">
+          Kasus Aktif
         </ion-segment-button>
         <ion-segment-button [hidden]="role==2?false:true" value="all" (click)="reqNewestPosts()">
           Semua Kasus
@@ -70,14 +83,15 @@
   <div>
     <div *ngIf="jenis=='kasus'&&view=='me'">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items0" (click)="viewPost(1,item.no_post,item.posted_by,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
+      <ion-card *ngFor="let item of items0" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
           <h2><b>{{item.title}}</b></h2>
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
-          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
+          <h3 style="text-align:right"><b>{{jenisKejadian(item.jenis_kejadian)}}</b></h3>
+          <i style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->
@@ -89,14 +103,15 @@
 
     <div *ngIf="jenis=='kasus'&&view=='all' && role==2">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items1" (click)="viewPost(1,item.no_post,item.posted_by,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
+      <ion-card *ngFor="let item of items1" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
           <h2><b>{{item.title}}</b></h2>
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
-          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
+          <h3 style="text-align:right"><b>{{jenisKejadian(item.jenis_kejadian)}}</b></h3>
+          <i style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->
@@ -108,14 +123,14 @@
 
     <div *ngIf="jenis=='kegiatan'">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items2" (click)="viewPost(2,item.no_post,item.posted_by,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
+      <ion-card *ngFor="let item of items2" (click)="viewPost(2,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi)">
         <!-- <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail> -->
         <ion-card-content>
           <h2><b>{{item.title}}</b></h2>
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
-          <i style="float:right">penanggungjawab: {{item.posted_by}}</i>
+          <i style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>
       <!-- </ion-list> -->

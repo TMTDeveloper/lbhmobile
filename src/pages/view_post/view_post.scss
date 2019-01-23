@@ -16,6 +16,21 @@ page-view_post {
         margin-bottom: 0px;
     }
 
+    .item-content {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        margin-top: -27px;
+        margin-bottom: -27px;
+        // min-height: 50px;
+        // height: 70px;
+        // display: flex;
+        // flex-direction: row;
+        // justify-content: flex-start;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+
     // ion-label.label.label-md{
     //     margin-top: 0px;
     //     margin-bottom: 0px;
