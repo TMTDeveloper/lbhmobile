@@ -1,5 +1,10 @@
 import { Component, ViewChild } from "@angular/core";
-import { NavController, NavParams, Content, ToastController } from "ionic-angular";
+import {
+  NavController,
+  NavParams,
+  Content,
+  ToastController
+} from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
   DocumentViewer,
@@ -15,6 +20,7 @@ import { AppModule } from "../../app/app.module";
 
 import * as moment from "moment";
 import { Credentials } from "../../providers/credentials.holder";
+import { AndroidPermissions } from "@ionic-native/android-permissions";
 
 @Component({
   selector: "page-view_post",
@@ -31,6 +37,7 @@ export class ViewPostPage {
   images = [];
 
   constructor(
+    private androidPermissions: AndroidPermissions,
     private document: DocumentViewer,
     private file: File,
     private transfer: FileTransfer,
@@ -40,7 +47,7 @@ export class ViewPostPage {
     public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public creds: Credentials,
-    public toastCtrl:ToastController
+    public toastCtrl: ToastController
   ) {
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
@@ -314,45 +321,99 @@ export class ViewPostPage {
 
   result: any;
   downloadAndOpenPdf(file, name) {
-    console.log(this.service.baseurl + "download?filename=" + file);
-    let path = this.file.dataDirectory;
+    this.androidPermissions
+      .hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
+      .then(status => {
+        if (status.hasPermission) {
+          console.log(this.service.baseurl + "download?filename=" + file);
+          let path = this.file.dataDirectory;
+          // this.presentToast(this.service.baseurl + "download?filename=" + file);
 
-    const transfer = this.transfer.create();
-    transfer
-      .download(
-        this.service.baseurl + "download?filename=" + file,
-        this.file.externalRootDirectory +
-          "/Download/" +
-          name.split(" ").join("_")
-      )
-      .then(entry => {
-        this.presentToast(
-          "File berhasil diunduh"
-        );
-        // get the file name and split at the end
-        // file;
+          const transfer = this.transfer.create();
+          transfer
+            .download(
+              this.service.baseurl + "download?filename=" + file,
+              this.file.externalRootDirectory +
+                "Download/" +
+                name.split(" ").join("_")
+            )
+            .then(
+              entry => {
+                this.presentToast(
+                  "File berhasil diunduh ke" +
+                    this.file.externalRootDirectory +
+                    "Download/"
+                );
+                // get the file name and split at the end
+                // file;
 
-        // this.result = JSON.stringify(entry);
-        // let url = entry.toURL();
-        // this.opener
-        //   .open(url, "application/pdf")
-        //   .then(() => console.log("success"));
-        // this.document.viewDocument(url, "application/pdf", {});
+                // this.result = JSON.stringify(entry);
+                // let url = entry.toURL();
+                // this.opener
+                //   .open(url, "application/pdf")
+                //   .then(() => console.log("success"));
+                // this.document.viewDocument(url, "application/pdf", {});
+              },
+              error => {
+                this.presentToast("Pengunduhan file gagal");
+              }
+            );
+        } else {
+          this.androidPermissions
+            .requestPermission(
+              this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE
+            )
+            .then(status => {
+              if (status.hasPermission) {
+                console.log(this.service.baseurl + "download?filename=" + file);
+                let path = this.file.dataDirectory;
+                // this.presentToast(this.service.baseurl + "download?filename=" + file);
+                const transfer = this.transfer.create();
+                transfer
+                  .download(
+                    this.service.baseurl + "download?filename=" + file,
+                    this.file.externalRootDirectory +
+                      "Download/" +
+                      name.split(" ").join("_")
+                  )
+                  .then(
+                    entry => {
+                      this.presentToast(
+                        "File berhasil diunduh ke" +
+                          this.file.externalRootDirectory +
+                          "Download/"
+                      );
+                      // get the file name and split at the end
+                      // file;
+
+                      // this.result = JSON.stringify(entry);
+                      // let url = entry.toURL();
+                      // this.opener
+                      //   .open(url, "application/pdf")
+                      //   .then(() => console.log("success"));
+                      // this.document.viewDocument(url, "application/pdf", {});
+                    },
+                    error => {
+                      this.presentToast("Pengunduhan file gagal");
+                    }
+                  );
+              }
+            });
+        }
       });
   }
 
-  presentToast(msg)
-  {
+  presentToast(msg) {
     let toast = this.toastCtrl.create({
       message: msg,
       duration: 3000,
-      position: 'bottom'
+      position: "bottom"
     });
-  
+
     toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+      console.log("Dismissed toast");
     });
-  
+
     toast.present();
   }
 

@@ -8,13 +8,13 @@ import { ContactPage } from "../pages/contact/contact";
 import { HomePage } from "../pages/home/home";
 import { TabsPage } from "../pages/tabs/tabs";
 import { LoginPage } from "../pages/login/login";
-import { RootPage } from '../pages/root/root';
+import { RootPage } from "../pages/root/root";
 import { PostPage } from "../pages/post/post";
 import { ViewPostPage } from "../pages/view_post/view_post";
 import { HttpModule } from "@angular/http";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { AuthService } from './../providers/auth-service';
-import { Credentials } from './../providers/credentials.holder';
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { AuthService } from "./../providers/auth-service";
+import { Credentials } from "./../providers/credentials.holder";
 
 import { StatusBar } from "@ionic-native/status-bar";
 import { SplashScreen } from "@ionic-native/splash-screen";
@@ -26,13 +26,41 @@ import { BackendService } from "../providers/backend.service";
 import { NewPostPage } from "../pages/post/new_post/new_post";
 import { FileChooser } from "@ionic-native/file-chooser";
 import { FilePath } from "@ionic-native/file-path";
-import { DatePicker } from '@ionic-native/date-picker';
+import { DatePicker } from "@ionic-native/date-picker";
+import { AndroidPermissions } from "@ionic-native/android-permissions";
 
 @NgModule({
-  declarations: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
-  imports: [BrowserModule, IonicModule.forRoot(MyApp), HttpModule,HttpClientModule],
+  declarations: [
+    MyApp,
+    AboutPage,
+    ContactPage,
+    HomePage,
+    TabsPage,
+    LoginPage,
+    RootPage,
+    PostPage,
+    ViewPostPage,
+    NewPostPage
+  ],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(MyApp),
+    HttpModule,
+    HttpClientModule
+  ],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, AboutPage, ContactPage, HomePage, TabsPage, LoginPage, RootPage, PostPage, ViewPostPage, NewPostPage],
+  entryComponents: [
+    MyApp,
+    AboutPage,
+    ContactPage,
+    HomePage,
+    TabsPage,
+    LoginPage,
+    RootPage,
+    PostPage,
+    ViewPostPage,
+    NewPostPage
+  ],
   providers: [
     StatusBar,
     SplashScreen,
@@ -46,7 +74,8 @@ import { DatePicker } from '@ionic-native/date-picker';
     Credentials,
     FileChooser,
     FilePath,
-    DatePicker
+    DatePicker,
+    AndroidPermissions
   ]
 })
 export class AppModule {}
