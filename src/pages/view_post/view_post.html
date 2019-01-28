@@ -94,6 +94,15 @@
       <ion-item text-wrap>
         <h2 class="bigbox">{{kronologi}}</h2>
       </ion-item>
+
+      <ion-navbar color="primary">
+        <ion-title>
+          Pembelajaran
+        </ion-title>
+      </ion-navbar>
+      <ion-item text-wrap>
+        <h2 class="bigbox">{{pembelajaran}}</h2>
+      </ion-item>
     </div>
 
     <div *ngIf="type==2">
@@ -116,12 +125,14 @@
 
       <!-- the list of files -->
       <ion-list *ngFor="let doc of images">
-          <ion-thumbnail item-start>
-            <img src="assets/imgs/pdf75.png">
-          </ion-thumbnail>
+        <ion-item>
+          <!-- <ion-thumbnail item-start>
+              <img src="assets/imgs/pdf75.png">
+            </ion-thumbnail> -->
           <h2>{{doc.originalfilename}}</h2>
           <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
           <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+        </ion-item>
       </ion-list>
 
       <!-- <ion-slides>

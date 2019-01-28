@@ -600,7 +600,8 @@ export class PostPage implements AfterViewInit {
     province,
     nama_korban,
     nama_pelaku,
-    kronologi
+    kronologi,
+    pembelajaran
   ) {
     this.navCtrl.push(ViewPostPage, {
       type: type,
@@ -612,7 +613,8 @@ export class PostPage implements AfterViewInit {
       province: province,
       nama_korban: nama_korban,
       nama_pelaku: nama_pelaku,
-      kronologi: kronologi
+      kronologi: kronologi,
+      pembelajaran: pembelajaran
     });
   }
 

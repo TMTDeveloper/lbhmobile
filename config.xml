@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="forum.lbh" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>LBH Forum</name>
-    <description>A Forum for LBH Indonesia</description>
+    <name>LBH Digital Platform</name>
+    <description>Digital Support for LBH Indonesia</description>
     <author email="rezazenaulia@gmail.com" href="http://ionicframework.com/">LBH Team</author>
     <content src="index.html" />
     <access origin="*" />
@@ -78,18 +78,18 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
-    <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^2.0.0" />
-    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-file" spec="6.0.1" />
-    <plugin name="cordova-plugin-file-transfer" spec="1.7.1" />
-    <plugin name="cordova-plugin-document-viewer" spec="0.9.10" />
-    <plugin name="cordova-plugin-file-opener2" spec="2.0.19" />
+    <plugin name="cordova-plugin-document-viewer" spec="^0.9.10" />
+    <plugin name="cordova-plugin-file-opener2" spec="^2.0.19" />
     <plugin name="cordova-plugin-filechooser" spec="1.2.0" />
     <plugin name="cordova-plugin-filepath" spec="1.5.1" />
     <plugin name="cordova-plugin-datepicker" spec="0.9.3" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^2.3.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <engine name="android" spec="6.3.0" />
 </widget>

@@ -240,6 +240,7 @@ export class ViewPostPage {
   penggugat;
   tergugat;
   kronologi;
+  pembelajaran;
 
   getCurrentPostDetails_OLD = () => {
     console.log(this.service.baseurl);
@@ -263,6 +264,7 @@ export class ViewPostPage {
         this.penggugat = response[0]["nama_korban"];
         this.tergugat = response[0]["nama_pelaku"];
         this.kronologi = response[0]["kronologi"];
+        this.pembelajaran = response[0]["pembelajaran"];
 
         // populate the list
         // this.populateList(this.items);
@@ -278,6 +280,7 @@ export class ViewPostPage {
     this.penggugat = this.navParams.get("nama_korban");
     this.tergugat = this.navParams.get("nama_pelaku");
     this.kronologi = this.navParams.get("kronologi");
+    this.pembelajaran = this.navParams.get("pembelajaran");
 
     // append the file links
     this.getFileAttachments();
