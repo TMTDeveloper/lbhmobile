@@ -285,7 +285,7 @@ export class NewPostPage {
     // kegiatan
     if (this.type == 2) {
       this.sendParams.tanggal_kejadian = moment(this.formKegiatan.controls.tanggal_kejadian.value, moment.ISO_8601).format();
-      this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
+      //this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKegiatan.controls.judul.value;
       this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
       this.sendParams.province_id = this.formKegiatan.controls.propinsi.value.id;

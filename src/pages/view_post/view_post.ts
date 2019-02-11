@@ -59,6 +59,7 @@ export class ViewPostPage {
   ngAfterViewInit() {
     this.getCurrentPostDetails();
     this.reqNewestPosts();
+    this.reqNewestProgress();
   }
 
   role;
@@ -80,11 +81,30 @@ export class ViewPostPage {
     this.content.resize();
   }
 
+  changeView(viewIndex){
+    if (viewIndex === 1)
+    {
+      this.view = "post";
+    }
+    if (viewIndex === 2)
+    {
+      this.view = "comment";
+    }
+    if (viewIndex === 3)
+    {
+      this.view = "progress";
+    }
+    
+    // resize the view
+    this.content.resize();
+  }
+
   users = [];
   userName = "Nurul";
 
   postLimit = 5;
   items1 = [];
+  items2 = [];
 
   postQuery = {
     "filter[where][no_post]": this.post_id,
@@ -94,11 +114,18 @@ export class ViewPostPage {
   };
 
   message = "";
+  message2 = "";
 
   sendParams = {
     no_post: this.post_id,
     posted_by: this.creds.data.email,
     posted_name: this.creds.data.name,
+    message: this.message,
+    date_created: moment().format()
+  };
+
+  sendProgressParams = {
+    no_post: this.post_id,
     message: this.message,
     date_created: moment().format()
   };
@@ -237,6 +264,124 @@ export class ViewPostPage {
     }, this.timeOut);
   }
 
+  sendProgress = () => {
+    this.sendProgressParams["no_post"] = this.post_id;
+    this.sendProgressParams["message"] = this.message2;
+    this.sendProgressParams["date_created"] = moment().format();
+
+    // empty the chat bar
+    this.message2 = "";
+
+    // post progress to server. upon success, add to list
+    this.service.postreq("developments", this.sendProgressParams).subscribe(
+      response => {
+        if (response != null) {
+          console.log(response);
+
+          // append the new posts to current array
+          let newMsg = {
+            no_post: this.sendProgressParams.no_post,
+            message: this.sendProgressParams.message,
+            date_created: this.sendProgressParams.date_created
+          };
+
+          this.items2.push(newMsg);
+
+          console.log(this.items2.length);
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // resize the view
+          this.content.resize();
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log("failed to send message!");
+          console.log(error);
+        }
+      }
+    );
+  };
+
+  reqNewestProgress = () => {
+    console.log(this.post_id);
+
+    this.timeOut = 0;
+
+    // return the tab to null
+    //this.jenis = jenis;
+
+    // set the query
+    this.postQuery["filter[where][no_post]"] = this.post_id;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items2.length;
+
+    if (this.items2.length > 0) return;
+
+    this.service
+      .getReqNew("developments", this.postQuery)
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items2.reverse();
+            this.items2.push(newItem);
+            this.items2.reverse();
+          });
+        }
+      });
+  };
+
+  doInfiniteProgress(infiniteScroll) {
+    console.log("Begin async operation");
+    console.log(this.postQuery);
+
+    // set the query
+    this.postQuery["filter[where][no_post]"] = this.post_id;
+
+    // add the offset
+    this.postQuery["filter[skip]"] = this.items2.length;
+
+    this.timeOut = 500;
+
+    setTimeout(() => {
+      this.service
+        .getReqNew("developments", this.postQuery)
+        .subscribe(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+              this.items2.reverse();
+              this.items2.push(newItem);
+              this.items2.reverse();
+            });
+
+            console.log(this.items2.length);
+
+            // populate the list
+            // this.populateList(this.items);
+
+            // end operation
+            console.log("Async operation has ended");
+            infiniteScroll.complete();
+          }
+        });
+    }, this.timeOut);
+  }
+
   type: number = 1;
 
   posted_by;
@@ -248,6 +393,8 @@ export class ViewPostPage {
   tergugat;
   kronologi;
   pembelajaran;
+
+  post_status;
 
   getCurrentPostDetails_OLD = () => {
     console.log(this.service.baseurl);

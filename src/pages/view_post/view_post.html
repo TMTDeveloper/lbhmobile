@@ -6,15 +6,16 @@
       </button>
       <ion-title>
         <div class="item item-avatar">
-          <h2>{{judul}}</h2>
+          <!-- <h2>{{judul}}</h2> -->
+          <h2>SIP</h2>
         </div>
       </ion-title>
     </ion-navbar>
   </div>
 
-  <div *ngIf="view=='comment'">
+  <div *ngIf="view=='comment' || view=='progress'">
     <div text-center>
-      <ion-card color="primary" (click)="toggleView()">
+      <ion-card color="primary" (click)="changeView(1)">
         <ion-card-content>
           <h2 *ngIf="type=='1'">Lihat Kasus</h2>
           <h2 *ngIf="type=='2'">Lihat Kegiatan</h2>
@@ -50,7 +51,7 @@
       </ion-item>
 
       <ion-item>
-        <h2>Waktu Kejadian</h2>
+        <h2>Tanggal Acara</h2>
         <p>{{dateToDate(waktu)}}</p>
       </ion-item>
 
@@ -250,13 +251,74 @@
     </ion-list>
 
   </div>
+
+  <div *ngIf="view=='progress'">
+
+    <ion-infinite-scroll (ionInfinite)="doInfiniteProgress($event)" position="top">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <ion-list text-wrap *ngFor="let msg of items2">
+      <ion-item class="item-content">
+
+        <!-- messages appearing on the left -->
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col col-auto>
+              <ion-avatar color="secondary">
+                <img src=''>
+                <b>{{msg.posted_name[0]}}</b>
+                <h3>{{msg.posted_name}}</h3>
+              </ion-avatar>
+            </ion-col> -->
+            <ion-col>
+              <div outline color="secondary">
+                <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
+                <p> {{msg.message}} </p>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <!-- test -->
+        <!-- <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div style="float:right; text-align: center" color="primary">
+                <h1>{{msg.message}}</h1>
+                <h2> <span class="time-display"></span></h2>
+                <p> </p>
+              </div>
+            </ion-col>
+            <ion-col col-auto>
+              <ion-avatar style="float:right;">
+                <img src=''>
+              </ion-avatar>
+            </ion-col>
+          </ion-row>
+        </ion-grid> -->
+
+      </ion-item>
+    </ion-list>
+
+  </div>
 </ion-content>
 
 <ion-footer>
   <div text-center *ngIf="view=='post'">
-    <ion-card color="primary" (click)="toggleView()">
+    <ion-card color="primary" (click)="changeView(2)">
       <ion-card-content>
         <h2>Komentar</h2>
+      </ion-card-content>
+    </ion-card>
+    <ion-card color="primary" (click)="changeView(3)">
+      <ion-card-content>
+        <h2>Lihat Perkembangan</h2>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="creds.data.role==1" color="danger" (click)="askClosePost()">
+      <ion-card-content>
+        <h2>Tutup Kasus</h2>
       </ion-card-content>
     </ion-card>
   </div>
@@ -265,6 +327,16 @@
       <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message" (keyup.enter)="send()">
       <ion-buttons right>
         <button (click)="send()" ion-button icon-only item-right class="send-chat-button">
+          <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </div>
+  <div *ngIf="view=='progress'">
+    <ion-toolbar>
+      <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..." [(ngModel)]="message2"></ion-textarea>
+      <ion-buttons right>
+        <button (click)="sendProgress()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>
         </button>
       </ion-buttons>
