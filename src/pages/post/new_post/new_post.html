@@ -28,7 +28,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>Jenis Kejadian</ion-label>
+        <ion-label stacked>Jenis Peradilan</ion-label>
         <ion-select formControlName="jenis_kejadian">
           <ion-option *ngFor="let item of kejadianList" [value]="item.id">{{item.value}}</ion-option>
         </ion-select>
@@ -77,19 +77,31 @@
     </ion-item> -->
 
       <ion-item>
-        <ion-label stacked no-border-top>Penggugat</ion-label>
+        <ion-label stacked no-border-top>Klien</ion-label>
         <ion-input formControlName="penggugat" type="text"></ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked no-border-top>Tergugat</ion-label>
+        <ion-label stacked no-border-top>Usia</ion-label>
+        <ion-input formControlName="usia" type="text"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Jenis Kelamin</ion-label>
+        <ion-select formControlName="jenis_kelamin">
+          <ion-option *ngFor="let item of kelaminList" [value]="item">{{item.value}}</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked no-border-top>Tergugat (opsional)</ion-label>
         <ion-input formControlName="tergugat" type="text"></ion-input>
       </ion-item>
 
       <div>
         <ion-item text-wrap>
-          <ion-label stacked no-border-top>Deskripsi kasus</ion-label>
-          <ion-textarea formControlName="kronologi" rows="5" style="height:100%" placeholder="[Kronologi]\n-\n\n[5W + 1H]\n-"></ion-textarea>
+          <ion-label stacked no-border-top>Kronologi</ion-label>
+          <ion-textarea formControlName="kronologi" rows="5" style="height:100%" placeholder="Deskripsikan kasus..."></ion-textarea>
         </ion-item>
       </div>
 

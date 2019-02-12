@@ -10,6 +10,18 @@ page-view_post {
     //     border-bottom: 100px !important;
     //     box-shadow: none !important;
     // }
+
+    .close-alert{
+      word-wrap: break-word;
+      word-break: break-word;
+      height: 50px;
+      width: 100px;
+      background-color: white;
+      color: red;
+      button{
+          color: red;
+      }
+    }
     
     ion-list.list.list-md {
         margin-top: 0px;

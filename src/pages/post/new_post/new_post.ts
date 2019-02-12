@@ -55,6 +55,8 @@ export class NewPostPage {
     nama_korban: "string",
     nama_pelaku: "string",
     jenis_kejadian: 0,
+    usia: 0,
+    jenis_kelamin: 0,
     tanggal_kejadian: "2019-01-16T09:05:47.831Z",
     kronologi: "string",
     pembelajaran: "string",
@@ -131,12 +133,20 @@ export class NewPostPage {
   penggugat;
   tergugat;
   kronologi;
+  usia;
+  kelamin;
 
   kejadianList = [
     {value:"Pelanggaran Ham",id:0},
     {value:"Pidana",id:1},
     {value:"Perdata",id:2},
-    {value:"Lain-lain",id:3},
+    {value:"Lain-lain",id:3}
+  ]
+
+  kelaminList = [
+    {value:"Perempuan",id:0},
+    {value:"Lelaki",id:1},
+    {value:"Lain-lain",id:2}
   ]
 
   propinsiList = [];
@@ -278,8 +288,10 @@ export class NewPostPage {
       this.sendParams.village = this.formKasus.controls.kelurahan.value.name;
       this.sendParams.village_id = this.formKasus.controls.kelurahan.value.id;
       this.sendParams.nama_korban = this.formKasus.controls.penggugat.value;
-      this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
+      //this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
       this.sendParams.kronologi = this.formKasus.controls.kronologi.value;
+      this.sendParams.usia = this.formKasus.controls.usia.value;
+      this.sendParams.jenis_kelamin = this.formKasus.controls.jenis_kelamin.value;
     }
 
     // kegiatan
@@ -392,6 +404,8 @@ export class NewPostPage {
         tanggal_kejadian: this.sendParams.tanggal_kejadian,
         province: this.sendParams.province,
         nama_korban: this.sendParams.nama_korban,
+        usia: this.sendParams.usia,
+        kelamin: this.sendParams.jenis_kelamin,
         nama_pelaku: this.sendParams.nama_pelaku,
         kronologi: this.sendParams.kronologi
       });

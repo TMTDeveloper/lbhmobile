@@ -27,6 +27,7 @@ import { LoginPage } from "../login/login";
 import { TabsPage } from "../tabs/tabs";
 import { Observable } from "rxjs/Rx";
 import { Credentials } from "../../providers/credentials.holder";
+import * as moment from "moment";
 
 @Component({
   selector: "page-post",
@@ -133,6 +134,10 @@ export class PostPage implements AfterViewInit {
 
   setOrderRule(rules: any[]) {
     this.postQuery["filter[order]"] = rules;
+  }
+
+  dateToDate(time) {
+    return moment(time).format("DD/MM/YY");
   }
 
   currentPostOffset = 0;
@@ -601,7 +606,8 @@ export class PostPage implements AfterViewInit {
     nama_korban,
     nama_pelaku,
     kronologi,
-    pembelajaran
+    pembelajaran,
+    object
   ) {
     this.navCtrl.push(ViewPostPage, {
       type: type,
@@ -614,7 +620,8 @@ export class PostPage implements AfterViewInit {
       nama_korban: nama_korban,
       nama_pelaku: nama_pelaku,
       kronologi: kronologi,
-      pembelajaran: pembelajaran
+      pembelajaran: pembelajaran,
+      object: object
     });
   }
 

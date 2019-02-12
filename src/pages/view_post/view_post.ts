@@ -3,7 +3,8 @@ import {
   NavController,
   NavParams,
   Content,
-  ToastController
+  ToastController,
+  AlertController
 } from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
@@ -47,6 +48,7 @@ export class ViewPostPage {
     public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public creds: Credentials,
+    public alert: AlertController,
     public toastCtrl: ToastController
   ) {
     this.post_id = navParams.get("post_id");
@@ -81,20 +83,20 @@ export class ViewPostPage {
     this.content.resize();
   }
 
-  changeView(viewIndex){
-    if (viewIndex === 1)
-    {
+  changeView(viewIndex) {
+    if (viewIndex === 1) {
       this.view = "post";
     }
-    if (viewIndex === 2)
-    {
+    if (viewIndex === 2) {
       this.view = "comment";
     }
-    if (viewIndex === 3)
-    {
+    if (viewIndex === 3) {
       this.view = "progress";
     }
-    
+    if (viewIndex === 4) {
+      this.view = "close";
+    }
+
     // resize the view
     this.content.resize();
   }
@@ -426,6 +428,10 @@ export class ViewPostPage {
     });
   };
 
+  object;
+  usia;
+  kelamin;
+
   getCurrentPostDetails() {
     this.posted_by = this.navParams.get("posted_by");
     this.posted_name = this.navParams.get("posted_name");
@@ -435,6 +441,9 @@ export class ViewPostPage {
     this.tergugat = this.navParams.get("nama_pelaku");
     this.kronologi = this.navParams.get("kronologi");
     this.pembelajaran = this.navParams.get("pembelajaran");
+    this.object = this.navParams.get("object");
+    this.usia = this.navParams.get("usia");
+    this.kelamin = this.navParams.get("kelamin");
 
     // append the file links
     this.getFileAttachments();
@@ -481,15 +490,15 @@ export class ViewPostPage {
             .download(
               this.service.baseurl + "download?filename=" + file,
               this.file.externalRootDirectory +
-                "Download/" +
-                name.split(" ").join("_")
+              "Download/" +
+              name.split(" ").join("_")
             )
             .then(
               entry => {
                 this.presentToast(
                   "File berhasil diunduh ke" +
-                    this.file.externalRootDirectory +
-                    "Download/"
+                  this.file.externalRootDirectory +
+                  "Download/"
                 );
                 // get the file name and split at the end
                 // file;
@@ -520,15 +529,15 @@ export class ViewPostPage {
                   .download(
                     this.service.baseurl + "download?filename=" + file,
                     this.file.externalRootDirectory +
-                      "Download/" +
-                      name.split(" ").join("_")
+                    "Download/" +
+                    name.split(" ").join("_")
                   )
                   .then(
                     entry => {
                       this.presentToast(
                         "File berhasil diunduh ke" +
-                          this.file.externalRootDirectory +
-                          "Download/"
+                        this.file.externalRootDirectory +
+                        "Download/"
                       );
                       // get the file name and split at the end
                       // file;
@@ -569,5 +578,47 @@ export class ViewPostPage {
     this.doInfinite(refresh);
   }
 
-  viewComment() {}
+  tempPembelajaran;
+
+  askClosePost() {
+    let alert = this.alert.create({
+      title: 'Apakah anda ingin tutup kasus ini?',
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.closePost();
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel close");
+            this.pembelajaran = "";
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  closePost() {
+    // subscribe to patch request.
+    // if fail, empty pembelajaran
+    this.object.pembelajaran = this.tempPembelajaran;
+
+    console.log("object: " + this.object);
+
+    this.service
+      .patchreq("postheaders/" + this.post_id, this.object)
+      .subscribe(response => {
+        if (response != null) {
+          this.pembelajaran = this.tempPembelajaran;
+          this.changeView(1);
+        }
+      });
+  }
+
+  viewComment() { }
 }

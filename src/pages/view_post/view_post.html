@@ -15,7 +15,7 @@
 
   <div *ngIf="view=='comment' || view=='progress'">
     <div text-center>
-      <ion-card color="primary" (click)="changeView(1)">
+      <ion-card *ngIf="view!='close'" color="primary" (click)="changeView(1)">
         <ion-card-content>
           <h2 *ngIf="type=='1'">Lihat Kasus</h2>
           <h2 *ngIf="type=='2'">Lihat Kegiatan</h2>
@@ -62,8 +62,18 @@
 
       <div *ngIf="type==1">
         <ion-item>
-          <h2>Penggugat</h2>
+          <h2>Klien</h2>
           <p>{{penggugat}}</p>
+        </ion-item>
+
+        <ion-item *ngIf="usia!=''">
+          <h2>Usia</h2>
+          <p>{{usia}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Jenis Kelamin</h2>
+          <p>{{kelamin}}</p>
         </ion-item>
 
         <ion-item>
@@ -89,14 +99,14 @@
     <div *ngIf="type==1">
       <ion-navbar color="primary">
         <ion-title>
-          Kronologi (5W + 1H)
+          Kronologi
         </ion-title>
       </ion-navbar>
       <ion-item text-wrap>
         <h2 class="bigbox">{{kronologi}}</h2>
       </ion-item>
 
-      <ion-navbar color="primary">
+      <ion-navbar *ngIf="pembelajaran!=''" color="primary">
         <ion-title>
           Pembelajaran
         </ion-title>
@@ -132,7 +142,8 @@
             </ion-thumbnail> -->
           <h2>{{doc.originalfilename}}</h2>
           <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
-          <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+          <button ion-button clear item-end
+            (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
         </ion-item>
       </ion-list>
 
@@ -192,7 +203,8 @@
       <ion-item *ngIf="msg.posted_name!=null" class="item-content">
 
         <!-- messages appearing on the right -->
-        <ion-grid *ngIf="msg.posted_by!=creds.data.email && creds.data.role ==1||msg.posted_by==creds.data.email && creds.data.role>=2">
+        <ion-grid
+          *ngIf="msg.posted_by!=creds.data.email && creds.data.role ==1||msg.posted_by==creds.data.email && creds.data.role>=2">
           <ion-row>
             <ion-col>
               <div outline style="float:right; text-align: right;" color="primary">
@@ -211,7 +223,8 @@
         </ion-grid>
 
         <!-- messages appearing on the left -->
-        <ion-grid *ngIf="msg.posted_by==creds.data.email && creds.data.role==1|| msg.posted_by!=creds.data.email && creds.data.role>=2">
+        <ion-grid
+          *ngIf="msg.posted_by==creds.data.email && creds.data.role==1|| msg.posted_by!=creds.data.email && creds.data.role>=2">
           <ion-row>
             <!-- <ion-col col-auto>
               <ion-avatar color="secondary">
@@ -302,6 +315,13 @@
     </ion-list>
 
   </div>
+  <div *ngIf="view=='close'">
+    <ion-toolbar>
+      <h2 text-center><b>Tutup Kasus</b></h2>
+      <ion-textarea rows="10" type="text" class="form-control" placeholder="Tulis Pembelajaran..."
+        [(ngModel)]="tempPembelajaran"></ion-textarea>
+    </ion-toolbar>
+  </div>
 </ion-content>
 
 <ion-footer>
@@ -316,7 +336,7 @@
         <h2>Lihat Perkembangan</h2>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="creds.data.role==1" color="danger" (click)="askClosePost()">
+    <ion-card *ngIf="creds.data.role==1 && pembelajaran==''" color="danger" (click)="changeView(4)">
       <ion-card-content>
         <h2>Tutup Kasus</h2>
       </ion-card-content>
@@ -324,7 +344,8 @@
   </div>
   <div *ngIf="view=='comment'">
     <ion-toolbar>
-      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message" (keyup.enter)="send()">
+      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message"
+        (keyup.enter)="send()">
       <ion-buttons right>
         <button (click)="send()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>
@@ -332,14 +353,27 @@
       </ion-buttons>
     </ion-toolbar>
   </div>
-  <div *ngIf="view=='progress'">
+  <div *ngIf="view=='progress' && creds.data.role==1">
     <ion-toolbar>
-      <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..." [(ngModel)]="message2"></ion-textarea>
+      <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..."
+        [(ngModel)]="message2"></ion-textarea>
       <ion-buttons right>
         <button (click)="sendProgress()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>
         </button>
       </ion-buttons>
     </ion-toolbar>
+  </div>
+  <div text-center *ngIf="view=='close'">
+    <ion-card *ngIf="creds.data.role==1" color="danger" (click)="askClosePost()">
+      <ion-card-content>
+        <h2>Tutup Kasus</h2>
+      </ion-card-content>
+    </ion-card>
+    <ion-card color="primary" (click)="changeView(1)">
+      <ion-card-content>
+        <h2>Kembali</h2>
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-footer>
