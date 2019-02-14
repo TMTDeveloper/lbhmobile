@@ -92,13 +92,17 @@ export class NewPostPage {
       kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
       kelurahan: [{ id: "", name: "" }, OptionValidator.isValid],
       penggugat: ["", Validators.required],
-      tergugat: ["", Validators.required],
-      kronologi: ["", Validators.required]
+      tergugat: [""],
+      kronologi: ["", Validators.required],
+      jenis_klien: ["", Validators.required],
+      usia: ["", Validators.required],
+      jenis_kelamin: ["", Validators.required]
     });
 
     this.formKegiatan = formBuilder.group({
       judul: ["", Validators.required],
       tanggal_kejadian: ["", Validators.required],
+      jenis_kejadian: ["", Validators.required],
       propinsi: [{ id: "", name: "" }, OptionValidator.isValid],
       kabupaten: [{ id: "", name: "" }, OptionValidator.isValid],
       kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
@@ -113,6 +117,7 @@ export class NewPostPage {
     this.userName = navParams.get("userName");
 
     this.loadAllAreas();
+    this.updateClient();
   }
 
   formKasus: any;
@@ -137,22 +142,66 @@ export class NewPostPage {
   kelamin;
 
   kejadianList = [
-    {value:"Pelanggaran Ham",id:0},
-    {value:"Pidana",id:1},
-    {value:"Perdata",id:2},
-    {value:"Lain-lain",id:3}
+    { value: "Pelanggaran Ham", id: 1 },
+    { value: "Pidana", id: 2 },
+    { value: "Perdata", id: 3 },
+    { value: "Lain-lain", id: 4 }
+  ]
+
+  klienList = [
+    { value: "Individu", id: 0 },
+    { value: "Non-Individu", id: 1 }
   ]
 
   kelaminList = [
-    {value:"Perempuan",id:0},
-    {value:"Lelaki",id:1},
-    {value:"Lain-lain",id:2}
+    { value: "Perempuan", id: 1 },
+    { value: "Lelaki", id: 2 },
+    { value: "Lain-lain", id: 3 }
+  ]
+
+  kegiatanList = [
+    { value: "Peserta Acara", id: 1 },
+    { value: "Pelaksana Acara", id: 2 },
+    { value: "Acara Kerjasama", id: 3 },
+    { value: "Lain-lain", id: 4 }
   ]
 
   propinsiList = [];
   kabupatenList = [];
   kecamatanList = [];
   kelurahanList = [];
+
+  individu = false;
+
+  updateClient() {
+    if (this.formKasus.controls.jenis_klien.value.id == 0) {
+      this.usia = "";
+      this.kelamin = "";
+      this.formKasus.controls.usia.reset();
+      this.formKasus.controls.jenis_kelamin.reset();
+
+      this.kelaminList = [
+        { value: "Perempuan", id: 1 },
+        { value: "Lelaki", id: 2 },
+        { value: "Lain-lain", id: 3 }
+      ]
+
+      this.individu = true;
+    }
+
+    if (this.formKasus.controls.jenis_klien.value.id == 1) {
+      this.kelaminList = [];
+
+      this.usia = "";
+      this.kelamin = "";
+      this.formKasus.controls.usia.setValue("Tidak ada");
+      this.formKasus.controls.usia.id = 0;
+      this.formKasus.controls.jenis_kelamin.setValue("Tidak ada");
+      this.formKasus.controls.jenis_kelamin.id = 3;
+
+      this.individu = false;
+    }
+  }
 
   updateAllAreas(index) {
     if (index == 0) {
@@ -288,16 +337,16 @@ export class NewPostPage {
       this.sendParams.village = this.formKasus.controls.kelurahan.value.name;
       this.sendParams.village_id = this.formKasus.controls.kelurahan.value.id;
       this.sendParams.nama_korban = this.formKasus.controls.penggugat.value;
-      //this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
+      this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
       this.sendParams.kronologi = this.formKasus.controls.kronologi.value;
-      this.sendParams.usia = this.formKasus.controls.usia.value;
-      this.sendParams.jenis_kelamin = this.formKasus.controls.jenis_kelamin.value;
+      this.sendParams.usia = this.formKasus.controls.usia.id;
+      this.sendParams.jenis_kelamin = this.formKasus.controls.jenis_kelamin.id;
     }
 
     // kegiatan
     if (this.type == 2) {
       this.sendParams.tanggal_kejadian = moment(this.formKegiatan.controls.tanggal_kejadian.value, moment.ISO_8601).format();
-      //this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
+      this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKegiatan.controls.judul.value;
       this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
       this.sendParams.province_id = this.formKegiatan.controls.propinsi.value.id;
@@ -457,7 +506,7 @@ export class NewPostPage {
     });
   }
 
-  addImage() {}
+  addImage() { }
 
   addFile() {
     this.fileChooser

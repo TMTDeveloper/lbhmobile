@@ -66,19 +66,24 @@
           <p>{{penggugat}}</p>
         </ion-item>
 
-        <ion-item *ngIf="usia!=''">
+        <ion-item *ngIf="usia!='0'">
           <h2>Usia</h2>
           <p>{{usia}}</p>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="kelaminIs(kelamin)!='null'">
           <h2>Jenis Kelamin</h2>
-          <p>{{kelamin}}</p>
+          <p>{{kelaminIs(kelamin)}}</p>
         </ion-item>
 
         <ion-item>
           <h2>Tergugat</h2>
           <p>{{tergugat}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Jenis Peradilan</h2>
+          <p>{{peradilanIs(jenis_kejadian)}}</p>
         </ion-item>
       </div>
 
@@ -91,6 +96,11 @@
         <ion-item>
           <h2>Penanggungjawab</h2>
           <p>{{tergugat}}</p>
+        </ion-item>
+
+        <ion-item>
+          <h2>Jenis Kegiatan</h2>
+          <p>{{kegiatanIs(jenis_kejadian)}}</p>
         </ion-item>
       </div>
 
@@ -331,14 +341,19 @@
         <h2>Komentar</h2>
       </ion-card-content>
     </ion-card>
-    <ion-card color="primary" (click)="changeView(3)">
+    <ion-card *ngIf="type==1" color="primary" (click)="changeView(3)">
       <ion-card-content>
         <h2>Lihat Perkembangan</h2>
       </ion-card-content>
     </ion-card>
-    <ion-card *ngIf="creds.data.role==1 && pembelajaran==''" color="danger" (click)="changeView(4)">
+    <ion-card *ngIf="creds.data.role==1 && type==1 && pembelajaran==''" color="danger" (click)="changeView(4)">
       <ion-card-content>
         <h2>Tutup Kasus</h2>
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngIf="creds.data.role==1 && type==2 && pembelajaran==''" color="danger" (click)="changeView(4)">
+      <ion-card-content>
+        <h2>Akhiri Kegiatan</h2>
       </ion-card-content>
     </ion-card>
   </div>

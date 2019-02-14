@@ -83,6 +83,57 @@ export class ViewPostPage {
     this.content.resize();
   }
 
+  kelaminIs(index) {
+    if (index === 0) {
+      return "null";
+    }
+    if (index === 1) {
+      return "Perempuan";
+    }
+    if (index === 2) {
+      return "Lelaki";
+    }
+    if (index === 3) {
+      return "Lain-lain";
+    }
+  }
+
+  peradilanIs(jenis) {
+    if (jenis === 0) {
+      return "null";
+    }
+    if (jenis == 1) {
+      return "Pelanggaran HAM";
+    }
+    if (jenis == 2) {
+      return "Pidana";
+    }
+    if (jenis == 3) {
+      return "Perdata";
+    }
+    if (jenis == 4) {
+      return "Lain-lain";
+    }
+  }
+
+  kegiatanIs(index) {
+    if (index === 0) {
+      return "null";
+    }
+    if (index === 1) {
+      return "Peserta Acara";
+    }
+    if (index === 2) {
+      return "Pelaksana Acara";
+    }
+    if (index === 3) {
+      return "Acara Kerjasama";
+    }
+    if (index === 4) {
+      return "Lain-lain";
+    }
+  }
+
   changeView(viewIndex) {
     if (viewIndex === 1) {
       this.view = "post";
@@ -431,6 +482,7 @@ export class ViewPostPage {
   object;
   usia;
   kelamin;
+  jenis_kejadian;
 
   getCurrentPostDetails() {
     this.posted_by = this.navParams.get("posted_by");
@@ -442,8 +494,9 @@ export class ViewPostPage {
     this.kronologi = this.navParams.get("kronologi");
     this.pembelajaran = this.navParams.get("pembelajaran");
     this.object = this.navParams.get("object");
-    this.usia = this.navParams.get("usia");
-    this.kelamin = this.navParams.get("kelamin");
+    this.usia = this.navParams.get("object").usia;
+    this.kelamin = this.navParams.get("object").jenis_kelamin;
+    this.jenis_kejadian = this.navParams.get("object").jenis_kejadian;
 
     // append the file links
     this.getFileAttachments();
@@ -607,6 +660,7 @@ export class ViewPostPage {
     // subscribe to patch request.
     // if fail, empty pembelajaran
     this.object.pembelajaran = this.tempPembelajaran;
+    this.object.status = 2;
 
     console.log("object: " + this.object);
 

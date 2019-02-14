@@ -40,6 +40,7 @@ export class PostPage implements AfterViewInit {
   items0 = [];
   items1 = [];
   items2 = [];
+  items3 = [];
 
   userName;
   role;
@@ -123,6 +124,21 @@ export class PostPage implements AfterViewInit {
 
   postQueryAll = {
     "filter[where][and][0][type]": 2,
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"]
+  };
+
+  postQueryClosed = {
+    "filter[where][and][0][status]": 2,
+    "filter[where][posted_by]": this.creds.data.email,
+    "filter[limit]": this.postLimit,
+    "filter[skip]": 0,
+    "filter[order]": ["date_modified DESC"]
+  };
+
+  postQueryClosedAll = {
+    "filter[where][and][0][status]": 2,
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"]
@@ -285,6 +301,90 @@ export class PostPage implements AfterViewInit {
 
           console.log(this.items1.length);
           console.log(this.items2.length);
+
+          // populate the list
+          // this.populateList(this.items);
+        }
+      });
+  };
+
+  reqClosedPosts = () => {
+    console.log(this.service.baseurl);
+
+    this.timeOut = 0;
+
+    // return the tab to null
+    //this.jenis = jenis;
+
+    // set the query
+    this.postQueryClosed["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQueryClosed["filter[skip]"] = this.items3.length;
+
+    // order by latest
+    this.postQueryClosed["filter[order]"] = ["no_post DESC"];
+
+    // resize the view
+    this.content.resize();
+
+    if (this.items3.length > 0) return;
+
+    this.service
+      .getReqNew("postheaders", this.postQueryClosed)
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items3.push(newItem);
+          });
+
+          // populate the list
+          // this.populateList(this.items);
+        }
+      });
+  };
+
+  reqAllClosedPosts = () => {
+    console.log(this.service.baseurl);
+
+    this.timeOut = 0;
+
+    // return the tab to null
+    //this.jenis = jenis;
+
+    // set the query
+    this.postQueryClosedAll["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQueryClosedAll["filter[skip]"] = this.items3.length;
+
+    // order by latest
+    this.postQueryClosedAll["filter[order]"] = ["no_post DESC"];
+
+    // resize the view
+    this.content.resize();
+
+    if (this.items3.length > 0) return;
+
+    this.service
+      .getReqNew("postheaders", this.postQueryClosedAll)
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items3.push(newItem);
+          });
 
           // populate the list
           // this.populateList(this.items);
@@ -551,16 +651,16 @@ export class PostPage implements AfterViewInit {
   }
 
   jenisKejadian(jenis) {
-    if (jenis == 0) {
+    if (jenis == 1) {
       return "Pelanggaran HAM";
     }
-    if (jenis == 1) {
+    if (jenis == 2) {
       return "Pidana";
     }
-    if (jenis == 2) {
+    if (jenis == 3) {
       return "Perdata";
     }
-    if (jenis == 3) {
+    if (jenis == 4) {
       return "Lain-lain";
     }
   }
@@ -591,7 +691,7 @@ export class PostPage implements AfterViewInit {
       return "Aplikasi Pendukung untuk Paralegal";
     }
     if (role == 2) {
-      return "Aplikasi Pendukung untuk Bantan Hukum";
+      return "Aplikasi Pendukung untuk Bantuan Hukum";
     }
   }
 
@@ -654,7 +754,7 @@ export class PostPage implements AfterViewInit {
     }
   }
 
-  populateList(any) {}
+  populateList(any) { }
 
   askLogout() {
     let alert = this.alert.create({
