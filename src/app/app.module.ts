@@ -28,6 +28,7 @@ import { FileChooser } from "@ionic-native/file-chooser";
 import { FilePath } from "@ionic-native/file-path";
 import { DatePicker } from "@ionic-native/date-picker";
 import { AndroidPermissions } from "@ionic-native/android-permissions";
+import { ProfilePage } from "../pages/profile/profile";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AndroidPermissions } from "@ionic-native/android-permissions";
     RootPage,
     PostPage,
     ViewPostPage,
-    NewPostPage
+    NewPostPage,
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { AndroidPermissions } from "@ionic-native/android-permissions";
     RootPage,
     PostPage,
     ViewPostPage,
-    NewPostPage
+    NewPostPage,
+    ProfilePage
   ],
   providers: [
     StatusBar,

@@ -1,4 +1,4 @@
-page-post {
+page-profile {
     .item-md ion-thumbnail {
         min-width: 25px;
         min-height: 25px;
@@ -6,13 +6,5 @@ page-post {
     .item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
         width:25px;
         height:25px;
-    }
-  
-    .toolbar-title-md { 
-      font-size: 12px;
-    }
-
-    .bigger-title{
-        font-size: 20px;
     }
 }

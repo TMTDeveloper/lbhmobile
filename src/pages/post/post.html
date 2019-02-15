@@ -1,25 +1,25 @@
 <ion-header>
-  <ion-navbar no-border-bottom color="primary">
-    <button ion-button menuToggle>
+  <ion-navbar color="primary">
+    <!-- <button ion-button menuToggle>
       <ion-icon name="Back"></ion-icon>
-    </button>
+    </button> -->
     <ion-grid>
-      <ion-row height-20>
-        <ion-item no-lines color="primary" style="font-size:12px">
-          {{getRole(role)}}
-        </ion-item>
+      <ion-row height-10>
+        <ion-title no-lines color="primary" style="font-size:12px; height: 20px">
+          <b>{{getRole(role)}}</b>
+        </ion-title>
       </ion-row>
-      <ion-row height-20>
+      <ion-row height-10>
+        <ion-title class="bigger-title">
+          {{namaOrganisasi(organisasi)}}
+        </ion-title>
         <!-- <ion-col>
           <ion-title>
             Beranda
           </ion-title>
         </ion-col> -->
-        <ion-col>
-          <ion-title>
-            {{namaOrganisasi(organisasi)}}
-          </ion-title>
-        </ion-col>
+        <!-- <ion-col>
+        </ion-col> -->
         <!-- <ion-col>
           <button style="float:right" ion-button round (click)="askLogout()" color="primary">
             Keluar

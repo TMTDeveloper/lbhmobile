@@ -1,0 +1,83 @@
+<ion-header>
+    <div>
+        <ion-navbar color="primary">
+            <ion-title>
+                <div>
+                    <!-- <h2>{{judul}}</h2> -->
+                    SIP
+                </div>
+            </ion-title>
+        </ion-navbar>
+    </div>
+</ion-header>
+
+<ion-content>
+    <div>
+        <ion-title>
+            <ion-navbar>
+                <ion-title>
+                    {{name}}
+                </ion-title>
+            </ion-navbar>
+
+            <ion-item>
+                <h2>Posisi</h2>
+                <p>{{roleIs(role)}}</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Organisasi</h2>
+                <p>{{organisasiIs(organisasi)}}</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Alamat Email</h2>
+                <p>{{email}}</p>
+            </ion-item>
+
+            <!-- <ion-item>
+            <ion-label stacked no-border-top>Daerah</ion-label>
+            <ion-input [(ngModel)]="daerah" type="text"></ion-input>
+          </ion-item> -->
+
+            <div>
+                <ion-item>
+                    <h2>Klien</h2>
+                    <p></p>
+                </ion-item>
+            </div>
+
+        </ion-title>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <ion-list>
+        <ion-list-header>
+            <button (click)="askChangePassword()" ion-button outline item-end>Ubah password</button>
+        </ion-list-header>
+    </ion-list>
+
+    <div text-center *ngIf="view=='post'">
+        <ion-card color="primary" (click)="changeView(2)">
+            <ion-card-content>
+                <h2>Komentar</h2>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="type==1" color="primary" (click)="changeView(3)">
+            <ion-card-content>
+                <h2>Lihat Perkembangan</h2>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="creds.data.role==1 && type==1 && pembelajaran==''" color="danger" (click)="changeView(4)">
+            <ion-card-content>
+                <h2>Tutup Kasus</h2>
+            </ion-card-content>
+        </ion-card>
+        <ion-card *ngIf="creds.data.role==1 && type==2 && pembelajaran==''" color="danger" (click)="changeView(4)">
+            <ion-card-content>
+                <h2>Akhiri Kegiatan</h2>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-footer>

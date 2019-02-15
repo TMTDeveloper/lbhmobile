@@ -39,6 +39,11 @@
 <ion-content>
   <div *ngIf="view=='post'">
     <ion-title>
+      <ion-navbar *ngIf="pembelajaran!=''" color="danger">
+        <ion-title>
+          Kasus ini sudah ditutup
+        </ion-title>
+      </ion-navbar>
 
       <ion-item>
         <h2>Nama Paralegal</h2>
