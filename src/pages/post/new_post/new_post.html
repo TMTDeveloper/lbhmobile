@@ -30,7 +30,7 @@
       <ion-item>
         <ion-label stacked>Jenis Peradilan</ion-label>
         <ion-select formControlName="jenis_kejadian">
-          <ion-option *ngFor="let item of kejadianList" [value]="item.id">{{item.value}}</ion-option>
+          <ion-option *ngFor="let item of kejadianList" [value]="item.id_keyword">{{item.value_keyword}}</ion-option>
         </ion-select>
       </ion-item>
 
@@ -90,7 +90,7 @@
 
       <ion-item>
         <ion-label stacked no-border-top>Usia</ion-label>
-        <ion-input formControlName="usia" type="text" [disabled]="individu==false"></ion-input>
+        <ion-input formControlName="usia" type="number" [disabled]="individu==false"></ion-input>
       </ion-item>
 
       <ion-item>

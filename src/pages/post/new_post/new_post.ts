@@ -118,6 +118,7 @@ export class NewPostPage {
 
     this.loadAllAreas();
     this.updateClient();
+    this.updateKejadian();
   }
 
   formKasus: any;
@@ -172,6 +173,31 @@ export class NewPostPage {
   kelurahanList = [];
 
   individu = false;
+
+  updateKejadian() {
+    this.kejadianList = [];
+
+    let query = {
+      "filter[where][keyword]":"jenis_kejadian"
+    };
+
+    this.service.getReqNew("generals", query).subscribe(
+      response => {
+        if (response != null) {
+          // view the created page
+          console.log(response);
+          let newList: any = response;
+          this.kejadianList = newList;
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log("failed to get kejadian!");
+          console.log(error);
+        }
+      }
+    );
+  }
 
   updateClient() {
     if (this.formKasus.controls.jenis_klien.value.id == 0) {
