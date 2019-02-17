@@ -68,7 +68,7 @@ export class PostPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUserData();
-
+    console.log(this.creds.data.email);
     this.reqMyPosts();
     this.reqNewestPosts();
     this.populateItems2();
@@ -94,7 +94,7 @@ export class PostPage implements AfterViewInit {
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
     "filter[where][and][1][organisasi]": this.creds.data.organisasi,
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQueryByName = {
@@ -104,7 +104,7 @@ export class PostPage implements AfterViewInit {
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
     "filter[where][and][1][organisasi]": this.creds.data.organisasi,
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQueryByPostIds = {
@@ -114,7 +114,7 @@ export class PostPage implements AfterViewInit {
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
     "filter[where][and][1][organisasi]": this.creds.data.organisasi,
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQuery2 = {
@@ -123,7 +123,7 @@ export class PostPage implements AfterViewInit {
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
     "filter[where][and][1][organisasi]": this.creds.data.organisasi,
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQueryAll = {
@@ -131,7 +131,7 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQueryClosed = {
@@ -140,7 +140,7 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   postQueryClosedAll = {
@@ -148,7 +148,7 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[reqby]" : this.creds.data.email
+    "filter[reqby]": this.creds.data.email
   };
 
   resetPostOffset() {
@@ -187,6 +187,7 @@ export class PostPage implements AfterViewInit {
           console.log(element);
           let postQueryByName = [];
           postQueryByName["filter[where][no_post]"] = element;
+          postQueryByName["filter[reqby]"] = this.creds.data.email;
 
           // resize the view
           this.content.resize();
@@ -520,7 +521,7 @@ export class PostPage implements AfterViewInit {
         console.log(element);
         let postQueryByName = [];
         postQueryByName["filter[where][no_post]"] = element;
-
+        postQueryByName["filter[reqby]"] = this.creds.data.email;
         // resize the view
         this.content.resize();
 
@@ -769,7 +770,7 @@ export class PostPage implements AfterViewInit {
     }
   }
 
-  populateList(any) { }
+  populateList(any) {}
 
   askLogout() {
     let alert = this.alert.create({
