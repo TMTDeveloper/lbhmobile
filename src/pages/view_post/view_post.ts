@@ -62,6 +62,7 @@ export class ViewPostPage {
     this.getCurrentPostDetails();
     this.reqNewestPosts();
     this.reqNewestProgress();
+    this.updatePost();
   }
 
   role;
@@ -207,6 +208,9 @@ export class ViewPostPage {
         if (response != null) {
           console.log(response);
 
+          // update the post
+          this.updatePost();
+
           // append the new posts to current array
           let newMsg = {
             no_post: this.sendParams.no_post,
@@ -229,7 +233,7 @@ export class ViewPostPage {
       },
       error => {
         if (error != null) {
-          console.log("failed to send message!");
+          console.log("failed to send message! \n error:" + error);
         }
       }
     );
@@ -330,6 +334,9 @@ export class ViewPostPage {
       response => {
         if (response != null) {
           console.log(response);
+
+          // update the post
+          this.updatePost();
 
           // append the new posts to current array
           let newMsg = {
@@ -629,6 +636,29 @@ export class ViewPostPage {
   purgeList(refresh) {
     this.items1 = [];
     this.doInfinite(refresh);
+  }
+
+  updatePost(){
+
+    var updateParams = {
+      id_user: this.creds.data.email,
+      no_post: this.object.no_post,
+      last_access: moment().format()
+    }
+
+    // post update to server. upon success, add to list
+    this.service.postreq("post-logs", updateParams).subscribe(
+      response => {
+        if (response != null) {
+          console.log(response);
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log(error);
+        }
+      }
+    );
   }
 
   tempPembelajaran;

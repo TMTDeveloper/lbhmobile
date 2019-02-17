@@ -59,7 +59,7 @@ export class NewPostPage {
     jenis_kelamin: 0,
     tanggal_kejadian: "2019-01-16T09:05:47.831Z",
     kronologi: "string",
-    pembelajaran: "string",
+    pembelajaran: "",
     date_created: moment().format(),
     date_modified: moment().format()
   };
@@ -482,7 +482,10 @@ export class NewPostPage {
         usia: this.sendParams.usia,
         kelamin: this.sendParams.jenis_kelamin,
         nama_pelaku: this.sendParams.nama_pelaku,
-        kronologi: this.sendParams.kronologi
+        kronologi: this.sendParams.kronologi,
+        jenis_kejadian: this.sendParams.jenis_kejadian,
+        object: this.sendParams,
+        pembelajaran: this.sendParams.pembelajaran
       });
     });
   }

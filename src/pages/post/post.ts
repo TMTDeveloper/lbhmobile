@@ -93,7 +93,8 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi,
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQueryByName = {
@@ -102,7 +103,8 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi,
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQueryByPostIds = {
@@ -111,7 +113,8 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi,
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQuery2 = {
@@ -119,14 +122,16 @@ export class PostPage implements AfterViewInit {
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
     "filter[order]": ["date_modified DESC"],
-    "filter[where][and][1][organisasi]": this.creds.data.organisasi
+    "filter[where][and][1][organisasi]": this.creds.data.organisasi,
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQueryAll = {
     "filter[where][and][0][type]": 2,
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
-    "filter[order]": ["date_modified DESC"]
+    "filter[order]": ["date_modified DESC"],
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQueryClosed = {
@@ -134,14 +139,16 @@ export class PostPage implements AfterViewInit {
     "filter[where][posted_by]": this.creds.data.email,
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
-    "filter[order]": ["date_modified DESC"]
+    "filter[order]": ["date_modified DESC"],
+    "filter[reqby]" : this.creds.data.email
   };
 
   postQueryClosedAll = {
     "filter[where][and][0][status]": 2,
     "filter[limit]": this.postLimit,
     "filter[skip]": 0,
-    "filter[order]": ["date_modified DESC"]
+    "filter[order]": ["date_modified DESC"],
+    "filter[reqby]" : this.creds.data.email
   };
 
   resetPostOffset() {
@@ -693,6 +700,14 @@ export class PostPage implements AfterViewInit {
     if (role == 2) {
       return "Aplikasi Pendukung untuk Bantuan Hukum";
     }
+  }
+
+  hasNewPost(item) {
+    console.log(item.last_post + " is after " + item.date_access + "?");
+    var hasNew = moment(item.last_post).isAfter(item.date_access);
+    if (item.date_access == null) hasNew = true;
+    console.log(hasNew);
+    return hasNew;
   }
 
   viewPost(
