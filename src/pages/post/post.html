@@ -89,7 +89,7 @@
   <div>
     <div *ngIf="jenis=='kasus'&&view=='me'">
       <!-- <ion-list> -->
-      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of items0"
+      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of sortMethod(items0)"
         (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
@@ -114,8 +114,7 @@
 
     <div *ngIf="jenis=='kasus'&&view=='all' && role==2">
       <!-- <ion-list> -->
-      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of items1"
-        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of sortMethod(items1)" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
@@ -138,8 +137,7 @@
 
     <div *ngIf="jenis=='kasus'&&view=='closed'">
       <!-- <ion-list> -->
-      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of items3"
-        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      <ion-card [color]="item.status==2?'danger':'primary'" *ngFor="let item of sortMethod(items3)" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
@@ -162,8 +160,7 @@
 
     <div *ngIf="jenis=='kegiatan'">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of items2"
-        (click)="viewPost(2,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      <ion-card *ngFor="let item of sortMethodKegiatan(items2)" (click)="viewPost(2,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail> -->

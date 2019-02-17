@@ -28,6 +28,7 @@ import { TabsPage } from "../tabs/tabs";
 import { Observable } from "rxjs/Rx";
 import { Credentials } from "../../providers/credentials.holder";
 import * as moment from "moment";
+import sort from "fast-sort";
 
 @Component({
   selector: "page-post",
@@ -174,6 +175,7 @@ export class PostPage implements AfterViewInit {
     this.content.resize();
 
     // first we get the post details
+
     await this.service
       .getReqNew("postdetails/postedby", { email: this.creds.data.email })
       .subscribe(response => {
@@ -796,5 +798,18 @@ export class PostPage implements AfterViewInit {
 
   logout() {
     this.events.publish("user:logout");
+  }
+
+  sortMethod(arr) {
+    return sort(arr).by([
+      { desc: u => moment(u.last_post).isAfter(u.date_access) },
+      { desc: u => (u.last_post == null ? u.date_modified : u.last_post) }
+    ]);
+  }
+
+  sortMethodKegiatan(arr) {
+    return sort(arr).by([
+      { desc: u => u.date_modified},
+    ]);
   }
 }
