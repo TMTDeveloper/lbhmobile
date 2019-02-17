@@ -25,10 +25,11 @@ export class AboutPage {
     private service: BackendService,
     public loadingCtrl: LoadingController,
     public cred: Credentials
-  ) {}
+  ) { }
 
   ngAfterViewInit() {
-    this.getDocument();
+    this.updateDokumen();
+    //this.getDocument();
     console.log(this.cred.data);
   }
 
@@ -40,14 +41,52 @@ export class AboutPage {
     loader.present();
   }
 
+  dokumenList;
+
+  updateDokumen() {
+    this.dokumenList = [];
+
+    let query = {
+      "filter[where][keyword]": "jenis_dokumen"
+    };
+
+    this.service.getReqNew("generals", query).subscribe(
+      response => {
+        if (response != null) {
+          // view the created page
+          console.log(response);
+          let newList: any = response;
+          this.dokumenList = newList;
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log("failed to get dokumen!");
+          console.log(error);
+        }
+      }
+    );
+  }
+
+  setDocType(index) {
+    this.documentType = index;
+    this.getDocument();
+  }
+
+  documentType = 0;
+
   getDocument() {
     const loader = this.loadingCtrl.create({
       content: "Please wait...",
       duration: 3000
     });
     loader.present();
+
+    this.documents = [];
+    console.log(this.documentType);
+
     this.service
-      .postreq("findupload", { where: { no_post: "document" } })
+      .postreq("findupload", { "where": { "no_post": "document", "type": this.documentType } })
       .subscribe(response => {
         if (response != null) {
           console.log(response);
@@ -64,7 +103,7 @@ export class AboutPage {
     // });
     // loader.present();
     this.service
-      .postreq("findupload", { where: { no_post: "document" } })
+      .postreq("findupload", { "where": { "no_post": "document", "type": this.documentType } })
       .subscribe(response => {
         if (response != null) {
           console.log(response);

@@ -4,11 +4,18 @@
       Arsip Dokumen Pembantu
     </ion-title>
   </ion-navbar>
+  <ion-item color="primary">
+    <ion-label color="light">
+      Tipe Dokumen
+    </ion-label>
+    <!-- <button (click)="askChangePassword()" ion-button outline item-start>Ubah password</button> -->
+    <ion-select color="light" item-end interface="popover" placeholder="[Pilih Tipe Dokumen]" placeholder-color="light">
+      <ion-option *ngFor="let item of dokumenList" (ionSelect)="setDocType(item.id_keyword)" [value]="item.id_keyword">{{item.value_keyword}}</ion-option>
+    </ion-select>
+  </ion-item>
 </ion-header>
 
 <ion-content padding>
-
-
   <ion-refresher (ionRefresh)="getDocumentRefresh($event)">
     <ion-refresher-content>
 
@@ -23,7 +30,8 @@
       </ion-thumbnail>
       <h2>{{doc.originalfilename}}</h2>
       <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
-      <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+      <button ion-button clear item-end
+        (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
     </ion-item>
   </ion-list>
 
