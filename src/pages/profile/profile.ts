@@ -200,6 +200,28 @@ export class ProfilePage {
     alert.present();
   }
 
+  askLogout() {
+    let alert = this.alert.create({
+      subTitle: "Apakah anda ingin keluar?",
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.logout();
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel logout");
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   logout() {
     this.events.publish("user:logout");
   }

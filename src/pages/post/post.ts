@@ -60,6 +60,7 @@ export class PostPage implements AfterViewInit {
     public navParams: NavParams,
     public alert: AlertController,
     public events: Events,
+    public platform: Platform,
     public creds: Credentials
   ) {
     console.log(this.service.baseurl);
@@ -73,6 +74,10 @@ export class PostPage implements AfterViewInit {
     this.reqMyPosts();
     this.reqNewestPosts();
     this.populateItems2();
+    
+    this.platform.registerBackButtonAction(() => {
+      this.askLogout();
+    });
   }
 
   getUserData() {
