@@ -501,9 +501,9 @@ export class ViewPostPage {
     this.kronologi = this.navParams.get("kronologi");
     this.pembelajaran = this.navParams.get("pembelajaran");
     this.object = this.navParams.get("object");
-    this.usia = this.navParams.get("object").usia;
-    this.kelamin = this.navParams.get("object").jenis_kelamin;
-    this.jenis_kejadian = this.navParams.get("object").jenis_kejadian;
+    this.usia = this.navParams.get("usia");
+    this.kelamin = this.navParams.get("jenis_kelamin");
+    this.jenis_kejadian = this.navParams.get("jenis_kejadian");
 
     // append the file links
     this.getFileAttachments();
