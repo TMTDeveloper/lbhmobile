@@ -59,7 +59,10 @@ export class ViewPostPage {
   @ViewChild(Content) content: Content;
 
   ngAfterViewInit() {
-    this.getCurrentPostDetails();
+    this.getCurrentPostDetails_OLD();
+  }
+
+  afterGetPost() {
     this.reqNewestPosts();
     this.reqNewestProgress();
     this.updatePost();
@@ -463,14 +466,14 @@ export class ViewPostPage {
 
     // set the query for current post
     let postQueryCur = {
-      "filter[where][no_post]": this.post_id,
-      "filter[where][type]": this.type
+      "filter[where][no_post]": this.post_id
     };
 
     this.service.getReqNew("postheaders", postQueryCur).subscribe(response => {
       if (response != null) {
         console.log(response);
 
+        this.object = response;
         this.posted_by = response[0]["posted_by"];
         this.posted_name = response[0]["posted_by"];
         this.waktu = response[0]["tanggal_kejadian"];
@@ -479,9 +482,15 @@ export class ViewPostPage {
         this.tergugat = response[0]["nama_pelaku"];
         this.kronologi = response[0]["kronologi"];
         this.pembelajaran = response[0]["pembelajaran"];
+        this.usia = response[0]["usia"];
+        this.kelamin = response[0]["kelamin"];
+        this.jenis_kejadian = response[0]["jenis_kejadian"];
 
         // populate the list
         // this.populateList(this.items);
+
+        // get details
+        this.afterGetPost();
       }
     });
   };
@@ -492,21 +501,48 @@ export class ViewPostPage {
   jenis_kejadian;
 
   getCurrentPostDetails() {
-    this.posted_by = this.navParams.get("posted_by");
-    this.posted_name = this.navParams.get("posted_name");
-    this.waktu = this.navParams.get("tanggal");
-    this.propinsi = this.navParams.get("province");
-    this.penggugat = this.navParams.get("nama_korban");
-    this.tergugat = this.navParams.get("nama_pelaku");
-    this.kronologi = this.navParams.get("kronologi");
-    this.pembelajaran = this.navParams.get("pembelajaran");
-    this.object = this.navParams.get("object");
-    this.usia = this.navParams.get("usia");
-    this.kelamin = this.navParams.get("jenis_kelamin");
-    this.jenis_kejadian = this.navParams.get("jenis_kejadian");
+    let loading = this.presentLoading();
 
-    // append the file links
-    this.getFileAttachments();
+    let postQuery = {
+      "filter[where][no_post]": this.post_id,
+    };
+    console.log(postQuery);
+
+    this.service
+      .getReqNew("postheaders", postQuery)
+      .subscribe(response => {
+        if (response != null) {
+          console.log(response);
+
+          // append the post details
+          this.posted_by = response["posted_by"];
+          this.posted_name = response["posted_name"];
+          this.waktu = response["tanggal"];
+          this.propinsi = response["province"];
+          this.penggugat = response["nama_korban"];
+          this.tergugat = response["nama_pelaku"];
+          this.kronologi = response["kronologi"];
+          this.pembelajaran = response["pembelajaran"];
+          this.object = response;
+          this.usia = response["usia"];
+          this.kelamin = response["kelamin"];
+          this.jenis_kejadian = response["jenis_kejadian"];
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // append the file links
+          this.getFileAttachments();
+
+          // get details
+          this.afterGetPost();
+
+          loading.dismiss();
+        }
+      }, error => {
+        this.alertFailGetPost();
+        this.navCtrl.pop();
+      });
   }
 
   getFileAttachments() {
@@ -639,7 +675,6 @@ export class ViewPostPage {
   }
 
   updatePost() {
-
     var updateParams = {
       id_user: this.creds.data.email,
       no_post: this.object.no_post,
@@ -659,6 +694,20 @@ export class ViewPostPage {
         }
       }
     );
+  }
+
+  alertFailGetPost() {
+    let alert = this.alert.create({
+      subTitle: "Gagal menemukan halaman!",
+      buttons: [
+        {
+          text: "Ok",
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   tempPembelajaran;
@@ -711,4 +760,13 @@ export class ViewPostPage {
   }
 
   viewComment() { }
+
+  presentLoading() {
+    const loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
+    return loader;
+  }
 }

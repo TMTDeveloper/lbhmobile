@@ -205,8 +205,8 @@ export class NewPostPage {
     if (this.formKasus.controls.jenis_klien.value.id == 0) {
       this.usia = "";
       this.kelamin = "";
-      this.formKasus.controls.usia.reset();
-      this.formKasus.controls.jenis_kelamin.reset();
+      this.formKasus.controls.usia.id = 0;
+      this.formKasus.controls.jenis_kelamin.id = 3;
 
       this.kelaminList = [
         { value: "Perempuan", id: 1 },
@@ -411,6 +411,8 @@ export class NewPostPage {
     // check fail
     let fail = false;
 
+    console.log(this.formKasus);
+
     // post to server. upon success, add to list
     await this.service.postreq("postheaders", this.sendParams).subscribe(
       async response => {
@@ -464,6 +466,35 @@ export class NewPostPage {
       }
     );
   };
+
+  viewCreatedPost_OLD(response) {
+    // this.navCtrl.getPrevious().data.waitingNewPost = true;
+    // this.navCtrl.pop();
+    // this.navCtrl.push(ViewPostPage, { post_id: no_post });
+
+    this.navCtrl.remove(1).then(response => {
+      this.navCtrl.push(ViewPostPage, {
+        type: this.sendParams.type,
+        post_id: this.sendParams.no_post,
+        judul:
+          this.type == 1
+            ? this.formKasus.controls.judul.value
+            : this.formKegiatan.controls.judul.value,
+        posted_by: this.sendParams.posted_by,
+        posted_name: this.sendParams.posted_name,
+        tanggal_kejadian: this.sendParams.tanggal_kejadian,
+        province: this.sendParams.province,
+        nama_korban: this.sendParams.nama_korban,
+        usia: this.sendParams.usia,
+        kelamin: this.sendParams.jenis_kelamin,
+        nama_pelaku: this.sendParams.nama_pelaku,
+        kronologi: this.sendParams.kronologi,
+        jenis_kejadian: this.sendParams.jenis_kejadian,
+        object: this.sendParams,
+        pembelajaran: this.sendParams.pembelajaran
+      });
+    });
+  }
 
   viewCreatedPost(response) {
     // this.navCtrl.getPrevious().data.waitingNewPost = true;

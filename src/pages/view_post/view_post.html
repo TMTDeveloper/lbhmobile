@@ -79,7 +79,7 @@
           <p>{{usia}}</p>
         </ion-item>
 
-        <ion-item *ngIf="kelaminIs(kelamin)!='null'">
+        <ion-item *ngIf="kelamin!='null' && kelamin!='0'">
           <h2>Jenis Kelamin</h2>
           <p>{{kelaminIs(kelamin)}}</p>
         </ion-item>

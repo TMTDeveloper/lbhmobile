@@ -78,7 +78,7 @@
 
       <ion-item>
         <ion-label stacked no-border-top>Tipe Klien</ion-label>
-        <ion-select formControlName="jenis_klien"  (ionChange)="updateClient()">
+        <ion-select formControlName="jenis_klien" (ionChange)="updateClient()">
           <ion-option *ngFor="let item of klienList" [value]="item">{{item.value}}</ion-option>
         </ion-select>
       </ion-item>
@@ -96,7 +96,7 @@
       <ion-item>
         <ion-label stacked>Jenis Kelamin</ion-label>
         <ion-select formControlName="jenis_kelamin" [disabled]="individu==false">
-          <ion-option *ngFor="let item of kelaminList" [value]="item">{{item.value}}</ion-option>
+          <ion-option *ngFor="let item of kelaminList" [value]="item.id">{{item.value}}</ion-option>
         </ion-select>
       </ion-item>
 
