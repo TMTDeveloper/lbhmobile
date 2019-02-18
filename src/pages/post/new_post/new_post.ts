@@ -550,16 +550,19 @@ export class NewPostPage {
         this.filePath.resolveNativePath(uri).then(filePath => {
 
           // check file size (max 5mb)
-          this.getFileSize(filePath).
-          then(function(fileSize){
-             console.log(fileSize);
+          // this.getFileSize(filePath).
+          // then(function(fileSize){
+          //    console.log(fileSize);
 
-             if (fileSize<500000) this.uploads.push(filePath);
-             else this.alertMaxSize();
-          }).
-          catch(function(err){
-            console.error(err);
-          });
+          //    if (fileSize<500000) this.uploads.push(filePath);
+          //    else this.alertMaxSize();
+          // }).
+          // catch(function(err){
+          //   console.error(err);
+          // });
+
+          // push
+          this.uploads.push(filePath);
         });
       })
       .catch(e => {

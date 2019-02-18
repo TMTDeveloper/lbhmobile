@@ -59,16 +59,16 @@ export class ProfilePage {
   }
 
   roleIs(role){
-    if (role == 0) {
+    if (role == 1) {
       return "Paralegal";
     }
-    if (role == 1) {
+    if (role == 2) {
       return "Pengacara";
     }
-    if (role == 2) {
+    if (role == 3) {
       return "Pengawas";
     }
-    if (role == 3) {
+    if (role == 0) {
       return "Admin";
     }
   }
