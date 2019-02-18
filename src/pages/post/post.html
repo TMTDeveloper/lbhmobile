@@ -101,7 +101,8 @@
           <h2><b>{{item.title}}</b></h2>
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
           <h3 style="text-align:right"><b>{{jenisKejadian(item.jenis_kejadian)}}</b></h3>
-          <h3 *ngIf="hasNewPost(item)" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3>
+          <!-- <h3 *ngIf="hasNewPost(item)" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3> -->
+          <h3 *ngIf="item.hasNewPost" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3>
           <i *ngIf="role==2" style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>

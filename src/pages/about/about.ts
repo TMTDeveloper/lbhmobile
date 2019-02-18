@@ -39,6 +39,7 @@ export class AboutPage {
       duration: 3000
     });
     loader.present();
+    return loader;
   }
 
   dokumenList;

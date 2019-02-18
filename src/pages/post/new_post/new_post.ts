@@ -81,6 +81,8 @@ export class NewPostPage {
     public formBuilder: FormBuilder,
     public creds: Credentials,
     public alertCtrl: AlertController,
+    // public window: Window,
+    public alert: AlertController,
     public datePicker: DatePicker
   ) {
     this.formKasus = formBuilder.group({
@@ -178,7 +180,7 @@ export class NewPostPage {
     this.kejadianList = [];
 
     let query = {
-      "filter[where][keyword]":"jenis_kejadian"
+      "filter[where][keyword]": "jenis_kejadian"
     };
 
     this.service.getReqNew("generals", query).subscribe(
@@ -351,6 +353,7 @@ export class NewPostPage {
 
     // kasus
     if (this.type == 1) {
+      this.sendParams.type = this.type;
       this.sendParams.tanggal_kejadian = moment(this.formKasus.controls.tanggal_kejadian.value, moment.ISO_8601).format();
       this.sendParams.jenis_kejadian = this.formKasus.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKasus.controls.judul.value;
@@ -371,6 +374,7 @@ export class NewPostPage {
 
     // kegiatan
     if (this.type == 2) {
+      this.sendParams.type = this.type;
       this.sendParams.tanggal_kejadian = moment(this.formKegiatan.controls.tanggal_kejadian.value, moment.ISO_8601).format();
       this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKegiatan.controls.judul.value;
@@ -541,14 +545,70 @@ export class NewPostPage {
     this.fileChooser
       .open()
       .then(uri => {
+
         // add the file uri
         this.filePath.resolveNativePath(uri).then(filePath => {
-          this.uploads.push(filePath);
+
+          // check file size (max 5mb)
+          this.getFileSize(filePath).
+          then(function(fileSize){
+             console.log(fileSize);
+
+             if (fileSize<500000) this.uploads.push(filePath);
+             else this.alertMaxSize();
+          }).
+          catch(function(err){
+            console.error(err);
+          });
         });
       })
       .catch(e => {
         // alert
       });
+  }
+
+  alertMaxSize(){
+    let alert = this.alert.create({
+      subTitle: "Maksimum ukuran 5MB!",
+      buttons: [
+        {
+          text: "Ok",
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  alertInvalidFile(){
+    let alert = this.alert.create({
+      subTitle: "Gagal mengambil file!",
+      buttons: [
+        {
+          text: "Ok",
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  getFileSize(fileUri) {
+    return new Promise(function (resolve, reject) {
+      this.window.resolveLocalFileSystemURL(fileUri, function (fileEntry) {
+        fileEntry.file(function (fileObj) {
+          resolve(fileObj.size);
+        },
+          function (err) {
+            reject(err);
+          });
+      },
+        function (err) {
+          reject(err);
+        });
+    });
   }
 
   insertDate() {
@@ -568,5 +628,14 @@ export class NewPostPage {
         },
         err => console.log("Error occurred while getting date: ", err)
       );
+  }
+
+  presentLoading() {
+    const loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
+    return loader;
   }
 }

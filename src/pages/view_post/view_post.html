@@ -40,8 +40,11 @@
   <div *ngIf="view=='post'">
     <ion-title>
       <ion-navbar *ngIf="pembelajaran!=''" color="danger">
-        <ion-title>
+        <ion-title *ngIf="type==1">
           Kasus ini sudah ditutup
+        </ion-title>
+        <ion-title *ngIf="type==2">
+          Kegiatan ini sudah berakhir
         </ion-title>
       </ion-navbar>
 
@@ -330,10 +333,14 @@
     </ion-list>
 
   </div>
+
   <div *ngIf="view=='close'">
     <ion-toolbar>
-      <h2 text-center><b>Tutup Kasus</b></h2>
-      <ion-textarea rows="10" type="text" class="form-control" placeholder="Tulis Pembelajaran..."
+      <h2 text-center>
+        <b *ngIf="type==1">Tutup Kasus</b>
+        <b *ngIf="type==2">Akhiri Kegiatan</b>
+      </h2>
+      <ion-textarea rows="10" type="text" class="form-control" placeholder="Tulis Pembelajaran yang didapat..."
         [(ngModel)]="tempPembelajaran"></ion-textarea>
     </ion-toolbar>
   </div>
@@ -387,7 +394,8 @@
   <div text-center *ngIf="view=='close'">
     <ion-card *ngIf="creds.data.role==1" color="danger" (click)="askClosePost()">
       <ion-card-content>
-        <h2>Tutup Kasus</h2>
+        <h2 *ngIf="type==1">Tutup Kasus</h2>
+        <h2 *ngIf="type==2">Akhiri Kegiatan</h2>
       </ion-card-content>
     </ion-card>
     <ion-card color="primary" (click)="changeView(1)">

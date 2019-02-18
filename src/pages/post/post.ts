@@ -213,6 +213,7 @@ export class PostPage implements AfterViewInit {
 
                 newItems.forEach(newItem => {
                   // append the new posts to current array
+                  this.hasNewPost(newItem);
                   this.items0.push(newItem);
                 });
 
@@ -651,6 +652,47 @@ export class PostPage implements AfterViewInit {
     }, this.timeOut);
   }
 
+  doInfiniteClosed(infiniteScroll) {
+    console.log("Begin async operation");
+    console.log(this.postQueryClosed);
+
+    // set the query
+    this.postQueryClosed["filter[where][type]"] = 1;
+
+    // add the offset
+    this.postQueryClosed["filter[skip]"] = this.items3.length;
+
+    // order by latest
+    this.postQueryClosed["filter[order]"] = ["no_post DESC"];
+
+    this.timeOut = 500;
+
+    setTimeout(() => {
+      this.service
+        .getReqNew("postheaders", this.postQueryClosed)
+        .subscribe(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+              this.items3.push(newItem);
+            });
+
+            // populate the list
+            // this.populateList(this.items);
+
+            // end operation
+            console.log("Async operation has ended");
+            infiniteScroll.complete();
+          }
+        });
+    }, this.timeOut);
+  }
+
   shortenDescription(description: string) {
     if (description == null) {
       return "";
@@ -715,6 +757,7 @@ export class PostPage implements AfterViewInit {
     var hasNew = moment(item.last_post).isAfter(item.date_access);
     if (item.date_access == null) hasNew = true;
     console.log(hasNew);
+    item.hasNewPost = hasNew;
     return hasNew;
   }
 
@@ -732,6 +775,7 @@ export class PostPage implements AfterViewInit {
     pembelajaran,
     object
   ) {
+    object.hasNewPost = false;
     this.navCtrl.push(ViewPostPage, {
       type: type,
       post_id: no_post,

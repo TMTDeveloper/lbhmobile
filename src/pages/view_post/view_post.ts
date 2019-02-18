@@ -638,7 +638,7 @@ export class ViewPostPage {
     this.doInfinite(refresh);
   }
 
-  updatePost(){
+  updatePost() {
 
     var updateParams = {
       id_user: this.creds.data.email,
@@ -692,15 +692,21 @@ export class ViewPostPage {
     this.object.pembelajaran = this.tempPembelajaran;
     this.object.status = 2;
 
-    console.log("object: " + this.object);
+    console.log(this.object);
 
     this.service
       .patchreq("postheaders/" + this.post_id, this.object)
       .subscribe(response => {
         if (response != null) {
-          this.pembelajaran = this.tempPembelajaran;
-          this.changeView(1);
+
         }
+      }, error => {
+        if (error != null) {
+
+        }
+      }, () => {
+        this.pembelajaran = this.tempPembelajaran;
+        this.changeView(1);
       });
   }
 
