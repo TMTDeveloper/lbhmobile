@@ -39,13 +39,13 @@
 <ion-content>
   <div *ngIf="view=='post'">
     <ion-title>
-      <ion-navbar *ngIf="pembelajaran!=''" color="danger">
-        <ion-title *ngIf="type==1">
+      <ion-navbar *ngIf="pembelajaran!='' && type==1" color="danger">
+        <ion-title>
           Kasus ini sudah ditutup
         </ion-title>
-        <ion-title *ngIf="type==2">
+        <!-- <ion-title *ngIf="type==2">
           Kegiatan ini sudah berakhir
-        </ion-title>
+        </ion-title> -->
       </ion-navbar>
 
       <ion-item>
@@ -101,10 +101,10 @@
           <p>{{penggugat}}</p>
         </ion-item>
 
-        <ion-item>
+        <!-- <ion-item>
           <h2>Penanggungjawab</h2>
           <p>{{tergugat}}</p>
-        </ion-item>
+        </ion-item> -->
 
         <ion-item>
           <h2>Jenis Kegiatan</h2>
@@ -160,7 +160,8 @@
             </ion-thumbnail> -->
           <h2>{{doc.originalfilename}}</h2>
           <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
-          <button ion-button clear item-end (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+          <button ion-button clear item-end
+            (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
         </ion-item>
       </ion-list>
 
@@ -220,7 +221,8 @@
       <ion-item *ngIf="msg.posted_name!=null" class="item-content">
 
         <!-- messages appearing on the right -->
-        <ion-grid *ngIf="msg.posted_by!=creds.data.email && creds.data.role ==1||msg.posted_by==creds.data.email && creds.data.role>=2">
+        <ion-grid
+          *ngIf="msg.posted_by!=creds.data.email && creds.data.role ==1||msg.posted_by==creds.data.email && creds.data.role>=2">
           <ion-row>
             <ion-col>
               <div outline style="float:right; text-align: right;" color="primary">
@@ -239,7 +241,8 @@
         </ion-grid>
 
         <!-- messages appearing on the left -->
-        <ion-grid *ngIf="msg.posted_by==creds.data.email && creds.data.role==1|| msg.posted_by!=creds.data.email && creds.data.role>=2">
+        <ion-grid
+          *ngIf="msg.posted_by==creds.data.email && creds.data.role==1|| msg.posted_by!=creds.data.email && creds.data.role>=2">
           <ion-row>
             <!-- <ion-col col-auto>
               <ion-avatar color="secondary">
@@ -368,7 +371,8 @@
   </div>
   <div *ngIf="view=='comment'">
     <ion-toolbar>
-      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message" (keyup.enter)="send()">
+      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message"
+        (keyup.enter)="send()">
       <ion-buttons right>
         <button (click)="send()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>
@@ -378,7 +382,8 @@
   </div>
   <div *ngIf="view=='progress' && creds.data.role==1">
     <ion-toolbar>
-      <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..." [(ngModel)]="message2"></ion-textarea>
+      <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..."
+        [(ngModel)]="message2"></ion-textarea>
       <ion-buttons right>
         <button (click)="sendProgress()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>

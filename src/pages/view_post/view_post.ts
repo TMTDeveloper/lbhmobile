@@ -51,6 +51,7 @@ export class ViewPostPage {
     public alert: AlertController,
     public toastCtrl: ToastController
   ) {
+    this.type = navParams.get("type");
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
     this.type = navParams.get("type");
@@ -463,6 +464,10 @@ export class ViewPostPage {
     console.log(this.service.baseurl);
 
     this.timeOut = 0;
+    let url;
+    
+    if (this.type == 1) url = "postheaders";
+    if (this.type == 2) url = "kegiatanheaders";
 
     // set the query for current post
     console.log(this.post_id);
@@ -470,22 +475,39 @@ export class ViewPostPage {
       "filter[where][no_post]": this.post_id
     };
 
-    this.service.getReqNew("postheaders", postQueryCur).subscribe(response => {
+    console.log(this.type + url);
+
+    this.service.getReqNew(url, postQueryCur).subscribe(response => {
       if (response != null) {
         console.log(response);
 
-        this.object = response;
-        this.posted_by = response[0]["posted_by"];
-        this.posted_name = response[0]["posted_by"];
-        this.waktu = response[0]["tanggal_kejadian"];
-        this.propinsi = response[0]["province"];
-        this.penggugat = response[0]["nama_korban"];
-        this.tergugat = response[0]["nama_pelaku"];
-        this.kronologi = response[0]["kronologi"];
-        this.pembelajaran = response[0]["pembelajaran"];
-        this.usia = response[0]["usia"];
-        this.kelamin = response[0]["jenis_kelamin"];
-        this.jenis_kejadian = response[0]["jenis_kejadian"];
+        // kasus
+        if (response[0].type == 1) {
+          this.object = response;
+          this.posted_by = response[0]["posted_by"];
+          this.posted_name = response[0]["posted_by"];
+          this.waktu = response[0]["tanggal_kejadian"];
+          this.propinsi = response[0]["province"];
+          this.penggugat = response[0]["nama_korban"];
+          this.tergugat = response[0]["nama_pelaku"];
+          this.kronologi = response[0]["kronologi"];
+          this.pembelajaran = response[0]["pembelajaran"];
+          this.usia = response[0]["usia"];
+          this.kelamin = response[0]["jenis_kelamin"];
+          this.jenis_kejadian = response[0]["jenis_kejadian"];
+        }
+
+        // kegiatan
+        if (response[0].type == 2) {
+          this.object = response;
+          this.posted_by = response[0]["posted_by"];
+          this.posted_name = response[0]["posted_by"];
+          this.waktu = response[0]["tanggal_kegiatan"];
+          this.propinsi = response[0]["province"];
+          this.penggugat = response[0]["nama_pelaksana"];
+          this.kronologi = response[0]["deskripsi"];
+          this.jenis_kejadian = response[0]["jenis_kegiatan"];
+        }
 
         // populate the list
         // this.populateList(this.items);
@@ -588,15 +610,15 @@ export class ViewPostPage {
             .download(
               this.service.baseurl + "download?filename=" + file,
               this.file.externalRootDirectory +
-                "Download/" +
-                name.split(" ").join("_")
+              "Download/" +
+              name.split(" ").join("_")
             )
             .then(
               entry => {
                 this.presentToast(
                   "File berhasil diunduh ke" +
-                    this.file.externalRootDirectory +
-                    "Download/"
+                  this.file.externalRootDirectory +
+                  "Download/"
                 );
                 // get the file name and split at the end
                 // file;
@@ -627,15 +649,15 @@ export class ViewPostPage {
                   .download(
                     this.service.baseurl + "download?filename=" + file,
                     this.file.externalRootDirectory +
-                      "Download/" +
-                      name.split(" ").join("_")
+                    "Download/" +
+                    name.split(" ").join("_")
                   )
                   .then(
                     entry => {
                       this.presentToast(
                         "File berhasil diunduh ke" +
-                          this.file.externalRootDirectory +
-                          "Download/"
+                        this.file.externalRootDirectory +
+                        "Download/"
                       );
                       // get the file name and split at the end
                       // file;
@@ -704,7 +726,7 @@ export class ViewPostPage {
       buttons: [
         {
           text: "Ok",
-          handler: () => {}
+          handler: () => { }
         }
       ]
     });
@@ -714,8 +736,9 @@ export class ViewPostPage {
   tempPembelajaran;
 
   askClosePost() {
+    let postTxt = this.type == 1 ? "kasus" : "kegiatan";
     let alert = this.alert.create({
-      title: "Apakah anda ingin tutup kasus ini?",
+      title: "Apakah anda ingin tutup " + postTxt + " ini?",
       buttons: [
         {
           text: "Ya",
@@ -760,7 +783,7 @@ export class ViewPostPage {
     );
   }
 
-  viewComment() {}
+  viewComment() { }
 
   presentLoading() {
     const loader = this.loadingCtrl.create({

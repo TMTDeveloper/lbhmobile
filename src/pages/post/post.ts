@@ -320,7 +320,7 @@ export class PostPage implements AfterViewInit {
     if (this.items2.length > 0) return;
 
     this.service
-      .getReqNew("postheaders", this.postQuery2)
+      .getReqNew("kegiatanheaders", this.postQuery2)
       .subscribe(response => {
         if (response != null) {
           console.log(response);
@@ -597,7 +597,7 @@ export class PostPage implements AfterViewInit {
     });
 
     let promiseRequest = this.service
-      .getReqNew("postheaders", this.postQuery2)
+      .getReqNew("kegiatanheaders", this.postQuery2)
       .toPromise();
 
     let race = Promise.race([promiseTimeout, promiseRequest]);
@@ -806,7 +806,9 @@ export class PostPage implements AfterViewInit {
         }
       }
     );
+
     object.date_access = moment().format();
+
     this.navCtrl.push(ViewPostPage, {
       type: type,
       post_id: no_post,
@@ -823,8 +825,59 @@ export class PostPage implements AfterViewInit {
     });
   }
 
+  viewPost2(
+    type,
+    no_post,
+    posted_by,
+    posted_name,
+    tanggal_kegiatan,
+    title,
+    province,
+    nama_korban,
+    deskripsi,
+    item
+  ) {
+    var updateParams = {
+      id_user: this.creds.data.email,
+      no_post: no_post,
+      last_access: moment().format()
+    };
+
+    // post update to server. upon success, add to list
+    this.service.postreq("post-logs", updateParams).subscribe(
+      response => {
+        if (response != null) {
+          console.log(response);
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log(error);
+        }
+      }
+    );
+
+    item.date_access = moment().format();
+    
+    this.navCtrl.push(ViewPostPage, {
+      type: type,
+      post_id: no_post,
+      posted_name: posted_name,
+      posted_by: posted_by,
+      tanggal: tanggal_kegiatan,
+      judul: title,
+      province: province,
+      nama_korban: nama_korban,
+      kronologi: deskripsi,
+      object: item
+    });
+  }
+
   newKasus() {
-    this.navCtrl.push(NewPostPage, { type: 1, userName: this.userName });
+    this.navCtrl.push(NewPostPage, {
+      type: 1,
+      userName: this.userName
+    });
     this.waitingNewPost = true;
   }
 
@@ -840,7 +893,7 @@ export class PostPage implements AfterViewInit {
 
 
 
-  populateList(any) {}
+  populateList(any) { }
 
   askLogout() {
     let alert = this.alert.create({

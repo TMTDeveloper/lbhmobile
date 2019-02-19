@@ -64,6 +64,30 @@ export class NewPostPage {
     date_modified: moment().format()
   };
 
+  sendParams2 = {
+    no_post: "string",
+    type: 0,
+    posted_by: "string",
+    posted_name: "string",
+    title: "string",
+    organisasi: 0,
+    status: 0,
+    province_id: "xx",
+    province: "string",
+    regency_id: "xxxx",
+    regency: "string",
+    district_id: "string",
+    district: "string",
+    village_id: "xxxxxxxxxx",
+    village: "string",
+    nama_pelaksana: "string",
+    jenis_kegiatan: 0,
+    tanggal_kegiatan: "2019-02-19T03:17:16.226Z",
+    deskripsi: "string",
+    date_created: "2019-02-19T03:17:16.226Z",
+    date_modified: "2019-02-19T03:17:16.226Z"
+  }
+
   constructor(
     private document: DocumentViewer,
     private file: File,
@@ -110,7 +134,6 @@ export class NewPostPage {
       kecamatan: [{ id: "", name: "" }, OptionValidator.isValid],
       kelurahan: [{ id: "", name: "" }, OptionValidator.isValid],
       penggugat: ["", Validators.required],
-      tergugat: ["", Validators.required],
       kronologi: ["", Validators.required]
     });
 
@@ -343,14 +366,18 @@ export class NewPostPage {
   items1 = [];
 
   createNewPost = async () => {
-    this.sendParams["no_post"] = "";
-    this.sendParams["posted_by"] = this.creds.data.email;
-    this.sendParams["posted_name"] = this.creds.data.name;
-    this.sendParams["date_created"] = moment().format();
-    this.sendParams["pembelajaran"] = "";
+
+    let url;
+    let paramsToSend;
 
     // kasus
     if (this.type == 1) {
+      this.sendParams["no_post"] = "";
+      this.sendParams["posted_by"] = this.creds.data.email;
+      this.sendParams["posted_name"] = this.creds.data.name;
+      this.sendParams["date_created"] = moment().format();
+      this.sendParams["pembelajaran"] = "";
+
       this.sendParams.type = this.type;
       this.sendParams.tanggal_kejadian = moment(
         this.formKasus.controls.tanggal_kejadian.value,
@@ -375,33 +402,47 @@ export class NewPostPage {
           this.formKasus.controls.jenis_kelamin.value
         );
       }
+
+      this.sendParams.organisasi = this.creds.data.organisasi;
+      this.sendParams.status = 1;
+      this.sendParams.type = this.type;
+
+      url = "postheaders";
+      paramsToSend = this.sendParams;
     }
 
     // kegiatan
     if (this.type == 2) {
-      this.sendParams.type = this.type;
-      this.sendParams.tanggal_kejadian = moment(
+      this.sendParams2["no_post"] = "";
+      this.sendParams2["posted_by"] = this.creds.data.email;
+      this.sendParams2["posted_name"] = this.creds.data.name;
+      this.sendParams2["date_created"] = moment().format();
+
+      this.sendParams2.type = this.type;
+      this.sendParams2.tanggal_kegiatan = moment(
         this.formKegiatan.controls.tanggal_kejadian.value,
         moment.ISO_8601
       ).format();
-      this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
-      this.sendParams.title = this.formKegiatan.controls.judul.value;
-      this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
-      this.sendParams.province_id = this.formKegiatan.controls.propinsi.value.id;
-      this.sendParams.regency = this.formKegiatan.controls.kabupaten.value.name;
-      this.sendParams.regency_id = this.formKegiatan.controls.kabupaten.value.id;
-      this.sendParams.district = this.formKegiatan.controls.kecamatan.value.name;
-      this.sendParams.district_id = this.formKegiatan.controls.kecamatan.value.id;
-      this.sendParams.village = this.formKegiatan.controls.kelurahan.value.name;
-      this.sendParams.village_id = this.formKegiatan.controls.kelurahan.value.id;
-      this.sendParams.nama_korban = this.formKegiatan.controls.penggugat.value;
-      this.sendParams.nama_pelaku = this.formKegiatan.controls.tergugat.value;
-      this.sendParams.kronologi = this.formKegiatan.controls.kronologi.value;
-    }
+      this.sendParams2.jenis_kegiatan = this.formKegiatan.controls.jenis_kejadian.value;
+      this.sendParams2.title = this.formKegiatan.controls.judul.value;
+      this.sendParams2.province = this.formKegiatan.controls.propinsi.value.name;
+      this.sendParams2.province_id = this.formKegiatan.controls.propinsi.value.id;
+      this.sendParams2.regency = this.formKegiatan.controls.kabupaten.value.name;
+      this.sendParams2.regency_id = this.formKegiatan.controls.kabupaten.value.id;
+      this.sendParams2.district = this.formKegiatan.controls.kecamatan.value.name;
+      this.sendParams2.district_id = this.formKegiatan.controls.kecamatan.value.id;
+      this.sendParams2.village = this.formKegiatan.controls.kelurahan.value.name;
+      this.sendParams2.village_id = this.formKegiatan.controls.kelurahan.value.id;
+      this.sendParams2.nama_pelaksana = this.formKegiatan.controls.penggugat.value;
+      this.sendParams2.deskripsi = this.formKegiatan.controls.kronologi.value;
 
-    this.sendParams.organisasi = this.creds.data.organisasi;
-    this.sendParams.status = 1;
-    this.sendParams.type = this.type;
+      this.sendParams2.organisasi = this.creds.data.organisasi;
+      this.sendParams2.status = 1;
+      this.sendParams2.type = this.type;
+
+      url = "kegiatanheaders";
+      paramsToSend = this.sendParams2;
+    }
 
     // empty the chat bar
     this.kronologi = "";
@@ -422,7 +463,7 @@ export class NewPostPage {
     console.log(this.formKasus);
 
     // post to server. upon success, add to list
-    await this.service.postreq("postheaders", this.sendParams).subscribe(
+    await this.service.postreq(url, paramsToSend).subscribe(
       async response => {
         if (response != null) {
           console.log(response);
@@ -473,36 +514,59 @@ export class NewPostPage {
     );
   };
 
-  viewCreatedPost_OLD(response) {
+  viewCreatedPost(response) {
     // this.navCtrl.getPrevious().data.waitingNewPost = true;
     // this.navCtrl.pop();
     // this.navCtrl.push(ViewPostPage, { post_id: no_post });
 
-    this.navCtrl.remove(1).then(response => {
-      this.navCtrl.push(ViewPostPage, {
-        type: this.sendParams.type,
-        post_id: this.sendParams.no_post,
-        judul:
-          this.type == 1
-            ? this.formKasus.controls.judul.value
-            : this.formKegiatan.controls.judul.value,
-        posted_by: this.sendParams.posted_by,
-        posted_name: this.sendParams.posted_name,
-        tanggal_kejadian: this.sendParams.tanggal_kejadian,
-        province: this.sendParams.province,
-        nama_korban: this.sendParams.nama_korban,
-        usia: this.sendParams.usia,
-        kelamin: this.sendParams.jenis_kelamin,
-        nama_pelaku: this.sendParams.nama_pelaku,
-        kronologi: this.sendParams.kronologi,
-        jenis_kejadian: this.sendParams.jenis_kejadian,
-        object: this.sendParams,
-        pembelajaran: this.sendParams.pembelajaran
+    if (this.type == 1){
+      this.navCtrl.remove(1).then(resp => {
+        this.navCtrl.push(ViewPostPage, {
+          type: 1,
+          post_id: response.no_post,
+          judul:
+            this.type == 1
+              ? this.formKasus.controls.judul.value
+              : this.formKegiatan.controls.judul.value,
+          posted_by: this.sendParams.posted_by,
+          posted_name: this.sendParams.posted_name,
+          tanggal_kejadian: this.sendParams.tanggal_kejadian,
+          province: this.sendParams.province,
+          nama_korban: this.sendParams.nama_korban,
+          usia: this.sendParams.usia,
+          kelamin: this.sendParams.jenis_kelamin,
+          nama_pelaku: this.sendParams.nama_pelaku,
+          kronologi: this.sendParams.kronologi,
+          jenis_kejadian: this.sendParams.jenis_kejadian,
+          object: this.sendParams,
+          pembelajaran: this.sendParams.pembelajaran
+        });
       });
-    });
+    }
+
+    if (this.type == 2){
+      this.navCtrl.remove(1).then(resp => {
+        this.navCtrl.push(ViewPostPage, {
+          type: 2,
+          post_id: response.no_post,
+          judul:
+            this.type == 1
+              ? this.formKasus.controls.judul.value
+              : this.formKegiatan.controls.judul.value,
+          posted_by: this.sendParams2.posted_by,
+          posted_name: this.sendParams2.posted_name,
+          tanggal_kejadian: this.sendParams2.tanggal_kegiatan,
+          province: this.sendParams2.province,
+          nama_korban: this.sendParams2.nama_pelaksana,
+          kronologi: this.sendParams2.deskripsi,
+          jenis_kejadian: this.sendParams2.jenis_kegiatan,
+          object: this.sendParams2
+        });
+      });
+    }
   }
 
-  viewCreatedPost(response) {
+  viewCreatedPost_OLD(response) {
     // this.navCtrl.getPrevious().data.waitingNewPost = true;
     // this.navCtrl.pop();
     // this.navCtrl.push(ViewPostPage, { post_id: no_post });
@@ -570,7 +634,7 @@ export class NewPostPage {
     }
   }
 
-  addImage() {}
+  addImage() { }
 
   addFile() {
     this.fileChooser
@@ -605,7 +669,7 @@ export class NewPostPage {
       buttons: [
         {
           text: "Ok",
-          handler: () => {}
+          handler: () => { }
         }
       ]
     });
@@ -618,7 +682,7 @@ export class NewPostPage {
       buttons: [
         {
           text: "Ok",
-          handler: () => {}
+          handler: () => { }
         }
       ]
     });
@@ -626,20 +690,20 @@ export class NewPostPage {
   }
 
   getFileSize(fileUri) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       this.window.resolveLocalFileSystemURL(
         fileUri,
-        function(fileEntry) {
+        function (fileEntry) {
           fileEntry.file(
-            function(fileObj) {
+            function (fileObj) {
               resolve(fileObj.size);
             },
-            function(err) {
+            function (err) {
               reject(err);
             }
           );
         },
-        function(err) {
+        function (err) {
           reject(err);
         }
       );
