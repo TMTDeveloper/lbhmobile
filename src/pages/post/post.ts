@@ -71,13 +71,30 @@ export class PostPage implements AfterViewInit {
   ngAfterViewInit() {
     this.getUserData();
     console.log(this.creds.data.email);
-    this.reqMyPosts();
-    this.reqNewestPosts();
-    this.populateItems2();
-    
+    // this.reqAllPosts();
+
     this.platform.registerBackButtonAction(() => {
       this.askLogout();
     });
+  }
+
+  ionViewWillEnter() {
+    console.log("woi");
+
+    this.jenis = "kasus";
+    this.view = "me";
+
+    this.reqAllPosts();
+  }
+
+  reqAllPosts() {
+    this.items0 = [];
+    this.items1 = [];
+    this.items2 = [];
+    this.items3 = [];
+    this.reqMyPosts();
+    this.reqNewestPosts();
+    this.reqKegiatan();
   }
 
   getUserData() {
@@ -171,66 +188,67 @@ export class PostPage implements AfterViewInit {
 
   currentPostOffset = 0;
   myPost: any;
-  reqMyPosts = async () => {
+  async reqMyPosts() {
+    if (this.items0.length > 0) return;
     console.log(this.service.baseurl);
 
-    this.timeOut = 0;
+    // this.timeOut = 0;
 
     // resize the view
     this.content.resize();
 
     // first we get the post details
-
+    let arr = [];
     await this.service
       .getReqNew("postdetails/postedby", { email: this.creds.data.email })
-      .subscribe(response => {
+      .toPromise()
+      .then(response => {
         console.log(response);
         this.myPost = response;
         this.myPost = this.myPost.reverse();
 
-        let arr = this.myPost.slice(0, 10);
+        arr = this.myPost.slice(0, 10);
         console.log(arr);
-        arr.forEach(async element => {
-          console.log(element);
-          let postQueryByName = [];
-          postQueryByName["filter[where][no_post]"] = element;
-          postQueryByName["filter[reqby]"] = this.creds.data.email;
-
-          // resize the view
-          this.content.resize();
-
-          if (this.items0.length > 0) return;
-
-          // finally get all the post headers here
-          await this.service
-            .getReqNew("postheaders", postQueryByName)
-            .subscribe(response => {
-              if (response != null) {
-                console.log(response);
-
-                let newItems: any;
-                newItems = response;
-
-                newItems.forEach(newItem => {
-                  // append the new posts to current array
-                  this.hasNewPost(newItem);
-                  this.items0.push(newItem);
-                });
-
-                console.log(this.items0.length);
-
-                // populate the list
-                // this.populateList(this.items);
-              }
-            });
-        });
       });
+    for (let element of arr) {
+      console.log(element);
+      let postQueryByName = [];
+      postQueryByName["filter[where][no_post]"] = element;
+      postQueryByName["filter[reqby]"] = this.creds.data.email;
+
+      // resize the view
+      this.content.resize();
+
+      // finally get all the post headers here
+      await this.service
+        .getReqNew("postheaders", postQueryByName)
+        .toPromise()
+        .then(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+
+              this.items0.push(newItem);
+            });
+
+            console.log(this.items0.length);
+
+            // populate the list
+            // this.populateList(this.items);
+          }
+        });
+    }
 
     // return the tab to null
     //this.jenis = jenis;
 
     // set the query
-  };
+  }
 
   reqNewestPosts = () => {
     console.log(this.service.baseurl);
@@ -276,7 +294,7 @@ export class PostPage implements AfterViewInit {
 
   timeOut = 500;
 
-  populateItems2 = () => {
+  reqKegiatan = () => {
     console.log(this.service.baseurl);
 
     this.timeOut = 0;
@@ -418,7 +436,10 @@ export class PostPage implements AfterViewInit {
       this.items1 = [];
       this.doInfinite(refresh);
     }
-
+    if (this.jenis == "kasus" && this.view == "closed") {
+      this.items3 = [];
+      this.doInfiniteClosed(refresh);
+    }
     if (this.jenis === "kegiatan") {
       this.items2 = [];
       this.doInfinite2(refresh);
@@ -426,116 +447,47 @@ export class PostPage implements AfterViewInit {
   }
 
   doInfiniteMe(infiniteScroll) {
-    this.infiniteMeObs().subscribe(
+    let promiseTimeout = new Promise((resolve, reject) => {
+      setTimeout(resolve, 5000, null);
+    });
+
+    let promiseRequest = this.infiniteMeObs();
+
+    let race = Promise.race([promiseTimeout, promiseRequest]);
+
+    race.then(
       response => {
-        if (response == true) {
-          infiniteScroll.complete();
-        }
+        infiniteScroll.complete();
       },
       error => {
         infiniteScroll.complete();
-        this.purgeList(infiniteScroll);
       }
     );
-    // console.log("Begin async operation");
-    // console.log(this.postQuery);
-
-    // let arr = this.myPost.slice(this.items0.length, this.items0.length + 9);
-
-    // arr.forEach((element, ind) => {
-    //   console.log(element);
-    //   let postQueryByName = [];
-    //   postQueryByName["filter[where][no_post]"] = element;
-
-    //   // resize the view
-    //   this.content.resize();
-
-    //   // if (this.items0.length > 0) return;
-
-    //   this.service
-    //     .getReqNew("postheaders", postQueryByName)
-    //     .subscribe(response => {
-    //       if (response != null) {
-    //         console.log(response);
-
-    //         let newItems: any;
-    //         newItems = response;
-
-    //         newItems.forEach(newItem => {
-    //           // append the new posts to current array
-    //           this.items0.push(newItem);
-    //         });
-    //         console.log(arr.length.toString() + " " + ind.toString());
-    //         if (ind == 0) {
-    //           infiniteScroll.complete();
-    //         }
-    //         console.log(this.items0.length);
-
-    //         // populate the list
-    //         // this.populateList(this.items);
-    //       }
-    //     });
-    // });
-
-    // set the query
-    // this.postQueryByName["filter[where][type]"] = 1;
-
-    // // add the offset
-    // this.postQueryByName["filter[skip]"] = this.items0.length;
-
-    // // filter by user's posts
-    // this.postQueryByName["filter[where][posted_by]"] = this.userName;
-
-    // this.timeOut = 500;
-
-    // setTimeout(() => {
-    //   this.service
-    //     .getReqNew("postheaders", this.postQueryByName)
-    //     .subscribe(response => {
-    //       if (response != null) {
-    //         console.log(response);
-
-    //         let newItems: any;
-    //         newItems = response;
-
-    //         newItems.forEach(newItem => {
-    //           // append the new posts to current array
-    //           this.items0.push(newItem);
-    //         });
-
-    //         console.log(this.items0.length);
-
-    //         // populate the list
-    //         // this.populateList(this.items);
-
-    //         // end operation
-    //         console.log("Async operation has ended");
-    //         infiniteScroll.complete();
-    //       }
-    //     });
-    // }, this.timeOut);
   }
 
-  infiniteMeObs() {
-    return Observable.create(observer => {
-      if (this.items0.length == this.myPost.length) {
-        observer.next(true);
-        observer.complete();
-      }
+  async infiniteMeObs() {
+    console.log(this.items0.length);
+    console.log(this.myPost.length);
+    if (this.items0.length == this.myPost.length) {
+      return;
+    }
 
-      let arr = this.myPost.slice(this.items0.length, this.items0.length + 9);
+    let arr = this.myPost.slice(this.items0.length, this.items0.length + 9);
+    console.log(arr);
+    for (let element of arr) {
+      console.log(element);
+      let postQueryByName = [];
+      postQueryByName["filter[where][no_post]"] = element;
+      postQueryByName["filter[reqby]"] = this.creds.data.email;
+      // resize the view
+      this.content.resize();
 
-      arr.forEach((element, ind) => {
-        console.log(element);
-        let postQueryByName = [];
-        postQueryByName["filter[where][no_post]"] = element;
-        postQueryByName["filter[reqby]"] = this.creds.data.email;
-        // resize the view
-        this.content.resize();
+      // if (this.items0.length > 0) return;
 
-        // if (this.items0.length > 0) return;
-
-        this.service.getReqNew("postheaders", postQueryByName).subscribe(
+      await this.service
+        .getReqNew("postheaders", postQueryByName)
+        .toPromise()
+        .then(
           response => {
             if (response != null) {
               console.log(response);
@@ -547,11 +499,9 @@ export class PostPage implements AfterViewInit {
                 // append the new posts to current array
                 this.items0.push(newItem);
               });
-              console.log(arr.length.toString() + " " + ind.toString());
-              if (ind == 0) {
-                observer.next(true);
-                observer.complete();
-              }
+              // console.log(arr.length.toString() + " " + ind.toString());
+              // if (ind == 0) {
+              // }
               console.log(this.items0.length);
 
               // populate the list
@@ -559,12 +509,10 @@ export class PostPage implements AfterViewInit {
             }
           },
           error => {
-            observer.next();
-            observer.error(error);
+            return;
           }
         );
-      });
-    });
+    }
   }
 
   doInfinite(infiniteScroll) {
@@ -572,40 +520,61 @@ export class PostPage implements AfterViewInit {
     console.log(this.postQuery);
 
     // set the query
-    this.postQuery["filter[where][type]"] = 1;
+    // this.postQuery["filter[where][type]"] = 1;
 
     // add the offset
     this.postQuery["filter[skip]"] = this.items1.length;
 
-    this.timeOut = 500;
+    this.timeOut = 5000;
 
-    setTimeout(() => {
-      this.service
-        .getReqNew("postheaders", this.postQuery)
-        .subscribe(response => {
-          if (response != null) {
-            console.log(response);
+    let promiseTimeout = new Promise((resolve, reject) => {
+      setTimeout(resolve, this.timeOut, null);
+    });
 
-            let newItems: any;
-            newItems = response;
+    let promiseRequest = this.service
+      .getReqNew("postheaders", this.postQuery)
+      .toPromise();
 
-            newItems.forEach(newItem => {
-              // append the new posts to current array
-              this.items1.push(newItem);
-            });
+    let race = Promise.race([promiseTimeout, promiseRequest]);
 
-            console.log(this.items1.length);
-            console.log(this.items2.length);
+    race.then(
+      response => {
+        if (response !== null) {
+          console.log(response);
 
-            // populate the list
-            // this.populateList(this.items);
+          let newItems: any;
+          newItems = response;
 
-            // end operation
-            console.log("Async operation has ended");
-            infiniteScroll.complete();
-          }
-        });
-    }, this.timeOut);
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items1.push(newItem);
+          });
+
+          console.log(this.items1.length);
+          console.log(this.items2.length);
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // end operation
+          console.log("Async operation has ended");
+          infiniteScroll.complete();
+        } else {
+          console.log("disini");
+          typeof infiniteScroll["enable"] === "function"
+            ? infiniteScroll.enable(false)
+            : null;
+          infiniteScroll.complete();
+        }
+      },
+      error => {
+        console.log("disini");
+        typeof infiniteScroll["enable"] === "function"
+          ? infiniteScroll.enable(false)
+          : null;
+        infiniteScroll.complete();
+      }
+    );
   }
 
   doInfinite2(infiniteScroll) {
@@ -621,35 +590,56 @@ export class PostPage implements AfterViewInit {
     // order by latest
     this.postQuery2["filter[order]"] = ["no_post DESC"];
 
-    this.timeOut = 500;
+    this.timeOut = 5000;
 
-    setTimeout(() => {
-      this.service
-        .getReqNew("postheaders", this.postQuery2)
-        .subscribe(response => {
-          if (response != null) {
-            console.log(response);
+    let promiseTimeout = new Promise((resolve, reject) => {
+      setTimeout(resolve, this.timeOut, null);
+    });
 
-            let newItems: any;
-            newItems = response;
+    let promiseRequest = this.service
+      .getReqNew("postheaders", this.postQuery2)
+      .toPromise();
 
-            newItems.forEach(newItem => {
-              // append the new posts to current array
-              this.items2.push(newItem);
-            });
+    let race = Promise.race([promiseTimeout, promiseRequest]);
 
-            console.log(this.items1.length);
-            console.log(this.items2.length);
+    race.then(
+      response => {
+        if (response !== null) {
+          console.log(response);
 
-            // populate the list
-            // this.populateList(this.items);
+          let newItems: any;
+          newItems = response;
 
-            // end operation
-            console.log("Async operation has ended");
-            infiniteScroll.complete();
-          }
-        });
-    }, this.timeOut);
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items2.push(newItem);
+          });
+
+          console.log(this.items1.length);
+          console.log(this.items2.length);
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // end operation
+          console.log("Async operation has ended");
+          infiniteScroll.complete();
+        } else {
+          console.log("disini");
+          typeof infiniteScroll["enable"] === "function"
+            ? infiniteScroll.enable(false)
+            : null;
+          infiniteScroll.complete();
+        }
+      },
+      error => {
+        console.log("disini");
+        typeof infiniteScroll["enable"] === "function"
+          ? infiniteScroll.enable(false)
+          : null;
+        infiniteScroll.complete();
+      }
+    );
   }
 
   doInfiniteClosed(infiniteScroll) {
@@ -658,39 +648,62 @@ export class PostPage implements AfterViewInit {
 
     // set the query
     this.postQueryClosed["filter[where][type]"] = 1;
-
+    delete this.postQueryClosed["filter[where][posted_by]"];
     // add the offset
     this.postQueryClosed["filter[skip]"] = this.items3.length;
 
     // order by latest
     this.postQueryClosed["filter[order]"] = ["no_post DESC"];
 
-    this.timeOut = 500;
+    this.timeOut = 5000;
 
-    setTimeout(() => {
-      this.service
-        .getReqNew("postheaders", this.postQueryClosed)
-        .subscribe(response => {
-          if (response != null) {
-            console.log(response);
+    let promiseTimeout = new Promise((resolve, reject) => {
+      setTimeout(resolve, this.timeOut, null);
+    });
 
-            let newItems: any;
-            newItems = response;
+    let promiseRequest = this.service
+      .getReqNew("postheaders", this.postQueryClosed)
+      .toPromise();
 
-            newItems.forEach(newItem => {
-              // append the new posts to current array
-              this.items3.push(newItem);
-            });
+    let race = Promise.race([promiseTimeout, promiseRequest]);
 
-            // populate the list
-            // this.populateList(this.items);
+    race.then(
+      response => {
+        if (response != null) {
+          console.log(response);
 
-            // end operation
-            console.log("Async operation has ended");
-            infiniteScroll.complete();
-          }
-        });
-    }, this.timeOut);
+          let newItems: any;
+          newItems = response;
+
+          newItems.forEach(newItem => {
+            // append the new posts to current array
+            this.items3.push(newItem);
+          });
+
+          // populate the list
+          // this.populateList(this.items);
+
+          // end operation
+          console.log("Async operation has ended");
+          infiniteScroll.complete();
+        } else {
+          console.log("disini");
+          console.log(typeof infiniteScroll["enable"] === "function");
+          typeof infiniteScroll["enable"] === "function"
+            ? infiniteScroll.enable(false)
+            : null;
+          infiniteScroll.complete();
+        }
+      },
+      error => {
+        console.log("disini");
+        console.log(typeof infiniteScroll["enable"] === "function");
+        typeof infiniteScroll["enable"] === "function"
+          ? infiniteScroll.enable(false)
+          : null;
+        infiniteScroll.complete();
+      }
+    );
   }
 
   shortenDescription(description: string) {
@@ -753,11 +766,10 @@ export class PostPage implements AfterViewInit {
   }
 
   hasNewPost(item) {
-    console.log(item.last_post + " is after " + item.date_access + "?");
     var hasNew = moment(item.last_post).isAfter(item.date_access);
-    if (item.date_access == null) hasNew = true;
-    console.log(hasNew);
-    item.hasNewPost = hasNew;
+    // if (item.date_access == null) hasNew = true;
+    // console.log(hasNew);
+    // item.hasNewPost = hasNew;
     return hasNew;
   }
 
@@ -775,7 +787,26 @@ export class PostPage implements AfterViewInit {
     pembelajaran,
     object
   ) {
-    object.hasNewPost = false;
+    var updateParams = {
+      id_user: this.creds.data.email,
+      no_post: no_post,
+      last_access: moment().format()
+    };
+
+    // post update to server. upon success, add to list
+    this.service.postreq("post-logs", updateParams).subscribe(
+      response => {
+        if (response != null) {
+          console.log(response);
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log(error);
+        }
+      }
+    );
+    object.date_access = moment().format();
     this.navCtrl.push(ViewPostPage, {
       type: type,
       post_id: no_post,
@@ -807,19 +838,7 @@ export class PostPage implements AfterViewInit {
 
   waitingNewPost = false;
 
-  ionViewWillEnter() {
-    this.waitingNewPost = this.navParams.get("waitingNewPost");
 
-    if (this.waitingNewPost) {
-      this.waitingNewPost = false;
-      this.navParams.data.waitingNewPost = false;
-      this.jenis = "kasus";
-      this.view = "me";
-
-      this.items0 = [];
-      this.reqMyPosts();
-    }
-  }
 
   populateList(any) {}
 
@@ -857,8 +876,6 @@ export class PostPage implements AfterViewInit {
   }
 
   sortMethodKegiatan(arr) {
-    return sort(arr).by([
-      { desc: u => u.date_modified},
-    ]);
+    return sort(arr).by([{ desc: u => u.date_modified }]);
   }
 }

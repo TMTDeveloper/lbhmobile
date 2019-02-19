@@ -149,25 +149,22 @@ export class NewPostPage {
     { value: "Pidana", id: 2 },
     { value: "Perdata", id: 3 },
     { value: "Lain-lain", id: 4 }
-  ]
+  ];
 
-  klienList = [
-    { value: "Individu", id: 0 },
-    { value: "Non-Individu", id: 1 }
-  ]
+  klienList = [{ value: "Individu", id: 0 }, { value: "Non-Individu", id: 1 }];
 
   kelaminList = [
     { value: "Perempuan", id: 1 },
-    { value: "Lelaki", id: 2 },
+    { value: "Laki-laki", id: 2 },
     { value: "Lain-lain", id: 3 }
-  ]
+  ];
 
   kegiatanList = [
     { value: "Peserta Acara", id: 1 },
     { value: "Pelaksana Acara", id: 2 },
     { value: "Acara Kerjasama", id: 3 },
     { value: "Lain-lain", id: 4 }
-  ]
+  ];
 
   propinsiList = [];
   kabupatenList = [];
@@ -201,18 +198,21 @@ export class NewPostPage {
     );
   }
 
+  loglog() {
+    console.log(this.formKasus.controls.jenis_kelamin);
+  }
+
   updateClient() {
     if (this.formKasus.controls.jenis_klien.value.id == 0) {
       this.usia = "";
       this.kelamin = "";
-      this.formKasus.controls.usia.id = 0;
-      this.formKasus.controls.jenis_kelamin.id = 3;
-
+      this.formKasus.controls.usia.setValue("");
+      this.formKasus.controls.jenis_kelamin.setValue("");
       this.kelaminList = [
         { value: "Perempuan", id: 1 },
-        { value: "Lelaki", id: 2 },
+        { value: "Laki-laki", id: 2 },
         { value: "Lain-lain", id: 3 }
-      ]
+      ];
 
       this.individu = true;
     }
@@ -222,10 +222,8 @@ export class NewPostPage {
 
       this.usia = "";
       this.kelamin = "";
-      this.formKasus.controls.usia.setValue("Tidak ada");
-      this.formKasus.controls.usia.id = 0;
-      this.formKasus.controls.jenis_kelamin.setValue("Tidak ada");
-      this.formKasus.controls.jenis_kelamin.id = 3;
+      this.formKasus.controls.usia.setValue("  ");
+      this.formKasus.controls.jenis_kelamin.setValue("  ");
 
       this.individu = false;
     }
@@ -346,7 +344,7 @@ export class NewPostPage {
 
   createNewPost = async () => {
     this.sendParams["no_post"] = "";
-    this.sendParams["posted_by"] = this.userName;
+    this.sendParams["posted_by"] = this.creds.data.email;
     this.sendParams["posted_name"] = this.creds.data.name;
     this.sendParams["date_created"] = moment().format();
     this.sendParams["pembelajaran"] = "";
@@ -354,7 +352,10 @@ export class NewPostPage {
     // kasus
     if (this.type == 1) {
       this.sendParams.type = this.type;
-      this.sendParams.tanggal_kejadian = moment(this.formKasus.controls.tanggal_kejadian.value, moment.ISO_8601).format();
+      this.sendParams.tanggal_kejadian = moment(
+        this.formKasus.controls.tanggal_kejadian.value,
+        moment.ISO_8601
+      ).format();
       this.sendParams.jenis_kejadian = this.formKasus.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKasus.controls.judul.value;
       this.sendParams.province = this.formKasus.controls.propinsi.value.name;
@@ -368,14 +369,21 @@ export class NewPostPage {
       this.sendParams.nama_korban = this.formKasus.controls.penggugat.value;
       this.sendParams.nama_pelaku = this.formKasus.controls.tergugat.value;
       this.sendParams.kronologi = this.formKasus.controls.kronologi.value;
-      this.sendParams.usia = this.formKasus.controls.usia.id;
-      this.sendParams.jenis_kelamin = this.formKasus.controls.jenis_kelamin.id;
+      if (this.formKasus.controls.jenis_klien.value.id == 0) {
+        this.sendParams.usia = Number(this.formKasus.controls.usia.value);
+        this.sendParams.jenis_kelamin = Number(
+          this.formKasus.controls.jenis_kelamin.value
+        );
+      }
     }
 
     // kegiatan
     if (this.type == 2) {
       this.sendParams.type = this.type;
-      this.sendParams.tanggal_kejadian = moment(this.formKegiatan.controls.tanggal_kejadian.value, moment.ISO_8601).format();
+      this.sendParams.tanggal_kejadian = moment(
+        this.formKegiatan.controls.tanggal_kejadian.value,
+        moment.ISO_8601
+      ).format();
       this.sendParams.jenis_kejadian = this.formKegiatan.controls.jenis_kejadian.value;
       this.sendParams.title = this.formKegiatan.controls.judul.value;
       this.sendParams.province = this.formKegiatan.controls.propinsi.value.name;
@@ -437,14 +445,12 @@ export class NewPostPage {
             }
           );
 
-          if (this.uploads.length > 0)
-            this.uploadImage(response.no_post).subscribe(response => {
-              if (response) {
-                loading.dismiss();
-                this.viewCreatedPost(response);
-              }
+          if (this.uploads.length > 0) {
+            this.uploadImage(response.no_post).then(response => {
+              loading.dismiss();
+              this.viewCreatedPost(response);
             });
-          else {
+          } else {
             loading.dismiss();
             this.viewCreatedPost(response);
           }
@@ -501,10 +507,10 @@ export class NewPostPage {
     // this.navCtrl.pop();
     // this.navCtrl.push(ViewPostPage, { post_id: no_post });
 
-    this.navCtrl.remove(1).then(response => {
+    this.navCtrl.remove(1).then(resp => {
       this.navCtrl.push(ViewPostPage, {
         type: this.sendParams.type,
-        post_id: this.sendParams.no_post,
+        post_id: response.no_post,
         judul:
           this.type == 1
             ? this.formKasus.controls.judul.value
@@ -539,47 +545,39 @@ export class NewPostPage {
   testres: string;
   optionsss: string;
 
-  uploadImage(no_post) {
-    return Observable.create(observer => {
-      const fileTransfer: FileTransferObject = this.transfer.create();
-      this.uploads.forEach(async (element, id) => {
-        var options = {
-          fileKey: "file",
-          fileName: element.substr(element.lastIndexOf("/") + 1),
-          chunkedMode: false,
-          mimeType: "multipart/form-data",
-          params: { no_post: no_post }
-        };
-        this.optionsss = JSON.stringify(options);
+  async uploadImage(no_post) {
+    const fileTransfer: FileTransferObject = this.transfer.create();
 
-        await fileTransfer
-          .upload(element, "http://178.128.212.2:3003/uploadpost", options)
-          .then(
-            res => {
-              this.testres = JSON.stringify(res);
-            },
-            error => {
-              this.test = JSON.stringify(error);
-            }
-          );
-        if (id == 0) {
-          observer.next(true);
-          observer.complete();
-        }
-      });
-    });
+    for (let element of this.uploads) {
+      var options = {
+        fileKey: "file",
+        fileName: element.substr(element.lastIndexOf("/") + 1),
+        chunkedMode: false,
+        mimeType: "multipart/form-data",
+        params: { no_post: no_post }
+      };
+      this.optionsss = JSON.stringify(options);
+      await fileTransfer
+        .upload(element, "http://178.128.212.2:3003/uploadpost", options)
+        .then(
+          res => {
+            this.testres = JSON.stringify(res);
+          },
+          error => {
+            this.test = JSON.stringify(error);
+          }
+        );
+    }
   }
 
-  addImage() { }
+  addImage() {}
 
   addFile() {
     this.fileChooser
       .open()
       .then(uri => {
-
         // add the file uri
         this.filePath.resolveNativePath(uri).then(filePath => {
-
           // check file size (max 5mb)
           // this.getFileSize(filePath).
           // then(function(fileSize){
@@ -601,28 +599,26 @@ export class NewPostPage {
       });
   }
 
-  alertMaxSize(){
+  alertMaxSize() {
     let alert = this.alert.create({
       subTitle: "Maksimum ukuran 5MB!",
       buttons: [
         {
           text: "Ok",
-          handler: () => {
-          }
+          handler: () => {}
         }
       ]
     });
     alert.present();
   }
 
-  alertInvalidFile(){
+  alertInvalidFile() {
     let alert = this.alert.create({
       subTitle: "Gagal mengambil file!",
       buttons: [
         {
           text: "Ok",
-          handler: () => {
-          }
+          handler: () => {}
         }
       ]
     });
@@ -630,18 +626,23 @@ export class NewPostPage {
   }
 
   getFileSize(fileUri) {
-    return new Promise(function (resolve, reject) {
-      this.window.resolveLocalFileSystemURL(fileUri, function (fileEntry) {
-        fileEntry.file(function (fileObj) {
-          resolve(fileObj.size);
+    return new Promise(function(resolve, reject) {
+      this.window.resolveLocalFileSystemURL(
+        fileUri,
+        function(fileEntry) {
+          fileEntry.file(
+            function(fileObj) {
+              resolve(fileObj.size);
+            },
+            function(err) {
+              reject(err);
+            }
+          );
         },
-          function (err) {
-            reject(err);
-          });
-      },
-        function (err) {
+        function(err) {
           reject(err);
-        });
+        }
+      );
     });
   }
 

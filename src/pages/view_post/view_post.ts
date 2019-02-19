@@ -65,7 +65,7 @@ export class ViewPostPage {
   afterGetPost() {
     this.reqNewestPosts();
     this.reqNewestProgress();
-    this.updatePost();
+    // this.updatePost();
   }
 
   role;
@@ -95,7 +95,7 @@ export class ViewPostPage {
       return "Perempuan";
     }
     if (index === 2) {
-      return "Lelaki";
+      return "Laki-laki";
     }
     if (index === 3) {
       return "Lain-lain";
@@ -339,7 +339,7 @@ export class ViewPostPage {
           console.log(response);
 
           // update the post
-          this.updatePost();
+          // this.updatePost();
 
           // append the new posts to current array
           let newMsg = {
@@ -465,6 +465,7 @@ export class ViewPostPage {
     this.timeOut = 0;
 
     // set the query for current post
+    console.log(this.post_id);
     let postQueryCur = {
       "filter[where][no_post]": this.post_id
     };
@@ -483,7 +484,7 @@ export class ViewPostPage {
         this.kronologi = response[0]["kronologi"];
         this.pembelajaran = response[0]["pembelajaran"];
         this.usia = response[0]["usia"];
-        this.kelamin = response[0]["kelamin"];
+        this.kelamin = response[0]["jenis_kelamin"];
         this.jenis_kejadian = response[0]["jenis_kejadian"];
 
         // populate the list
@@ -504,13 +505,12 @@ export class ViewPostPage {
     let loading = this.presentLoading();
 
     let postQuery = {
-      "filter[where][no_post]": this.post_id,
+      "filter[where][no_post]": this.post_id
     };
     console.log(postQuery);
 
-    this.service
-      .getReqNew("postheaders", postQuery)
-      .subscribe(response => {
+    this.service.getReqNew("postheaders", postQuery).subscribe(
+      response => {
         if (response != null) {
           console.log(response);
 
@@ -539,10 +539,12 @@ export class ViewPostPage {
 
           loading.dismiss();
         }
-      }, error => {
+      },
+      error => {
         this.alertFailGetPost();
         this.navCtrl.pop();
-      });
+      }
+    );
   }
 
   getFileAttachments() {
@@ -586,15 +588,15 @@ export class ViewPostPage {
             .download(
               this.service.baseurl + "download?filename=" + file,
               this.file.externalRootDirectory +
-              "Download/" +
-              name.split(" ").join("_")
+                "Download/" +
+                name.split(" ").join("_")
             )
             .then(
               entry => {
                 this.presentToast(
                   "File berhasil diunduh ke" +
-                  this.file.externalRootDirectory +
-                  "Download/"
+                    this.file.externalRootDirectory +
+                    "Download/"
                 );
                 // get the file name and split at the end
                 // file;
@@ -625,15 +627,15 @@ export class ViewPostPage {
                   .download(
                     this.service.baseurl + "download?filename=" + file,
                     this.file.externalRootDirectory +
-                    "Download/" +
-                    name.split(" ").join("_")
+                      "Download/" +
+                      name.split(" ").join("_")
                   )
                   .then(
                     entry => {
                       this.presentToast(
                         "File berhasil diunduh ke" +
-                        this.file.externalRootDirectory +
-                        "Download/"
+                          this.file.externalRootDirectory +
+                          "Download/"
                       );
                       // get the file name and split at the end
                       // file;
@@ -677,9 +679,9 @@ export class ViewPostPage {
   updatePost() {
     var updateParams = {
       id_user: this.creds.data.email,
-      no_post: this.object.no_post,
-      last_access: moment().format()
-    }
+      no_post: this.post_id,
+      last_access: moment(this.sendParams["date_created"]).add(1, "seconds")
+    };
 
     // post update to server. upon success, add to list
     this.service.postreq("post-logs", updateParams).subscribe(
@@ -702,8 +704,7 @@ export class ViewPostPage {
       buttons: [
         {
           text: "Ok",
-          handler: () => {
-          }
+          handler: () => {}
         }
       ]
     });
@@ -714,7 +715,7 @@ export class ViewPostPage {
 
   askClosePost() {
     let alert = this.alert.create({
-      title: 'Apakah anda ingin tutup kasus ini?',
+      title: "Apakah anda ingin tutup kasus ini?",
       buttons: [
         {
           text: "Ya",
@@ -743,23 +744,23 @@ export class ViewPostPage {
 
     console.log(this.object);
 
-    this.service
-      .patchreq("postheaders/" + this.post_id, this.object)
-      .subscribe(response => {
+    this.service.patchreq("postheaders/" + this.post_id, this.object).subscribe(
+      response => {
         if (response != null) {
-
         }
-      }, error => {
+      },
+      error => {
         if (error != null) {
-
         }
-      }, () => {
+      },
+      () => {
         this.pembelajaran = this.tempPembelajaran;
         this.changeView(1);
-      });
+      }
+    );
   }
 
-  viewComment() { }
+  viewComment() {}
 
   presentLoading() {
     const loader = this.loadingCtrl.create({

@@ -24,7 +24,7 @@
 
       <ion-item>
         <ion-label stacked>Tanggal Kejadian</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" formControlName="tanggal_kejadian"></ion-datetime>
+        <ion-datetime  displayFormat="DD/MM/YYYY" pickerFormat="DD MM YYYY" formControlName="tanggal_kejadian"></ion-datetime>
       </ion-item>
 
       <ion-item>
@@ -89,13 +89,13 @@
       </ion-item>
 
       <ion-item>
-        <ion-label stacked no-border-top>Usia</ion-label>
-        <ion-input formControlName="usia" type="number" [disabled]="individu==false"></ion-input>
+        <ion-label [ngStyle]="{'opacity':individu==false?'.4':'1'}" stacked no-border-top>Usia</ion-label>
+        <ion-input formControlName="usia" type="text" [disabled]="individu==false"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Jenis Kelamin</ion-label>
-        <ion-select formControlName="jenis_kelamin" [disabled]="individu==false">
+        <ion-select (ionChange)="loglog()" formControlName="jenis_kelamin" [disabled]="individu==false">
           <ion-option *ngFor="let item of kelaminList" [value]="item.id">{{item.value}}</ion-option>
         </ion-select>
       </ion-item>

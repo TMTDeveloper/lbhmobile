@@ -48,7 +48,7 @@
         <ion-segment-button value="kasus" (click)="reqMyPosts()" color="primary">
           Kasus
         </ion-segment-button>
-        <ion-segment-button value="kegiatan" (click)="populateItems2()" color="primary">
+        <ion-segment-button value="kegiatan" (click)="reqKegiatan()" color="primary">
           Kegiatan
         </ion-segment-button>
       </ion-segment>
@@ -95,6 +95,7 @@
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
+          {{item.no_post}}
           <ion-row>
             <i style="float:left; font-size:10px">{{dateToDate(item.date_created)}}</i>
           </ion-row>
@@ -102,7 +103,7 @@
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
           <h3 style="text-align:right"><b>{{jenisKejadian(item.jenis_kejadian)}}</b></h3>
           <!-- <h3 *ngIf="hasNewPost(item)" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3> -->
-          <h3 *ngIf="item.hasNewPost" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3>
+          <h3 *ngIf="hasNewPost(item)" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3>
           <i *ngIf="role==2" style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>
@@ -120,12 +121,14 @@
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
+            {{item.no_post}}
           <ion-row>
             <i style="float:left; font-size:10px">{{dateToDate(item.date_created)}}</i>
           </ion-row>
           <h2><b>{{item.title}}</b></h2>
           <p style="overflow-wrap:normal">{{shortenDescription(item.kronologi)}}</p>
           <h3 style="text-align:right"><b>{{jenisKejadian(item.jenis_kejadian)}}</b></h3>
+          <h3 *ngIf="hasNewPost(item)" style="float:right; font-size:20px"><b>(Pesan Baru!)</b></h3>
           <i style="float:right; font-size:10px">penanggungjawab: {{item.posted_name}}</i>
         </ion-card-content>
       </ion-card>
@@ -143,6 +146,7 @@
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
+            {{item.no_post}}
           <ion-row>
             <i style="float:left; font-size:10px">{{dateToDate(item.date_created)}}</i>
           </ion-row>
