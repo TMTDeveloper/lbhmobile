@@ -462,10 +462,11 @@ export class ViewPostPage {
 
   getCurrentPostDetails_OLD = () => {
     console.log(this.service.baseurl);
+    let loading = this.presentLoading();
 
     this.timeOut = 0;
     let url;
-    
+
     if (this.type == 1) url = "postheaders";
     if (this.type == 2) url = "kegiatanheaders";
 
@@ -512,8 +513,13 @@ export class ViewPostPage {
         // populate the list
         // this.populateList(this.items);
 
+        // append the file links
+        this.getFileAttachments();
+
         // get details
         this.afterGetPost();
+
+        loading.dismiss();
       }
     });
   };
@@ -591,6 +597,10 @@ export class ViewPostPage {
 
           // end operation
           console.log("Async operation has ended");
+        }
+      }, error => {
+        if (error != null) {
+          console.log(error);
         }
       });
   }
@@ -762,21 +772,24 @@ export class ViewPostPage {
   closePost() {
     // subscribe to patch request.
     // if fail, empty pembelajaran
-    this.object.pembelajaran = this.tempPembelajaran;
-    this.object.status = 2;
+    this.object[0].pembelajaran = this.tempPembelajaran;
+    this.object[0].status = 2;
 
     console.log(this.object);
 
-    this.service.patchreq("postheaders/" + this.post_id, this.object).subscribe(
+    this.service.patchreq("postheaders/" + this.post_id, this.object[0]).subscribe(
       response => {
         if (response != null) {
+          console.log(response);
         }
       },
       error => {
         if (error != null) {
+          console.log(error);
         }
       },
       () => {
+        console.log("success");
         this.pembelajaran = this.tempPembelajaran;
         this.changeView(1);
       }
