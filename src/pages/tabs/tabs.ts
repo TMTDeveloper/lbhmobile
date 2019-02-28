@@ -20,7 +20,10 @@ export class TabsPage {
   tab4Root = PostPage;
   tab5Root = ProfilePage;
 
+  role;
+
   constructor(private creds: Credentials, public events:Events, navCtrl:NavController) {
+    this.role = creds.data.role;
     events.subscribe('user:logout',()=>{
       navCtrl.popToRoot();
     })

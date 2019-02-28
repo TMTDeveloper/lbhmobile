@@ -325,6 +325,29 @@ export class ViewPostPage {
     }, this.timeOut);
   }
 
+  askSendProgress() {
+    let alert = this.alert.create({
+      title: "Kirim laporan perkembangan?",
+      subTitle: "Laporan anda akan dinilai oleh pengacara",
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.sendProgress();
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel close");
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   sendProgress = () => {
     this.sendProgressParams["no_post"] = this.post_id;
     this.sendProgressParams["message"] = this.message2;
@@ -726,6 +749,55 @@ export class ViewPostPage {
         if (error != null) {
           console.log(error);
         }
+      }
+    );
+  }
+
+  askApproveProgress(development) {
+    let alert = this.alert.create({
+      title: "Apakah laporan ini dinilai baik?",
+      subTitle: "Penilaian ini akan tersimpan dalam riwayat pendamping",
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.approveProgress(development);
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            console.log("Cancel close");
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  approveProgress(development){
+    // subscribe to patch request.
+    // if fail, empty pembelajaran
+    development.approved = "Y";
+
+    console.log(development);
+
+    this.service.patchreq("developments/" + development.id, development).subscribe(
+      response => {
+        if (response != null) {
+          console.log(response);
+        }
+      },
+      error => {
+        if (error != null) {
+          console.log(error);
+        }
+      },
+      () => {
+        console.log("success");
+        this.pembelajaran = this.tempPembelajaran;
+        this.changeView(1);
       }
     );
   }

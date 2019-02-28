@@ -48,7 +48,8 @@ export class AboutPage {
     this.dokumenList = [];
 
     let query = {
-      "filter[where][keyword]": "jenis_dokumen"
+      "filter[where][and][0][keyword]": "jenis_dokumen",
+      "filter[where][and][1][active]": "Y"
     };
 
     this.service.getReqNew("generals", query).subscribe(

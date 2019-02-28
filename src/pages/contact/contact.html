@@ -7,5 +7,42 @@
 </ion-header>
 
 <ion-content>
+    <div>
+        <ion-title>
+            <ion-item>
+                <h1>{{name}}</h1>
+            </ion-item>
 
+            <ion-item>
+                <h2>Jumlah kasus yang ditangani</h2>
+                <p>{{totalPosts()}}</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Jumlah prosedur yang dijalankan</h2>
+                <p>{{totalDevelopments()}}</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Jumlah prosedur yang disahkan</h2>
+                <p>{{totalApprovedDevelopments()}}</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Tingkat keberhasilan</h2>
+                <p>{{approvedPercentage()}}%</p>
+            </ion-item>
+
+            <ion-item>
+                <h2>Rata-rata prosedur per kasus</h2>
+                <p>{{averageDevelopments()}}</p>
+            </ion-item>
+
+            <!-- <ion-item>
+            <ion-label stacked no-border-top>Daerah</ion-label>
+            <ion-input [(ngModel)]="daerah" type="text"></ion-input>
+          </ion-item> -->
+
+        </ion-title>
+    </div>
 </ion-content>

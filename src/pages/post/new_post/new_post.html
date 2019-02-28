@@ -77,14 +77,14 @@
     </ion-item> -->
 
       <ion-item>
-        <ion-label stacked no-border-top>Tipe Klien</ion-label>
+        <ion-label stacked no-border-top>Tipe Korban</ion-label>
         <ion-select formControlName="jenis_klien" (ionChange)="updateClient()">
           <ion-option *ngFor="let item of klienList" [value]="item">{{item.value}}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked no-border-top>Klien</ion-label>
+        <ion-label stacked no-border-top>Nama Korban</ion-label>
         <ion-input formControlName="penggugat" type="text"></ion-input>
       </ion-item>
 

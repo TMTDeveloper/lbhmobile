@@ -23,6 +23,15 @@ page-view_post {
       }
     }
     
+    .item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
+        width:25px;
+        height:25px;
+    }
+
+    .button-md{
+      height:1.2em;
+    }
+    
     ion-list.list.list-md {
         margin-top: 0px;
         margin-bottom: 0px;

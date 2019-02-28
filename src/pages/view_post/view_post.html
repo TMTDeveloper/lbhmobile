@@ -70,7 +70,7 @@
 
       <div *ngIf="type==1">
         <ion-item>
-          <h2>Klien</h2>
+          <h2>Nama Korban</h2>
           <p>{{penggugat}}</p>
         </ion-item>
 
@@ -306,6 +306,7 @@
               <div outline color="secondary">
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
                 <p> {{msg.message}} </p>
+                <button (click)="askApproveProgress(msg)" color="danger" ion-button outline item-start>Acc</button>
               </div>
             </ion-col>
           </ion-row>
@@ -385,7 +386,7 @@
       <ion-textarea rows="5" type="text" class="form-control" placeholder="Tulis Perkembangan..."
         [(ngModel)]="message2"></ion-textarea>
       <ion-buttons right>
-        <button (click)="sendProgress()" ion-button icon-only item-right class="send-chat-button">
+        <button (click)="askSendProgress()" ion-button icon-only item-right class="send-chat-button">
           <ion-icon name="send"></ion-icon>
         </button>
       </ion-buttons>
