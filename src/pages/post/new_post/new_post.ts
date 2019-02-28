@@ -200,7 +200,8 @@ export class NewPostPage {
     this.kejadianList = [];
 
     let query = {
-      "filter[where][keyword]": "jenis_kejadian"
+      "filter[where][and][0][keyword]": "jenis_kejadian",
+      "filter[where][and][1][active]": "Y"
     };
 
     this.service.getReqNew("generals", query).subscribe(

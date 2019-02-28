@@ -486,7 +486,7 @@ export class ViewPostPage {
         if (response[0].type == 1) {
           this.object = response;
           this.posted_by = response[0]["posted_by"];
-          this.posted_name = response[0]["posted_by"];
+          this.posted_name = response[0]["posted_name"];
           this.waktu = response[0]["tanggal_kejadian"];
           this.propinsi = response[0]["province"];
           this.penggugat = response[0]["nama_korban"];
@@ -502,7 +502,7 @@ export class ViewPostPage {
         if (response[0].type == 2) {
           this.object = response;
           this.posted_by = response[0]["posted_by"];
-          this.posted_name = response[0]["posted_by"];
+          this.posted_name = response[0]["posted_name"];
           this.waktu = response[0]["tanggal_kegiatan"];
           this.propinsi = response[0]["province"];
           this.penggugat = response[0]["nama_pelaksana"];
