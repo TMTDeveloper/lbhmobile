@@ -17,7 +17,7 @@ export class ContactPage {
   organisasi;
   role;
   email;
-  
+
   constructor(
     private transfer: FileTransfer,
     public navCtrl: NavController,
@@ -30,30 +30,130 @@ export class ContactPage {
     public events: Events,
     public toastCtrl: ToastController
   ) {
-      this.name = creds.data.name;
-      this.organisasi = creds.data.organisasi;
-      this.role = creds.data.role;
-      this.email = creds.data.email;
+    this.name = creds.data.name;
+    this.organisasi = creds.data.organisasi;
+    this.role = creds.data.role;
+    this.email = creds.data.email;
+
+    this.getTotalPosts();
   }
 
-  totalPosts(){
-    return 0;
+  myPost;
+
+  async getTotalPosts() {
+    const loader = this.loadingCtrl.create({
+      content: "Mohon tunggu...",
+      duration: 3000
+    });
+    loader.present();
+
+    // first we get the post details
+    let arr = [];
+    await this.service
+      .getReqNew("postdetails/postedby", { email: this.creds.data.email })
+      .toPromise()
+      .then(response => {
+        console.log(response);
+        this.myPost = response;
+        this.myPost = this.myPost.reverse();
+
+        arr = this.myPost.slice(0, 10);
+        console.log(arr);
+      });
+    for (let element of arr) {
+      console.log(element);
+      let postQueryByName = [];
+      postQueryByName["filter[where][no_post]"] = element;
+      postQueryByName["filter[reqby]"] = this.creds.data.email;
+
+      // finally get all the post headers here
+      await this.service
+        .getReqNew("postheaders", postQueryByName)
+        .toPromise()
+        .then(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+
+              this.totalPosts.push(newItem);
+            });
+
+            console.log(this.totalPosts.length);
+
+            // populate the list
+            // this.populateList(this.items);
+          }
+        });
+    }
   }
 
-  totalDevelopments(){
-    return 0;
+  async getTotalDevelopments(){
+    const loader = this.loadingCtrl.create({
+      content: "Mohon tunggu...",
+      duration: 3000
+    });
+    loader.present();
+
+    // first we get the post details
+    let arr = [];
+    await this.service
+      .getReqNew("postdevelopments", { email: this.creds.data.email })
+      .toPromise()
+      .then(response => {
+        console.log(response);
+        this.myPost = response;
+        this.myPost = this.myPost.reverse();
+
+        arr = this.myPost.slice(0, 10);
+        console.log(arr);
+      });
+    for (let element of arr) {
+      console.log(element);
+      let postQueryByName = [];
+      postQueryByName["filter[where][no_post]"] = element;
+      postQueryByName["filter[reqby]"] = this.creds.data.email;
+
+      // finally get all the post headers here
+      await this.service
+        .getReqNew("postheaders", postQueryByName)
+        .toPromise()
+        .then(response => {
+          if (response != null) {
+            console.log(response);
+
+            let newItems: any;
+            newItems = response;
+
+            newItems.forEach(newItem => {
+              // append the new posts to current array
+
+              this.totalPosts.push(newItem);
+            });
+
+            console.log(this.totalPosts.length);
+
+            // populate the list
+            // this.populateList(this.items);
+          }
+        });
+    }
   }
 
-  totalApprovedDevelopments(){
-    return 0;
+  totalPosts;
+  totalDevelopments;
+  totalApprovedDevelopments;
+
+  averageDevelopments() {
+    return this.totalDevelopments / this.totalPosts;
   }
 
-  averageDevelopments(){
-    return 0;
-  }
-
-  approvedPercentage(){
-    return 0;
+  approvedPercentage() {
+    return this.totalApprovedDevelopments / this.totalDevelopments;
   }
 
 }

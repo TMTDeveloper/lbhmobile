@@ -51,6 +51,8 @@ export class ViewPostPage {
     public alert: AlertController,
     public toastCtrl: ToastController
   ) {
+    this.getUserData();
+
     this.type = navParams.get("type");
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
@@ -74,6 +76,8 @@ export class ViewPostPage {
   getUserData() {
     this.userName = this.creds.data["name"];
     this.role = this.creds.data["role"];
+
+    console.log(this.role);
   }
 
   backToPostPage() {
@@ -155,6 +159,20 @@ export class ViewPostPage {
 
     // resize the view
     this.content.resize();
+  }
+
+  formatNewline(text){
+    let formatted = this.replaceAll(text, '\n', '<br\/>');
+
+    return formatted;
+  }
+
+  replaceAll(str, find, replace) {
+    return str.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
+  }
+  
+  escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   }
 
   users = [];
@@ -783,7 +801,12 @@ export class ViewPostPage {
 
     console.log(development);
 
-    this.service.patchreq("developments/" + development.id, development).subscribe(
+    let query = {
+      "where[no_post]":development.no_post,
+      "where[ind]":development.ind
+    }
+
+    this.service.patchreqnew("developments", development, query).subscribe(
       response => {
         if (response != null) {
           console.log(response);
@@ -796,8 +819,6 @@ export class ViewPostPage {
       },
       () => {
         console.log("success");
-        this.pembelajaran = this.tempPembelajaran;
-        this.changeView(1);
       }
     );
   }
@@ -866,6 +887,45 @@ export class ViewPostPage {
         this.changeView(1);
       }
     );
+  }
+
+  showHint1()
+  {
+    let alert = this.alert.create({
+      title: 'Laporan ini sedang menunggu penilaian pengacara.',
+      buttons: [
+        {
+          text: "Ok"
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showHint2()
+  {
+    let alert = this.alert.create({
+      title: 'Laporan ini sudah dinilai baik oleh pengacara.',
+      buttons: [
+        {
+          text: "Ok"
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  showHint3()
+  {
+    let alert = this.alert.create({
+      title: 'Laporan ini sudah dinilai.',
+      buttons: [
+        {
+          text: "Ok"
+        }
+      ]
+    });
+    alert.present();
   }
 
   viewComment() { }

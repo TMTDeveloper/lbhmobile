@@ -305,8 +305,11 @@
             <ion-col>
               <div outline color="secondary">
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
-                <p> {{msg.message}} </p>
-                <button (click)="askApproveProgress(msg)" color="danger" ion-button outline item-start>Acc</button>
+                <p [ngStyle]="{ 'white-space': 'pre-wrap' }">{{msg.message}}</p>
+                <button *ngIf="role==1 && msg.approved=='N'" (click)="showHint1()" color="primary" ion-button outline item-start>Acc</button>
+                <button *ngIf="role==1 && msg.approved=='Y'" (click)="showHint2()" color="secondary" ion-button outline item-start>Acc</button>
+                <button *ngIf="role==2 && msg.approved=='N'" (click)="askApproveProgress(msg)" color="danger" ion-button outline item-start>Acc</button>
+                <button *ngIf="role==2 && msg.approved=='Y'" (click)="showHint3()" color="secondary" ion-button outline item-start>Acc</button>
               </div>
             </ion-col>
           </ion-row>

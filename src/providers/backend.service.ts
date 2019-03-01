@@ -29,7 +29,7 @@ export class BackendService {
     public http: Http,
     private creds: Credentials,
     public Http2: HttpClient
-  ) {}
+  ) { }
 
   getreq(url: string) {
     const headers = new Headers();
@@ -88,6 +88,18 @@ export class BackendService {
     return this.http
       .patch(this.baseurl + url, body, options)
       .map(res => res.json());
+  }
+
+  patchreqnew(url: string, body, param) {
+    const headers = new HttpHeaders({ "Content-Type": "application/json" });
+    let params = new HttpParams({
+      fromObject: param,
+      encoder: new MyCustomHttpUrlEncodingCodec()
+    });
+    return this.Http2.patch(this.baseurl + url, body, {
+      headers: headers,
+      params: params
+    });
   }
 
   currentUser: User;
