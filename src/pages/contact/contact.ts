@@ -35,12 +35,13 @@ export class ContactPage {
     this.role = creds.data.role;
     this.email = creds.data.email;
 
-    this.getTotalPosts();
+    //this.getTotalPosts();
+    this.getAllStats();
   }
 
   myPost;
 
-  async getTotalPosts() {
+  async getAllStats() {
     const loader = this.loadingCtrl.create({
       content: "Mohon tunggu...",
       duration: 3000
@@ -54,17 +55,28 @@ export class ContactPage {
       .toPromise()
       .then(response => {
         console.log(response);
-        this.myPost = response;
-        this.myPost = this.myPost.reverse();
 
-        arr = this.myPost.slice(0, 10);
-        console.log(arr);
+        let newItems: any;
+        newItems = response;
+
+        newItems.forEach(newItem => {
+          // append the new posts to current array
+
+          this.allPosts.push(newItem);
+        });
+
+        console.log(this.allPosts.length);
+
+        this.totalPosts = this.allPosts.length;
+
+        // add all my post to array for filter
+        this.myPost = response;
+        console.log(this.myPost);
       });
-    for (let element of arr) {
+    for (let element of this.myPost) {
       console.log(element);
       let postQueryByName = [];
       postQueryByName["filter[where][no_post]"] = element;
-      postQueryByName["filter[reqby]"] = this.creds.data.email;
 
       // finally get all the post headers here
       await this.service
@@ -80,80 +92,41 @@ export class ContactPage {
             newItems.forEach(newItem => {
               // append the new posts to current array
 
-              this.totalPosts.push(newItem);
+              this.allDevelopments.push(newItem);
+              if (newItem.approved == "Y") this.allApprovedDevelopments.push(newItem);
             });
 
-            console.log(this.totalPosts.length);
+            console.log(this.allDevelopments.length);
+            console.log(this.allApprovedDevelopments.length);
 
-            // populate the list
-            // this.populateList(this.items);
+            this.totalDevelopments = this.allDevelopments.length;
+            this.totalApprovedDevelopments = this.allApprovedDevelopments.length;
           }
         });
     }
+    loader.dismiss();
   }
 
-  async getTotalDevelopments(){
-    const loader = this.loadingCtrl.create({
-      content: "Mohon tunggu...",
-      duration: 3000
-    });
-    loader.present();
+  allPosts = [];
+  allDevelopments = [];
+  allApprovedDevelopments = [];
 
-    // first we get the post details
-    let arr = [];
-    await this.service
-      .getReqNew("postdevelopments", { email: this.creds.data.email })
-      .toPromise()
-      .then(response => {
-        console.log(response);
-        this.myPost = response;
-        this.myPost = this.myPost.reverse();
-
-        arr = this.myPost.slice(0, 10);
-        console.log(arr);
-      });
-    for (let element of arr) {
-      console.log(element);
-      let postQueryByName = [];
-      postQueryByName["filter[where][no_post]"] = element;
-      postQueryByName["filter[reqby]"] = this.creds.data.email;
-
-      // finally get all the post headers here
-      await this.service
-        .getReqNew("postheaders", postQueryByName)
-        .toPromise()
-        .then(response => {
-          if (response != null) {
-            console.log(response);
-
-            let newItems: any;
-            newItems = response;
-
-            newItems.forEach(newItem => {
-              // append the new posts to current array
-
-              this.totalPosts.push(newItem);
-            });
-
-            console.log(this.totalPosts.length);
-
-            // populate the list
-            // this.populateList(this.items);
-          }
-        });
-    }
-  }
-
-  totalPosts;
-  totalDevelopments;
-  totalApprovedDevelopments;
+  totalPosts = 0;
+  totalDevelopments = 0;
+  totalApprovedDevelopments = 0;
 
   averageDevelopments() {
-    return this.totalDevelopments / this.totalPosts;
+    let result;
+    if (this.allPosts.length <= 0) result = 0;
+    else result = this.allDevelopments.length / this.allPosts.length;
+    return result;
   }
 
   approvedPercentage() {
-    return this.totalApprovedDevelopments / this.totalDevelopments;
+    let result;
+    if (this.allDevelopments.length <= 0) result = 0;
+    else result = this.allApprovedDevelopments.length / this.allDevelopments.length;
+    return result;
   }
 
 }
