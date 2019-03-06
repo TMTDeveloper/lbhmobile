@@ -5,8 +5,9 @@ page-login {
     background: #ff7755;
 
     .logo-row {
-      padding-top: 50px;
-      padding-bottom: 5px;
+      padding-top: 10vh;
+      padding-bottom: 30vh;
+      min-height: 70vh;
       font-size: 3em;
       color: #ffffff !important;
     }
@@ -14,8 +15,9 @@ page-login {
     .login-box {
       //background: #cc5500;
       background: #ff7755;
-      padding: 20px 20px 0px 20px;
+      padding: 20px 20px 20px 20px;
       margin-bottom: 0px;
+      min-height: 30vh;
     }
 
     ion-row {

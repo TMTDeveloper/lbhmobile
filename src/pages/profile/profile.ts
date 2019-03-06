@@ -108,7 +108,7 @@ export class ProfilePage {
           text: "Batal",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
           }
         }
       ],
@@ -137,7 +137,7 @@ export class ProfilePage {
           text: "Batal",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
           }
         }
       ],
@@ -159,7 +159,7 @@ export class ProfilePage {
           text: "Tutup",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
           }
         }
       ]
@@ -179,7 +179,7 @@ export class ProfilePage {
       error => {
       },
       () => {
-        console.log("success change pass");
+        //console.log("success change pass");
         this.promptRelog();
       });
   }
@@ -214,7 +214,7 @@ export class ProfilePage {
           text: "Tidak",
           role: "cancel",
           handler: () => {
-            console.log("Cancel logout");
+            //console.log("Cancel logout");
           }
         }
       ]

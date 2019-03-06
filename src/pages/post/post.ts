@@ -63,14 +63,14 @@ export class PostPage implements AfterViewInit {
     public platform: Platform,
     public creds: Credentials
   ) {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
   }
 
   @ViewChild(Content) content: Content;
 
   ngAfterViewInit() {
     this.getUserData();
-    console.log(this.creds.data.email);
+    //console.log(this.creds.data.email);
     // this.reqAllPosts();
 
     this.platform.registerBackButtonAction(() => {
@@ -79,7 +79,7 @@ export class PostPage implements AfterViewInit {
   }
 
   ionViewWillEnter() {
-    console.log("woi");
+    //console.log("woi");
 
     this.jenis = "kasus";
     this.view = "me";
@@ -106,7 +106,7 @@ export class PostPage implements AfterViewInit {
   }
 
   ionViewDidEnter() {
-    console.log(this.jenis);
+    //console.log(this.jenis);
   }
 
   postLimit = 10;
@@ -190,7 +190,7 @@ export class PostPage implements AfterViewInit {
   myPost: any;
   async reqMyPosts() {
     if (this.items0.length > 0) return;
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
 
     // this.timeOut = 0;
 
@@ -203,15 +203,15 @@ export class PostPage implements AfterViewInit {
       .getReqNew("postdetails/postedby", { email: this.creds.data.email })
       .toPromise()
       .then(response => {
-        console.log(response);
+        //console.log(response);
         this.myPost = response;
         this.myPost = this.myPost.reverse();
 
         arr = this.myPost.slice(0, 10);
-        console.log(arr);
+        //console.log(arr);
       });
     for (let element of arr) {
-      console.log(element);
+      //console.log(element);
       let postQueryByName = [];
       postQueryByName["filter[where][no_post]"] = element;
       postQueryByName["filter[reqby]"] = this.creds.data.email;
@@ -225,7 +225,7 @@ export class PostPage implements AfterViewInit {
         .toPromise()
         .then(response => {
           if (response != null) {
-            console.log(response);
+            //console.log(response);
 
             let newItems: any;
             newItems = response;
@@ -236,7 +236,7 @@ export class PostPage implements AfterViewInit {
               this.items0.push(newItem);
             });
 
-            console.log(this.items0.length);
+            //console.log(this.items0.length);
 
             // populate the list
             // this.populateList(this.items);
@@ -251,7 +251,7 @@ export class PostPage implements AfterViewInit {
   }
 
   reqNewestPosts = () => {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
 
     this.timeOut = 0;
 
@@ -273,7 +273,7 @@ export class PostPage implements AfterViewInit {
       .getReqNew("postheaders", this.postQuery)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -283,8 +283,8 @@ export class PostPage implements AfterViewInit {
             this.items1.push(newItem);
           });
 
-          console.log(this.items1.length);
-          console.log(this.items2.length);
+          //console.log(this.items1.length);
+          //console.log(this.items2.length);
 
           // populate the list
           // this.populateList(this.items);
@@ -295,7 +295,7 @@ export class PostPage implements AfterViewInit {
   timeOut = 500;
 
   reqKegiatan = () => {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
 
     this.timeOut = 0;
 
@@ -314,8 +314,8 @@ export class PostPage implements AfterViewInit {
     // resize the view
     this.content.resize();
 
-    console.log(this.organisasi);
-    console.log();
+    //console.log(this.organisasi);
+    //console.log();
 
     if (this.items2.length > 0) return;
 
@@ -323,7 +323,7 @@ export class PostPage implements AfterViewInit {
       .getReqNew("kegiatanheaders", this.postQuery2)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -333,8 +333,8 @@ export class PostPage implements AfterViewInit {
             this.items2.push(newItem);
           });
 
-          console.log(this.items1.length);
-          console.log(this.items2.length);
+          //console.log(this.items1.length);
+          //console.log(this.items2.length);
 
           // populate the list
           // this.populateList(this.items);
@@ -343,7 +343,7 @@ export class PostPage implements AfterViewInit {
   };
 
   reqClosedPosts = () => {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
 
     this.timeOut = 0;
 
@@ -368,7 +368,7 @@ export class PostPage implements AfterViewInit {
       .getReqNew("postheaders", this.postQueryClosed)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -385,7 +385,7 @@ export class PostPage implements AfterViewInit {
   };
 
   reqAllClosedPosts = () => {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
 
     this.timeOut = 0;
 
@@ -410,7 +410,7 @@ export class PostPage implements AfterViewInit {
       .getReqNew("postheaders", this.postQueryClosedAll)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -466,16 +466,16 @@ export class PostPage implements AfterViewInit {
   }
 
   async infiniteMeObs() {
-    console.log(this.items0.length);
-    console.log(this.myPost.length);
+    //console.log(this.items0.length);
+    //console.log(this.myPost.length);
     if (this.items0.length == this.myPost.length) {
       return;
     }
 
     let arr = this.myPost.slice(this.items0.length, this.items0.length + 9);
-    console.log(arr);
+    //console.log(arr);
     for (let element of arr) {
-      console.log(element);
+      //console.log(element);
       let postQueryByName = [];
       postQueryByName["filter[where][no_post]"] = element;
       postQueryByName["filter[reqby]"] = this.creds.data.email;
@@ -490,7 +490,7 @@ export class PostPage implements AfterViewInit {
         .then(
           response => {
             if (response != null) {
-              console.log(response);
+              //console.log(response);
 
               let newItems: any;
               newItems = response;
@@ -499,10 +499,10 @@ export class PostPage implements AfterViewInit {
                 // append the new posts to current array
                 this.items0.push(newItem);
               });
-              // console.log(arr.length.toString() + " " + ind.toString());
+              // //console.log(arr.length.toString() + " " + ind.toString());
               // if (ind == 0) {
               // }
-              console.log(this.items0.length);
+              //console.log(this.items0.length);
 
               // populate the list
               // this.populateList(this.items);
@@ -516,8 +516,8 @@ export class PostPage implements AfterViewInit {
   }
 
   doInfinite(infiniteScroll) {
-    console.log("Begin async operation");
-    console.log(this.postQuery);
+    //console.log("Begin async operation");
+    //console.log(this.postQuery);
 
     // set the query
     // this.postQuery["filter[where][type]"] = 1;
@@ -540,7 +540,7 @@ export class PostPage implements AfterViewInit {
     race.then(
       response => {
         if (response !== null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -550,17 +550,17 @@ export class PostPage implements AfterViewInit {
             this.items1.push(newItem);
           });
 
-          console.log(this.items1.length);
-          console.log(this.items2.length);
+          //console.log(this.items1.length);
+          //console.log(this.items2.length);
 
           // populate the list
           // this.populateList(this.items);
 
           // end operation
-          console.log("Async operation has ended");
+          //console.log("Async operation has ended");
           infiniteScroll.complete();
         } else {
-          console.log("disini");
+          //console.log("disini");
           typeof infiniteScroll["enable"] === "function"
             ? infiniteScroll.enable(false)
             : null;
@@ -568,7 +568,7 @@ export class PostPage implements AfterViewInit {
         }
       },
       error => {
-        console.log("disini");
+        //console.log("disini");
         typeof infiniteScroll["enable"] === "function"
           ? infiniteScroll.enable(false)
           : null;
@@ -578,8 +578,8 @@ export class PostPage implements AfterViewInit {
   }
 
   doInfinite2(infiniteScroll) {
-    console.log("Begin async operation");
-    console.log(this.postQuery2);
+    //console.log("Begin async operation");
+    //console.log(this.postQuery2);
 
     // set the query
     this.postQuery2["filter[where][type]"] = 2;
@@ -605,7 +605,7 @@ export class PostPage implements AfterViewInit {
     race.then(
       response => {
         if (response !== null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -615,17 +615,17 @@ export class PostPage implements AfterViewInit {
             this.items2.push(newItem);
           });
 
-          console.log(this.items1.length);
-          console.log(this.items2.length);
+          //console.log(this.items1.length);
+          //console.log(this.items2.length);
 
           // populate the list
           // this.populateList(this.items);
 
           // end operation
-          console.log("Async operation has ended");
+          //console.log("Async operation has ended");
           infiniteScroll.complete();
         } else {
-          console.log("disini");
+          //console.log("disini");
           typeof infiniteScroll["enable"] === "function"
             ? infiniteScroll.enable(false)
             : null;
@@ -633,7 +633,7 @@ export class PostPage implements AfterViewInit {
         }
       },
       error => {
-        console.log("disini");
+        //console.log("disini");
         typeof infiniteScroll["enable"] === "function"
           ? infiniteScroll.enable(false)
           : null;
@@ -643,8 +643,8 @@ export class PostPage implements AfterViewInit {
   }
 
   doInfiniteClosed(infiniteScroll) {
-    console.log("Begin async operation");
-    console.log(this.postQueryClosed);
+    //console.log("Begin async operation");
+    //console.log(this.postQueryClosed);
 
     // set the query
     this.postQueryClosed["filter[where][type]"] = 1;
@@ -670,7 +670,7 @@ export class PostPage implements AfterViewInit {
     race.then(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -684,11 +684,11 @@ export class PostPage implements AfterViewInit {
           // this.populateList(this.items);
 
           // end operation
-          console.log("Async operation has ended");
+          //console.log("Async operation has ended");
           infiniteScroll.complete();
         } else {
-          console.log("disini");
-          console.log(typeof infiniteScroll["enable"] === "function");
+          //console.log("disini");
+          //console.log(typeof infiniteScroll["enable"] === "function");
           typeof infiniteScroll["enable"] === "function"
             ? infiniteScroll.enable(false)
             : null;
@@ -696,8 +696,8 @@ export class PostPage implements AfterViewInit {
         }
       },
       error => {
-        console.log("disini");
-        console.log(typeof infiniteScroll["enable"] === "function");
+        //console.log("disini");
+        //console.log(typeof infiniteScroll["enable"] === "function");
         typeof infiniteScroll["enable"] === "function"
           ? infiniteScroll.enable(false)
           : null;
@@ -768,7 +768,7 @@ export class PostPage implements AfterViewInit {
   hasNewPost(item) {
     var hasNew = moment(item.last_post).isAfter(item.date_access);
     // if (item.date_access == null) hasNew = true;
-    // console.log(hasNew);
+    // //console.log(hasNew);
     // item.hasNewPost = hasNew;
     return hasNew;
   }
@@ -797,12 +797,12 @@ export class PostPage implements AfterViewInit {
     this.service.postreq("post-logs", updateParams).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       }
     );
@@ -847,12 +847,12 @@ export class PostPage implements AfterViewInit {
     this.service.postreq("post-logs", updateParams).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       }
     );
@@ -909,7 +909,7 @@ export class PostPage implements AfterViewInit {
           text: "Tidak",
           role: "cancel",
           handler: () => {
-            console.log("Cancel logout");
+            //console.log("Cancel logout");
           }
         }
       ]

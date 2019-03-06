@@ -77,12 +77,12 @@ export class ViewPostPage {
     this.userName = this.creds.data["name"];
     this.role = this.creds.data["role"];
 
-    console.log(this.role);
+    //console.log(this.role);
   }
 
   backToPostPage() {
     this.navCtrl.pop();
-    console.log(this.post_id);
+    //console.log(this.post_id);
   }
 
   toggleView() {
@@ -228,7 +228,7 @@ export class ViewPostPage {
     this.service.postreq("postdetails", this.sendParams).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           // update the post
           this.updatePost();
@@ -244,7 +244,7 @@ export class ViewPostPage {
 
           this.items1.push(newMsg);
 
-          console.log(this.items1.length);
+          //console.log(this.items1.length);
 
           // populate the list
           // this.populateList(this.items);
@@ -255,14 +255,14 @@ export class ViewPostPage {
       },
       error => {
         if (error != null) {
-          console.log("failed to send message! \n error:" + error);
+          //console.log("failed to send message! \n error:" + error);
         }
       }
     );
   };
 
   reqNewestPosts = () => {
-    console.log(this.post_id);
+    //console.log(this.post_id);
 
     this.timeOut = 0;
 
@@ -281,7 +281,7 @@ export class ViewPostPage {
       .getReqNew("postdetails", this.postQuery)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -293,7 +293,7 @@ export class ViewPostPage {
             this.items1.reverse();
           });
 
-          console.log(this.items1.length);
+          //console.log(this.items1.length);
 
           // populate the list
           // this.populateList(this.items);
@@ -302,8 +302,8 @@ export class ViewPostPage {
   };
 
   doInfinite(infiniteScroll) {
-    console.log("Begin async operation");
-    console.log(this.postQuery);
+    //console.log("Begin async operation");
+    //console.log(this.postQuery);
 
     // set the query
     this.postQuery["filter[where][no_post]"] = this.post_id;
@@ -318,7 +318,7 @@ export class ViewPostPage {
         .getReqNew("postdetails", this.postQuery)
         .subscribe(response => {
           if (response != null) {
-            console.log(response);
+            //console.log(response);
 
             let newItems: any;
             newItems = response;
@@ -330,13 +330,13 @@ export class ViewPostPage {
               this.items1.reverse();
             });
 
-            console.log(this.items1.length);
+            //console.log(this.items1.length);
 
             // populate the list
             // this.populateList(this.items);
 
             // end operation
-            console.log("Async operation has ended");
+            //console.log("Async operation has ended");
             infiniteScroll.complete();
           }
         });
@@ -358,7 +358,7 @@ export class ViewPostPage {
           text: "Tidak",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
           }
         }
       ]
@@ -378,7 +378,7 @@ export class ViewPostPage {
     this.service.postreq("developments", this.sendProgressParams).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           // update the post
           // this.updatePost();
@@ -392,7 +392,7 @@ export class ViewPostPage {
 
           this.items2.push(newMsg);
 
-          console.log(this.items2.length);
+          //console.log(this.items2.length);
 
           // populate the list
           // this.populateList(this.items);
@@ -403,15 +403,15 @@ export class ViewPostPage {
       },
       error => {
         if (error != null) {
-          console.log("failed to send message!");
-          console.log(error);
+          //console.log("failed to send message!");
+          //console.log(error);
         }
       }
     );
   };
 
   reqNewestProgress = () => {
-    console.log(this.post_id);
+    //console.log(this.post_id);
 
     this.timeOut = 0;
 
@@ -430,7 +430,7 @@ export class ViewPostPage {
       .getReqNew("developments", this.postQuery)
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -446,8 +446,8 @@ export class ViewPostPage {
   };
 
   doInfiniteProgress(infiniteScroll) {
-    console.log("Begin async operation");
-    console.log(this.postQuery);
+    //console.log("Begin async operation");
+    //console.log(this.postQuery);
 
     // set the query
     this.postQuery["filter[where][no_post]"] = this.post_id;
@@ -462,7 +462,7 @@ export class ViewPostPage {
         .getReqNew("developments", this.postQuery)
         .subscribe(response => {
           if (response != null) {
-            console.log(response);
+            //console.log(response);
 
             let newItems: any;
             newItems = response;
@@ -474,13 +474,13 @@ export class ViewPostPage {
               this.items2.reverse();
             });
 
-            console.log(this.items2.length);
+            //console.log(this.items2.length);
 
             // populate the list
             // this.populateList(this.items);
 
             // end operation
-            console.log("Async operation has ended");
+            //console.log("Async operation has ended");
             infiniteScroll.complete();
           }
         });
@@ -502,7 +502,7 @@ export class ViewPostPage {
   post_status;
 
   getCurrentPostDetails_OLD = () => {
-    console.log(this.service.baseurl);
+    //console.log(this.service.baseurl);
     let loading = this.presentLoading();
 
     this.timeOut = 0;
@@ -512,16 +512,16 @@ export class ViewPostPage {
     if (this.type == 2) url = "kegiatanheaders";
 
     // set the query for current post
-    console.log(this.post_id);
+    //console.log(this.post_id);
     let postQueryCur = {
       "filter[where][no_post]": this.post_id
     };
 
-    console.log(this.type + url);
+    //console.log(this.type + url);
 
     this.service.getReqNew(url, postQueryCur).subscribe(response => {
       if (response != null) {
-        console.log(response);
+        //console.log(response);
 
         // kasus
         if (response[0].type == 1) {
@@ -576,12 +576,12 @@ export class ViewPostPage {
     let postQuery = {
       "filter[where][no_post]": this.post_id
     };
-    console.log(postQuery);
+    //console.log(postQuery);
 
     this.service.getReqNew("postheaders", postQuery).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           // append the post details
           this.posted_by = response["posted_by"];
@@ -621,7 +621,7 @@ export class ViewPostPage {
       .postreq("findupload", { where: { no_post: this.post_id } })
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let newItems: any;
           newItems = response;
@@ -631,17 +631,17 @@ export class ViewPostPage {
             this.images.push(newItem);
           });
 
-          console.log(this.items1.length);
+          //console.log(this.items1.length);
 
           // populate the list
           // this.populateList(this.items);
 
           // end operation
-          console.log("Async operation has ended");
+          //console.log("Async operation has ended");
         }
       }, error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       });
   }
@@ -652,7 +652,7 @@ export class ViewPostPage {
       .hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
       .then(status => {
         if (status.hasPermission) {
-          console.log(this.service.baseurl + "download?filename=" + file);
+          //console.log(this.service.baseurl + "download?filename=" + file);
           let path = this.file.dataDirectory;
           // this.presentToast(this.service.baseurl + "download?filename=" + file);
 
@@ -678,7 +678,7 @@ export class ViewPostPage {
                 // let url = entry.toURL();
                 // this.opener
                 //   .open(url, "application/pdf")
-                //   .then(() => console.log("success"));
+                //   .then(() => //console.log("success"));
                 // this.document.viewDocument(url, "application/pdf", {});
               },
               error => {
@@ -692,7 +692,7 @@ export class ViewPostPage {
             )
             .then(status => {
               if (status.hasPermission) {
-                console.log(this.service.baseurl + "download?filename=" + file);
+                //console.log(this.service.baseurl + "download?filename=" + file);
                 let path = this.file.dataDirectory;
                 // this.presentToast(this.service.baseurl + "download?filename=" + file);
                 const transfer = this.transfer.create();
@@ -717,7 +717,7 @@ export class ViewPostPage {
                       // let url = entry.toURL();
                       // this.opener
                       //   .open(url, "application/pdf")
-                      //   .then(() => console.log("success"));
+                      //   .then(() => //console.log("success"));
                       // this.document.viewDocument(url, "application/pdf", {});
                     },
                     error => {
@@ -738,7 +738,7 @@ export class ViewPostPage {
     });
 
     toast.onDidDismiss(() => {
-      console.log("Dismissed toast");
+      //console.log("Dismissed toast");
     });
 
     toast.present();
@@ -760,12 +760,12 @@ export class ViewPostPage {
     this.service.postreq("post-logs", updateParams).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       }
     );
@@ -786,7 +786,7 @@ export class ViewPostPage {
           text: "Tidak",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
           }
         }
       ]
@@ -799,7 +799,7 @@ export class ViewPostPage {
     // if fail, empty pembelajaran
     development.approved = "Y";
 
-    console.log(development);
+    //console.log(development);
 
     let query = {
       "where[no_post]":development.no_post,
@@ -809,16 +809,16 @@ export class ViewPostPage {
     this.service.patchreqnew("developments", development, query).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       },
       () => {
-        console.log("success");
+        //console.log("success");
       }
     );
   }
@@ -853,7 +853,7 @@ export class ViewPostPage {
           text: "Tidak",
           role: "cancel",
           handler: () => {
-            console.log("Cancel close");
+            //console.log("Cancel close");
             this.pembelajaran = "";
           }
         }
@@ -868,21 +868,21 @@ export class ViewPostPage {
     this.object[0].pembelajaran = this.tempPembelajaran;
     this.object[0].status = 2;
 
-    console.log(this.object);
+    //console.log(this.object);
 
     this.service.patchreq("postheaders/" + this.post_id, this.object[0]).subscribe(
       response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
         if (error != null) {
-          console.log(error);
+          //console.log(error);
         }
       },
       () => {
-        console.log("success");
+        //console.log("success");
         this.pembelajaran = this.tempPembelajaran;
         this.changeView(1);
       }

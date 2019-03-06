@@ -36,6 +36,9 @@ export class ContactPage {
     this.email = creds.data.email;
 
     //this.getTotalPosts();
+  }
+
+  ionViewWillEnter(){
     this.getAllStats();
   }
 
@@ -48,13 +51,15 @@ export class ContactPage {
     });
     loader.present();
 
+    this.clearCache();
+
     // first we get the post details
     let arr = [];
     await this.service
       .getReqNew("postdetails/postedby", { email: this.creds.data.email })
       .toPromise()
       .then(response => {
-        console.log(response);
+        //console.log(response);
 
         let newItems: any;
         newItems = response;
@@ -65,26 +70,26 @@ export class ContactPage {
           this.allPosts.push(newItem);
         });
 
-        console.log(this.allPosts.length);
+        //console.log(this.allPosts.length);
 
         this.totalPosts = this.allPosts.length;
 
         // add all my post to array for filter
         this.myPost = response;
-        console.log(this.myPost);
+        //console.log(this.myPost);
       });
     for (let element of this.myPost) {
-      console.log(element);
+      //console.log(element);
       let postQueryByName = [];
       postQueryByName["filter[where][no_post]"] = element;
 
       // finally get all the post headers here
       await this.service
-        .getReqNew("postheaders", postQueryByName)
+        .getReqNew("developments", postQueryByName)
         .toPromise()
         .then(response => {
           if (response != null) {
-            console.log(response);
+            //console.log(response);
 
             let newItems: any;
             newItems = response;
@@ -96,8 +101,8 @@ export class ContactPage {
               if (newItem.approved == "Y") this.allApprovedDevelopments.push(newItem);
             });
 
-            console.log(this.allDevelopments.length);
-            console.log(this.allApprovedDevelopments.length);
+            //console.log(this.allDevelopments.length);
+            //console.log(this.allApprovedDevelopments.length);
 
             this.totalDevelopments = this.allDevelopments.length;
             this.totalApprovedDevelopments = this.allApprovedDevelopments.length;
@@ -115,18 +120,27 @@ export class ContactPage {
   totalDevelopments = 0;
   totalApprovedDevelopments = 0;
 
-  averageDevelopments() {
-    let result;
-    if (this.allPosts.length <= 0) result = 0;
-    else result = this.allDevelopments.length / this.allPosts.length;
-    return result;
+  clearCache(){
+    this.allPosts = [];
+    this.allDevelopments = [];
+    this.allApprovedDevelopments = [];
+    this.totalPosts = 0;
+    this.totalDevelopments = 0;
+    this.totalApprovedDevelopments = 0;
   }
 
   approvedPercentage() {
     let result;
     if (this.allDevelopments.length <= 0) result = 0;
     else result = this.allApprovedDevelopments.length / this.allDevelopments.length;
-    return result;
+    return (result * 100).toFixed(2);
+  }
+
+  averageDevelopments() {
+    let result;
+    if (this.allPosts.length <= 0) result = 0;
+    else result = this.allDevelopments.length / this.allPosts.length;
+    return result.toFixed(1);
   }
 
 }

@@ -138,7 +138,7 @@ export class NewPostPage {
     });
 
     this.type = navParams.get("type");
-    console.log(this.type);
+    //console.log(this.type);
     this.userName = navParams.get("userName");
 
     this.loadAllAreas();
@@ -208,22 +208,22 @@ export class NewPostPage {
       response => {
         if (response != null) {
           // view the created page
-          console.log(response);
+          //console.log(response);
           let newList: any = response;
           this.kejadianList = newList;
         }
       },
       error => {
         if (error != null) {
-          console.log("failed to get kejadian!");
-          console.log(error);
+          //console.log("failed to get kejadian!");
+          //console.log(error);
         }
       }
     );
   }
 
   loglog() {
-    console.log(this.formKasus.controls.jenis_kelamin);
+    //console.log(this.formKasus.controls.jenis_kelamin);
   }
 
   updateClient() {
@@ -271,15 +271,15 @@ export class NewPostPage {
         response => {
           if (response != null) {
             // view the created page
-            console.log(response);
+            //console.log(response);
             let newList: any = response;
             this.kabupatenList = newList;
           }
         },
         error => {
           if (error != null) {
-            console.log("failed to create post!");
-            console.log(error);
+            //console.log("failed to create post!");
+            //console.log(error);
           }
         }
       );
@@ -300,15 +300,15 @@ export class NewPostPage {
         response => {
           if (response != null) {
             // view the created page
-            console.log(response);
+            //console.log(response);
             let newList: any = response;
             this.kecamatanList = newList;
           }
         },
         error => {
           if (error != null) {
-            console.log("failed to create post!");
-            console.log(error);
+            //console.log("failed to create post!");
+            //console.log(error);
           }
         }
       );
@@ -327,15 +327,15 @@ export class NewPostPage {
         response => {
           if (response != null) {
             // view the created page
-            console.log(response);
+            //console.log(response);
             let newList: any = response;
             this.kelurahanList = newList;
           }
         },
         error => {
           if (error != null) {
-            console.log("failed to create post!");
-            console.log(error);
+            //console.log("failed to create post!");
+            //console.log(error);
           }
         }
       );
@@ -350,15 +350,15 @@ export class NewPostPage {
         response => {
           if (response != null) {
             // view the created page
-            console.log(response);
+            //console.log(response);
             let newList: any = response;
             this.propinsiList = newList;
           }
         },
         error => {
           if (error != null) {
-            console.log("failed to create post!");
-            console.log(error);
+            //console.log("failed to create post!");
+            //console.log(error);
           }
         }
       );
@@ -461,13 +461,13 @@ export class NewPostPage {
     // check fail
     let fail = false;
 
-    console.log(this.formKasus);
+    //console.log(this.formKasus);
 
     // post to server. upon success, add to list
     await this.service.postreq(url, paramsToSend).subscribe(
       async response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
 
           let blankReq = {
             no_post: response.no_post,
@@ -477,12 +477,12 @@ export class NewPostPage {
           // add a blank message to show this is user's post
           await this.service.postreq("postdetails", blankReq).subscribe(
             response => {
-              console.log(response);
+              //console.log(response);
             },
             error => {
               if (error != null) {
                 fail = true;
-                console.log("failed to send message!");
+                //console.log("failed to send message!");
               }
             }
           );
@@ -508,8 +508,8 @@ export class NewPostPage {
           loading.dismiss();
 
           alert.present();
-          console.log("failed to create post!");
-          console.log(error);
+          //console.log("failed to create post!");
+          //console.log(error);
         }
       }
     );
@@ -646,7 +646,7 @@ export class NewPostPage {
           // check file size (max 5mb)
           // this.getFileSize(filePath).
           // then(function(fileSize){
-          //    console.log(fileSize);
+          //    //console.log(fileSize);
 
           //    if (fileSize<500000) this.uploads.push(filePath);
           //    else this.alertMaxSize();

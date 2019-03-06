@@ -21,7 +21,7 @@ export class RootPage {
     InitCredentials() {
         // Let's navigate to our first page
         //this.nav.setRoot(LoginPage);
-        console.log('ionViewDidLoad First');
+        //console.log('ionViewDidLoad First');
         this.creds.set("First singleton data");
         this.creds.log(); // log init data;
     }

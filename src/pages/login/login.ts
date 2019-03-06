@@ -4,7 +4,8 @@ import {
   AlertController,
   LoadingController,
   Loading,
-  IonicPage
+  IonicPage,
+  Events
 } from "ionic-angular";
 import { AuthService } from "../../providers/auth-service";
 
@@ -23,7 +24,8 @@ export class LoginPage {
     private nav: NavController,
     private auth: AuthService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    public events: Events
   ) {}
 
   checkCookie()
@@ -35,7 +37,7 @@ export class LoginPage {
   ionViewWillEnter()
   {
     // did we just logout?
-
+    this.events.unsubscribe('user:logout');
   }
 
   public createAccount() {
@@ -50,13 +52,13 @@ export class LoginPage {
           this.nav.push(TabsPage);
         } else {
           this.showError("Email atau Sandi salah!");
-          console.log("wrong credentials");
+          //console.log("wrong credentials");
         }
       },
       error => {
         // if (error != null) {
         //   this.showError("Login error:" + error);
-        //   console.log("server error");
+        //   //console.log("server error");
         // }
       }
     );
@@ -64,7 +66,7 @@ export class LoginPage {
 
   showLoading() {
     this.loading = this.loadingCtrl.create({
-      content: "Please wait...",
+      content: "Mohon tunggu...",
       dismissOnPageChange: true
     });
     this.loading.present();

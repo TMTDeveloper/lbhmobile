@@ -30,7 +30,7 @@ export class AboutPage {
   ngAfterViewInit() {
     this.updateDokumen();
     //this.getDocument();
-    console.log(this.cred.data);
+    //console.log(this.cred.data);
   }
 
   presentLoading() {
@@ -56,15 +56,15 @@ export class AboutPage {
       response => {
         if (response != null) {
           // view the created page
-          console.log(response);
+          //console.log(response);
           let newList: any = response;
           this.dokumenList = newList;
         }
       },
       error => {
         if (error != null) {
-          console.log("failed to get dokumen!");
-          console.log(error);
+          //console.log("failed to get dokumen!");
+          //console.log(error);
         }
       }
     );
@@ -85,13 +85,13 @@ export class AboutPage {
     loader.present();
 
     this.documents = [];
-    console.log(this.documentType);
+    //console.log(this.documentType);
 
     this.service
       .postreq("findupload", { "where": { "no_post": "document", "type": this.documentType } })
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
           this.documents = response;
           this.result = JSON.stringify(response);
           loader.dismiss();
@@ -108,7 +108,7 @@ export class AboutPage {
       .postreq("findupload", { "where": { "no_post": "document", "type": this.documentType } })
       .subscribe(response => {
         if (response != null) {
-          console.log(response);
+          //console.log(response);
           refresher.complete();
           this.documents = response;
           // loader.dismiss();
@@ -117,7 +117,7 @@ export class AboutPage {
   }
   result: any;
   downloadAndOpenPdf(file, name) {
-    console.log(this.service.baseurl + "download?filename=" + file);
+    //console.log(this.service.baseurl + "download?filename=" + file);
     let path = this.file.dataDirectory;
 
     const transfer = this.transfer.create();
