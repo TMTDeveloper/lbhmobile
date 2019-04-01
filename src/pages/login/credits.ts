@@ -13,8 +13,8 @@ import { TabsPage } from "../tabs/tabs";
 import { Credentials } from "../../providers/credentials.holder";
 
 @Component({
-  selector: "page-login",
-  templateUrl: "login.html"
+  selector: "page-credits",
+  templateUrl: "credits.html"
 })
 export class CreditsPage {
   loading: Loading;

@@ -73,16 +73,19 @@ export class PostPage implements AfterViewInit {
     //console.log(this.creds.data.email);
     // this.reqAllPosts();
 
-    this.platform.registerBackButtonAction(() => {
-      this.askLogout();
-    });
+    // this.platform.registerBackButtonAction(() => {
+    //   this.askLogout();
+    // });
   }
 
   ionViewWillEnter() {
     //console.log("woi");
 
-    this.jenis = "kasus";
-    this.view = "me";
+    let jenis = this.navParams.get("jenis");
+    let view = this.navParams.get("view");
+
+    this.jenis = jenis;
+    this.view = view;
 
     this.reqAllPosts();
   }

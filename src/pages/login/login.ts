@@ -83,7 +83,38 @@ export class LoginPage {
     alert.present();
   }
 
-  showLoginBox(){
-    
+  showLogin(){
+    let alert = this.alertCtrl.create({
+      inputs: [
+        {
+          name: 'email',
+          placeholder: 'Email'
+        },
+        {
+          name: 'password',
+          placeholder: 'Sandi',
+          type: 'password'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Masuk',
+          handler: data => {
+            this.registerCredentials.email = data.email;
+            this.registerCredentials.password = data.password;
+            console.log(this.registerCredentials);
+            this.login();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }

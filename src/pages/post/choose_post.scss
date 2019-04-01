@@ -1,0 +1,34 @@
+page-choose_post {
+    .item-md ion-thumbnail {
+        min-width: 25px;
+        min-height: 25px;
+    }
+    .item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
+        width:25px;
+        height:25px;
+    }
+  
+    .toolbar-title-md { 
+      font-size: 12px;
+    }
+
+    .bigger-title{
+        font-size: 20px;
+    }
+
+    .main-btn{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        border-radius: 10%;
+    }
+
+    .main-btn-padding{
+        padding-top: 20vh;
+    }
+
+    .main-bg{
+        background-color: #1abc9c;
+    }
+}

@@ -30,7 +30,7 @@
   </ion-navbar>
 
   <!-- top button for create new post -->
-  <ion-toolbar [hidden]="role==2?true:false" color="primary">
+  <ion-toolbar [hidden]="role==2?true:true" color="primary">
     <div text-center>
       <button ion-button round (click)="newKasus()" [hidden]="jenis=='kasus'?false:true" color="primary">
         Mulai Kasus Baru
@@ -42,7 +42,7 @@
   </ion-toolbar>
 
   <!-- choose view kasus or kegiatan -->
-  <div>
+  <div [hidden]="true">
     <ion-toolbar color="primary">
       <ion-segment [(ngModel)]="jenis" color="light">
         <ion-segment-button value="kasus" (click)="reqMyPosts()" color="primary">
