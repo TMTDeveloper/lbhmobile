@@ -16,7 +16,7 @@ import { Credentials } from "../../providers/credentials.holder";
   selector: "page-login",
   templateUrl: "login.html"
 })
-export class LoginPage {
+export class CreditsPage {
   loading: Loading;
   registerCredentials = { email: "", password: "" };
 
@@ -81,9 +81,5 @@ export class LoginPage {
       buttons: ["OK"]
     });
     alert.present();
-  }
-
-  showLoginBox(){
-    
   }
 }

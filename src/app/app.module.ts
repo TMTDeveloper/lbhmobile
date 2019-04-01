@@ -29,6 +29,7 @@ import { FilePath } from "@ionic-native/file-path";
 import { DatePicker } from "@ionic-native/date-picker";
 import { AndroidPermissions } from "@ionic-native/android-permissions";
 import { ProfilePage } from "../pages/profile/profile";
+import { CreditsPage } from "../pages/login/credits";
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { ProfilePage } from "../pages/profile/profile";
     PostPage,
     ViewPostPage,
     NewPostPage,
-    ProfilePage
+    ProfilePage,
+    CreditsPage
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { ProfilePage } from "../pages/profile/profile";
     PostPage,
     ViewPostPage,
     NewPostPage,
-    ProfilePage
+    ProfilePage,
+    CreditsPage
   ],
   providers: [
     StatusBar,
