@@ -2,11 +2,47 @@ page-about {
     .item-md ion-thumbnail {
         min-width: 25px;
         min-height: 25px;
+
+        display: flex!important;
+        align-content: center!important;
+        align-items: center!important;
+        justify-content: center!important;
+        
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
     }
     
     .item-md ion-thumbnail ion-img, .item-md ion-thumbnail img {
         width:25px;
         height:25px;
+    }
+
+    .vertical-align-content {
+        margin-top: 0px!important;
+        display: flex!important;
+        align-content: center!important;
+        align-items: center!important;
+        
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+
+    .list-item-info{
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    
+    .label-md{
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
     }
 
     ion-select{

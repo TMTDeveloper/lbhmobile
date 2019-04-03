@@ -30,6 +30,7 @@ import { Credentials } from "../../providers/credentials.holder";
 import * as moment from "moment";
 import sort from "fast-sort";
 import { PostPage } from "./post";
+import { CreditsPage } from "../login/credits";
 
 @Component({
     selector: "page-choose_post",
@@ -130,6 +131,22 @@ export class ChoosePostPage implements AfterViewInit {
         this.waitingNewPost = true;
     }
 
+    newKasus() {
+        this.navCtrl.push(NewPostPage, {
+            type: 1,
+            userName: this.userName
+        });
+        this.waitingNewPost = true;
+    }
+
+    newKegiatan() {
+        this.navCtrl.push(NewPostPage, {
+            type: 2,
+            userName: this.userName
+        });
+        this.waitingNewPost = true;
+    }
+
     waitingNewPost = false;
 
     askLogout() {
@@ -152,6 +169,14 @@ export class ChoosePostPage implements AfterViewInit {
             ]
         });
         alert.present();
+    }
+
+    showCredits() {
+        this.navCtrl.push(CreditsPage, {
+            type: 2,
+            userName: this.userName
+        });
+        this.waitingNewPost = true;
     }
 
     logout() {
