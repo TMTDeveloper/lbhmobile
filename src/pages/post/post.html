@@ -1,18 +1,23 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar hideBackButton="true" color="primary">
     <!-- <button ion-button menuToggle>
       <ion-icon name="Back"></ion-icon>
     </button> -->
     <ion-grid>
-      <ion-row height-10>
+      <!-- <ion-row height-10>
         <ion-title no-lines color="primary" style="font-size:12px; height: 20px">
           <b>{{getRole(role)}}</b>
         </ion-title>
-      </ion-row>
+      </ion-row> -->
       <ion-row height-10>
-        <ion-title class="bigger-title">
-          {{namaOrganisasi(organisasi)}}
-        </ion-title>
+        <ion-col col-2>
+          <img src="assets/imgs/SIP-logo.png">
+        </ion-col>
+        <ion-col col-10>
+            <ion-title class="bigger-title">
+              {{namaOrganisasi(organisasi)}}
+            </ion-title>
+        </ion-col>
         <!-- <ion-col>
           <ion-title>
             Beranda
