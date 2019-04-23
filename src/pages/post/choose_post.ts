@@ -75,6 +75,10 @@ export class ChoosePostPage implements AfterViewInit {
         //console.log(this.creds.data.email);
         // this.reqAllPosts();
 
+        //this.registerBackBtn();
+    }
+
+    registerBackBtn(){
         this.platform.registerBackButtonAction(() => {
             this.askLogout();
         });

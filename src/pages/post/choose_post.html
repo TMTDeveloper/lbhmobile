@@ -35,19 +35,23 @@
         <ion-grid>
             <ion-row class="main-btn-padding">
                 <ion-col col-6>
-                    <img ion-button  class="main-btn" src="assets/imgs/logo.png" style="width : 100% ; height : 100%" (click)="seeMyKasus()">
+                    <img ion-button class="main-btn" src="assets/imgs/kasus.png" style="width : 100% ; height : 100%"
+                        (click)="seeMyKasus()">
                 </ion-col>
                 <ion-col col-6>
-                    <img ion-button  class="main-btn" src="assets/imgs/logo.png" style="width : 100% ; height : 100%" (click)="seeKegiatan()">
+                    <img ion-button class="main-btn" src="assets/imgs/kegiatan.png" style="width : 100% ; height : 100%"
+                        (click)="seeKegiatan()">
                 </ion-col>
             </ion-row>
 
             <ion-row *ngIf="role==1">
                 <ion-col col-6>
-                    <img ion-button  class="main-btn" src="assets/imgs/logo.png" style="width : 100% ; height : 100%" (click)="newKasus()">
+                    <button ion-button class="main-btn" style="width : 100% ; height : 150%"
+                        (click)="newKasus()">Kasus Baru</button>
                 </ion-col>
                 <ion-col col-6>
-                    <img ion-button  class="main-btn" src="assets/imgs/logo.png" style="width : 100% ; height : 100%" (click)="newKegiatan()">
+                    <button ion-button class="main-btn" style="width : 100% ; height : 150%"
+                        (click)="newKegiatan()">Kegiatan Baru</button>
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -55,5 +59,5 @@
 </ion-content>
 
 <ion-footer>
-  <button class="btn-size" (click)="showCredits()" color="light" ion-button outline item-end>Credits</button>
+    <button class="btn-size" (click)="showCredits()" color="light" ion-button outline item-end>Credits</button>
 </ion-footer>

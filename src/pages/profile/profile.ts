@@ -56,6 +56,8 @@ export class ProfilePage {
       this.organisasi = creds.data.organisasi;
       this.role = creds.data.role;
       this.email = creds.data.email;
+
+      this.updateOrganisasi();
   }
 
   roleIs(role){
@@ -73,7 +75,43 @@ export class ProfilePage {
     }
   }
 
-  organisasiIs(organisasi){
+  organisasiList;
+
+  updateOrganisasi() {
+    this.organisasiList = [];
+
+    let query = {
+      "filter[where][and][0][keyword]": "organisasi",
+      "filter[where][and][1][active]": "Y"
+    };
+
+    this.service.getReqNew("generals", query).subscribe(
+      response => {
+        if (response != null) {
+          // view the created page
+          //console.log(response);
+          let newList: any = response;
+          this.organisasiList = newList;
+
+          this.organisasiLabel = this.organisasiIs(this.organisasi);
+        }
+      },
+      error => {
+        if (error != null) {
+          //console.log("failed to get dokumen!");
+          //console.log(error);
+        }
+      }
+    );
+  }
+
+  organisasiLabel = "";
+
+  organisasiIs(organisasi) {
+    return this.organisasiList[organisasi-1].value_keyword;
+  }
+
+  organisasiIs_OLD(organisasi){
     if (organisasi == 0) {
       return "LBH Jakarta";
     }

@@ -70,6 +70,7 @@ export class PostPage implements AfterViewInit {
 
   ngAfterViewInit() {
     this.getUserData();
+    this.updateOrganisasi();
     //console.log(this.creds.data.email);
     // this.reqAllPosts();
 
@@ -738,7 +739,43 @@ export class PostPage implements AfterViewInit {
     }
   }
 
+  organisasiList;
+
+  updateOrganisasi() {
+    this.organisasiList = [];
+
+    let query = {
+      "filter[where][and][0][keyword]": "organisasi",
+      "filter[where][and][1][active]": "Y"
+    };
+
+    this.service.getReqNew("generals", query).subscribe(
+      response => {
+        if (response != null) {
+          // view the created page
+          //console.log(response);
+          let newList: any = response;
+          this.organisasiList = newList;
+
+          this.organisasiLabel = this.namaOrganisasi(this.organisasi);
+        }
+      },
+      error => {
+        if (error != null) {
+          //console.log("failed to get dokumen!");
+          //console.log(error);
+        }
+      }
+    );
+  }
+
+  organisasiLabel = "";
+
   namaOrganisasi(organisasi) {
+    return this.organisasiList[organisasi-1].value_keyword;
+  }
+
+  namaOrganisasi_OLD(organisasi) {
     if (organisasi == 0) {
       return "LBH Jakarta";
     }

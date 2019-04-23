@@ -37,7 +37,7 @@ export class CreditsPage {
   ionViewWillEnter()
   {
     // did we just logout?
-    this.events.unsubscribe('user:logout');
+    //this.events.unsubscribe('user:logout');
   }
 
   public createAccount() {
