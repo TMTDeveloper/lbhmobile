@@ -36,6 +36,7 @@ export class TabsPage {
   registerBackBtn(){
       this.platform.registerBackButtonAction(() => {
           this.askLogout();
+          this.events.publish('user:quit');
       });
   }
 

@@ -5,7 +5,8 @@ import {
   LoadingController,
   Loading,
   IonicPage,
-  Events
+  Events,
+  Platform
 } from "ionic-angular";
 import { AuthService } from "../../providers/auth-service";
 
@@ -25,7 +26,8 @@ export class LoginPage {
     private auth: AuthService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    public events: Events
+    public events: Events,
+    private platform: Platform
   ) {}
 
   checkCookie()
@@ -36,8 +38,21 @@ export class LoginPage {
 
   ionViewWillEnter()
   {
-    // did we just logout?
-    this.events.unsubscribe('user:logout');
+    // if in login page, back btn exits app
+    this.events.subscribe('user:quit',
+      response => this.closeApp()
+    );
+  }
+
+  ionViewWillExit()
+  {
+    // else, back btn logs user out
+    this.events.unsubscribe('user:quit');
+  }
+
+  closeApp()
+  {
+    this.platform.exitApp();
   }
 
   public createAccount() {
