@@ -6,7 +6,7 @@ import { HomePage } from '../home/home';
 import { PostPage } from '../post/post';
 
 import { Credentials } from '../../providers/credentials.holder';
-import { Events, NavController } from 'ionic-angular';
+import { Events, NavController, AlertController } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
 import { ChoosePostPage } from '../post/choose_post';
 
@@ -23,10 +23,36 @@ export class TabsPage {
 
   role;
 
-  constructor(private creds: Credentials, public events:Events, navCtrl:NavController) {
+  constructor(
+    private creds: Credentials,
+    public events:Events,
+    public navCtrl:NavController,
+    public alert: AlertController) {
     this.role = creds.data.role;
     events.subscribe('user:logout',()=>{
-      navCtrl.popToRoot();
+      this.askLogout();
     })
+  }
+
+  askLogout() {
+    let alert = this.alert.create({
+      subTitle: "Apakah anda ingin keluar?",
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.navCtrl.popToRoot();
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            //console.log("Cancel logout");
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 }
