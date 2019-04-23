@@ -6,7 +6,7 @@ import { HomePage } from '../home/home';
 import { PostPage } from '../post/post';
 
 import { Credentials } from '../../providers/credentials.holder';
-import { Events, NavController, AlertController } from 'ionic-angular';
+import { Events, NavController, AlertController, Platform } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
 import { ChoosePostPage } from '../post/choose_post';
 
@@ -27,11 +27,16 @@ export class TabsPage {
     private creds: Credentials,
     public events:Events,
     public navCtrl:NavController,
-    public alert: AlertController) {
+    public alert: AlertController,
+    public platform: Platform) {
     this.role = creds.data.role;
-    events.subscribe('user:logout',()=>{
-      this.askLogout();
-    })
+    this.registerBackBtn();
+  }
+
+  registerBackBtn(){
+      this.platform.registerBackButtonAction(() => {
+          this.askLogout();
+      });
   }
 
   askLogout() {
