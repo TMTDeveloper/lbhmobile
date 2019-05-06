@@ -47,7 +47,7 @@ export class LoginPage {
   ionViewWillExit()
   {
     // else, back btn logs user out
-    this.events.unsubscribe('user:quit');
+    //this.events.unsubscribe('user:quit');
   }
 
   closeApp()

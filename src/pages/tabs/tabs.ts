@@ -25,19 +25,19 @@ export class TabsPage {
 
   constructor(
     private creds: Credentials,
-    public events:Events,
-    public navCtrl:NavController,
+    public events: Events,
+    public navCtrl: NavController,
     public alert: AlertController,
     public platform: Platform) {
     this.role = creds.data.role;
     this.registerBackBtn();
   }
 
-  registerBackBtn(){
-      this.platform.registerBackButtonAction(() => {
-          this.askLogout();
-          this.events.publish('user:quit');
-      });
+  registerBackBtn() {
+    this.platform.registerBackButtonAction(() => {
+      if (!this.navCtrl.canGoBack()) this.events.publish('user:quit');
+      this.askLogout();
+    });
   }
 
   askLogout() {
