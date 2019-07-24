@@ -16,4 +16,66 @@ page-post {
         font-size: 20px;
         height: 100%;
     }
+
+    .toolbar-buttons .toolbar-background {
+        background: #1abc9c !important;
+    }
+
+    #active-card{
+        border-left: 3px solid #1abc9c;
+    }
+    
+    #inactive-card{
+        border-left: 3px solid #df3636;
+    }
+
+    ion-segment-button{
+        //max-width: 25px;
+        background-color: #1abc9c !important;
+        border-width: thin !important;
+      }
+      
+      .segment-button {
+        border-style: solid !important;
+        border-color: #ffffff !important;
+        color: #ffffff !important; 
+        border-width: thin;
+        opacity: 1 !important;
+      }
+      
+      .segment-button:first-of-type {
+        border-right: 0px !important;
+        border-radius: 90px 0px 0px 90px;
+        margin-right: -20px;
+        margin-left: 0px;
+        line-height: 3.4rem;
+        height: 100%;
+        width: 100%}
+
+      .segment-button:not(:first-of-type) {
+        border-right: 0px !important;
+        border-left: 0px !important;
+        border-radius: 0px 0px 0px 0px;
+        margin-right: -20px;
+        margin-left: -20px;
+        line-height: 3.4rem;
+        height: 100%;
+        width: 100%;}
+
+      .segment-button:last-of-type {
+        border-right: 1px solid #ffffff !important;
+        border-left: 0px !important;
+        border-radius: 0px 90px 90px 0px;
+        margin-right: 0px;
+        margin-left: -20px;
+        line-height: 3.4rem;
+        height: 100%;
+        width: 100%;}
+      
+       .segment-activated{
+        border-radius: 90px 90px 90px 90px !important;
+        background-color: #ffffff !important;
+        color: #1abc9c !important;
+        z-index: 5 !important;
+      }
 }

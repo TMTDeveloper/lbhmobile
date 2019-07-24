@@ -59,6 +59,16 @@ $colors: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+.tabs-md .tab-button[aria-selected=true]{
+  color: #ffffff !important;
+  padding: 0;
+  background-color: #1abc9c !important;
+}
+
+.tabs-md .tab-button[aria-selected=true] .tab-button-icon{
+  color: #ffffff !important;
+}
+
 
 
 

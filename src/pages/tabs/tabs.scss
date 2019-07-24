@@ -1,0 +1,26 @@
+page-tabs{
+    .tabs-md .tab-button[aria-selected=true]{
+        color: #ffffff !important;
+        padding: 0;
+        background-color: #1abc9c !important;
+    }
+
+    a{
+        #tab-t0-0 .tab-button[aria-selected=true] {
+            color: #ffffff !important;
+            padding: 0;
+            background-color: #1abc9c !important;
+       }
+    }
+    
+    .tabs-md[tabsLayout=icon-hide] .tab-button,
+.tabs-md[tabsLayout=title-hide] .tab-button,
+.tabs-md .tab-button.icon-only,
+.tabs-md .tab-button.has-title-only {
+    font-weight: 900 !important; 
+}
+.tabs-md .tab-button[aria-selected=true] .tab-button-text {
+    -webkit-transform: none !important;
+    color: #fff;
+}
+}

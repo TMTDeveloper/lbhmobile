@@ -261,6 +261,7 @@ export class ProfilePage {
   }
 
   logout() {
+    console.log("logging out");
     this.events.publish("user:logout");
   }
 }

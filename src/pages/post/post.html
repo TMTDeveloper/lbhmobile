@@ -62,19 +62,23 @@
 
   <!-- view all cases or only mine -->
   <div *ngIf="jenis=='kasus'">
-    <ion-toolbar [hidden]="role==1?false:false" no-border-top>
+    <ion-toolbar [hidden]="role==1?false:true" no-border-top class="toolbar-buttons">
       <ion-segment [(ngModel)]="view">
         <ion-segment-button [hidden]="role==1?false:true" value="me" (click)="reqMyPosts()">
           Kasus Saya
         </ion-segment-button>
+        <ion-segment-button [hidden]="role==1?false:true" value="closed" (click)="reqClosedPosts()">
+          Kasus Selesai
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+    <ion-toolbar [hidden]="role==2?false:true" no-border-top class="toolbar-buttons">
+      <ion-segment [(ngModel)]="view">
         <ion-segment-button [hidden]="role==2?false:true" value="me" (click)="reqMyPosts()">
           Kasus Aktif
         </ion-segment-button>
         <ion-segment-button [hidden]="role==2?false:true" value="all" (click)="reqNewestPosts()">
           Semua Kasus
-        </ion-segment-button>
-        <ion-segment-button [hidden]="role==1?false:true" value="closed" (click)="reqClosedPosts()">
-          Kasus Selesai
         </ion-segment-button>
         <ion-segment-button [hidden]="role==2?false:true" value="closed" (click)="reqAllClosedPosts()">
           Kasus Selesai
@@ -95,9 +99,8 @@
     <div *ngIf="jenis=='kasus'&&view=='me'">
       <!-- <ion-list> -->
       <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items0)"
-      style.border-top="{{item.status==2 ? '3px solid #df3636' : '3px solid #f4f4f4'}}"
-      style.border-left="{{item.status==2 ? '3px solid #df3636' : '3px solid #f4f4f4'}}"
-        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      id="{{item.status==2 ? 'inactive-card' : 'active-card'}}"
+      (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
