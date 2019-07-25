@@ -79,6 +79,7 @@ page-choose_post {
         border-bottom:  0px !important;
 
         .button-inner{
+            flex-direction: column;
             align-items: flex-end;
             text-align: right;
         }
@@ -91,7 +92,8 @@ page-choose_post {
         border-bottom:  1px solid #ffffff !important;
 
         .button-inner{
-            align-items: flex-end;
+            flex-direction: column;
+            align-items: flex-start;
             text-align: left;
         }
     }
@@ -103,7 +105,8 @@ page-choose_post {
         border-bottom:  0px !important;
 
         .button-inner{
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: flex-end;
             text-align: right;
         }
     }
@@ -115,6 +118,7 @@ page-choose_post {
         border-bottom:  0px !important;
 
         .button-inner{
+            flex-direction: column;
             align-items: flex-start;
             text-align: left;
         }

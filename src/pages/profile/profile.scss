@@ -7,4 +7,25 @@ page-profile {
         width:25px;
         height:25px;
     }
+
+    .title{
+        text-align: center;
+    }
+
+    .label{
+        text-align: center;
+    }
+
+    .user-pic{
+        padding-top: 20px;
+    }
+
+    .item-inner{
+        border-style: unset !important;
+    }
+
+    .label img{
+        border-radius: 50%;
+        border: solid 1px black;
+    }
 }

@@ -7,14 +7,16 @@
       <ion-title>
         <div class="item item-avatar">
           <!-- <h2>{{judul}}</h2> -->
-          <h2>SIP</h2>
+          <h2 *ngIf="view=='post'">Data Kasus</h2>
+          <h2 *ngIf="view=='comment'">Komentar</h2>
+          <h2 *ngIf="view=='progress'">Perkembangan</h2>
         </div>
       </ion-title>
     </ion-navbar>
   </div>
 
   <div *ngIf="view=='comment' || view=='progress'">
-    <div text-center>
+    <div class="case-back-button" text-center>
       <ion-card *ngIf="view!='close'" color="primary" (click)="changeView(1)">
         <ion-card-content>
           <h2 *ngIf="type=='1'">Lihat Kasus</h2>
@@ -22,11 +24,11 @@
         </ion-card-content>
       </ion-card>
     </div>
-    <ion-navbar>
+    <!-- <ion-navbar>
       <ion-title>
         Pendamping
       </ion-title>
-    </ion-navbar>
+    </ion-navbar> -->
     <ion-item no-lines>
       <h2 align="center"><b>{{posted_name}}</b></h2>
       <ion-avatar item-start *ngFor="let user of users">
@@ -339,8 +341,8 @@
   </div>
 
   <div *ngIf="view=='close'">
-    <ion-toolbar>
-      <h2 text-center>
+    <ion-toolbar id="close-case">
+      <h2 text-center id="close-case">
         <b *ngIf="type==1">Tutup Kasus</b>
         <b *ngIf="type==2">Akhiri Kegiatan</b>
       </h2>

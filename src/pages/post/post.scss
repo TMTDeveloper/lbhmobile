@@ -78,4 +78,20 @@ page-post {
         color: #1abc9c !important;
         z-index: 5 !important;
       }
+
+      .header-toolbar .toolbar-title{
+        position: absolute;
+        left: 0;
+      
+        padding: 0;  
+      
+        width: 90%;
+      
+        pointer-events: none;
+        text-align: center;
+  
+        .item h2{
+          margin: 0px;
+        }
+      }
 }

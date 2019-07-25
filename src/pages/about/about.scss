@@ -56,4 +56,11 @@ page-about {
     .select-md .select-icon .select-icon-inner{
         color: white;
     }
+
+    .toolbar-title{
+        display: flex;
+        align-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
 }

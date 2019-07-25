@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar hideBackButton="true" color="primary">
+  <ion-navbar class="header-toolbar" hideBackButton="false" color="primary">
     <!-- <button ion-button menuToggle>
       <ion-icon name="Back"></ion-icon>
     </button> -->
@@ -10,13 +10,17 @@
         </ion-title>
       </ion-row> -->
       <ion-row height-10>
-        <ion-col col-2>
-          <img src="assets/imgs/SIP-logo.png">
+        <ion-col col-0>
         </ion-col>
-        <ion-col col-10>
-            <ion-title class="bigger-title">
-              {{organisasiLabel}}
-            </ion-title>
+        <ion-col col-12>
+          <ion-title *ngIf="jenis=='kasus'" class="bigger-title">
+            {{organisasiLabel}}
+          </ion-title>
+          <ion-title *ngIf="jenis=='kegiatan'" class="bigger-title">
+            Data Kegiatan
+          </ion-title>
+        </ion-col>
+        <ion-col col-0>
         </ion-col>
         <!-- <ion-col>
           <ion-title>
@@ -99,8 +103,8 @@
     <div *ngIf="jenis=='kasus'&&view=='me'">
       <!-- <ion-list> -->
       <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items0)"
-      id="{{item.status==2 ? 'inactive-card' : 'active-card'}}"
-      (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+        id="{{item.status==2 ? 'inactive-card' : 'active-card'}}"
+        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
@@ -126,12 +130,13 @@
 
     <div *ngIf="jenis=='kasus'&&view=='all' && role==2">
       <!-- <ion-list> -->
-      <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items1)" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items1)"
+        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
-            <!-- {{item.no_post}} -->
+          <!-- {{item.no_post}} -->
           <ion-row>
             <i style="float:left; font-size:10px">{{dateToDate(item.date_created)}}</i>
           </ion-row>
@@ -151,12 +156,13 @@
 
     <div *ngIf="jenis=='kasus'&&view=='closed'">
       <!-- <ion-list> -->
-      <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items3)" (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
+      <ion-card [color]="item.status==2?'light':'light'" *ngFor="let item of sortMethod(items3)"
+        (click)="viewPost(1,item.no_post,item.posted_by,item.posted_name,item.tanggal_kejadian,item.title,item.province,item.nama_korban,item.nama_pelaku,item.kronologi,item.pembelajaran,item)">
         <!-- <ion-thumbnail item-start>
             <ion-icon name="person"></ion-icon>
           </ion-thumbnail> -->
         <ion-card-content>
-            <!-- {{item.no_post}} -->
+          <!-- {{item.no_post}} -->
           <ion-row>
             <i style="float:left; font-size:10px">{{dateToDate(item.date_created)}}</i>
           </ion-row>
@@ -175,7 +181,8 @@
 
     <div *ngIf="jenis=='kegiatan'">
       <!-- <ion-list> -->
-      <ion-card *ngFor="let item of sortMethodKegiatan(items2)" (click)="viewPost2(2,item.no_post,item.posted_by,item.posted_name,item.tanggal_kegiatan,item.title,item.province,item.nama_korban,item.deskripsi,item)">
+      <ion-card *ngFor="let item of sortMethodKegiatan(items2)"
+        (click)="viewPost2(2,item.no_post,item.posted_by,item.posted_name,item.tanggal_kegiatan,item.title,item.province,item.nama_korban,item.deskripsi,item)">
         <!-- <ion-thumbnail item-start>
           <ion-icon name="person"></ion-icon>
         </ion-thumbnail> -->
