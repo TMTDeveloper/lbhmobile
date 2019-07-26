@@ -46,7 +46,17 @@ page-about {
     }
 
     ion-select{
-        max-width: 70% !important;
+        max-width: 100% !important;
+    }
+
+    .item-inner{
+        border-style: none !important;
+    }
+
+    .select{
+        width: 100%;
+        background: url("../assets/imgs/burger.png") no-repeat right;
+        appearance: none;
     }
 
     .select-md .select-placeholder{

@@ -64,9 +64,7 @@
   },
   "description": "An Ionic project",
   "cordova": {
-    "platforms": [
-      "android"
-    ],
+    "platforms": [],
     "plugins": {
       "cordova-plugin-device": {},
       "cordova-plugin-ionic-keyboard": {},

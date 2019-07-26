@@ -12,12 +12,11 @@
         </ion-col>
         <ion-col col-2>
           <ion-item color="primary">
-            <ion-label color="light">
-              <!-- Tipe Dokumen -->
-            </ion-label>
-            <!-- <button (click)="askChangePassword()" ion-button outline item-start>Ubah password</button> -->
-            <ion-select color="light" item-end interface="popover" placeholder="<ion-icon name='menu'></ion-icon>"
-              placeholder-color="light">
+            <ion-select color="light" item-end
+            interface="popover"
+            name="menu"
+            placeholder=""
+            placeholder-color="light">
               <ion-option *ngFor="let item of dokumenList" (ionSelect)="setDocType(item.id_keyword)"
                 [value]="item.id_keyword">
                 {{item.value_keyword}}</ion-option>
