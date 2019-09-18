@@ -28,30 +28,55 @@ export class LoginPage {
     private loadingCtrl: LoadingController,
     public events: Events,
     private platform: Platform
-  ) {}
+  ) { }
 
-  checkCookie()
-  {
+  checkCookie() {
     // always check if has cookie to continue session
     // session lasts ~5 mins
   }
 
-  ionViewWillEnter()
-  {
+  ionViewWillEnter() {
     // if in login page, back btn exits app
     this.events.subscribe('user:quit',
       response => this.closeApp()
     );
+    this.checkVersion();
   }
 
-  ionViewWillExit()
-  {
+  ionViewWillExit() {
     // else, back btn logs user out
     //this.events.unsubscribe('user:quit');
   }
 
-  closeApp()
-  {
+  thisVersionInt = 1;
+  thisVersionStr = "0.01";
+
+  getCurVersion() {
+    return "0.01";
+  }
+
+  checkVersion() {
+    if (this.thisVersionStr != this.getCurVersion()) {
+      this.askToUpdate();
+    }
+  }
+
+  askToUpdate() {
+    let alert = this.alertCtrl.create({
+      title: "Versi ini sudah tidak didukung!",
+      subTitle: "Mohon unduh versi terbaru",
+      buttons: [{
+        text: 'OK',
+        handler: data => {
+          console.log('Exited app bcs version mismatch');
+          this.closeApp();
+        }
+      }]
+    });
+    alert.present();
+  }
+
+  closeApp() {
     this.platform.exitApp();
   }
 
@@ -98,7 +123,7 @@ export class LoginPage {
     alert.present();
   }
 
-  showLogin(){
+  showLogin() {
     let alert = this.alertCtrl.create({
       inputs: [
         {

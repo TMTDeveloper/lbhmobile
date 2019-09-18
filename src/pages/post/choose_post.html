@@ -81,9 +81,11 @@
                 <!-- 3rd row -->
                 <ion-col col-6>
                     <button item-end ion-button class="cross-btn-3"
-                    (click)="newKasus()">
-                    Input<br/>
-                    Kasus</button>
+                    (click)="role==1?newKasus():false">
+                    <span [hidden]="role==2?true:false">
+                        Input<br/>
+                        Kasus
+                    </span></button>
                 </ion-col>
                 <ion-col col-6>
 
@@ -96,9 +98,11 @@
                 </ion-col>
                 <ion-col item-start col-6 id="margins-2">
                     <button ion-button class="cross-btn-4"
-                    (click)="newKegiatan()">
-                    Input<br/>
-                    Kegiatan</button>
+                    (click)="role==1?newKegiatan():false">
+                    <span [hidden]="role==2?true:false">
+                        Input<br/>
+                        Kegiatan
+                    </span></button>
                 </ion-col>
             </ion-row>
         </ion-grid>
