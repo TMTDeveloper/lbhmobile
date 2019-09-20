@@ -12,6 +12,7 @@ import { AuthService } from "../../providers/auth-service";
 
 import { TabsPage } from "../tabs/tabs";
 import { Credentials } from "../../providers/credentials.holder";
+import { BackendService } from "../../providers/backend.service";
 
 @Component({
   selector: "page-login",
@@ -27,7 +28,8 @@ export class LoginPage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     public events: Events,
-    private platform: Platform
+    private platform: Platform,
+    private service: BackendService
   ) { }
 
   checkCookie() {
@@ -40,7 +42,7 @@ export class LoginPage {
     this.events.subscribe('user:quit',
       response => this.closeApp()
     );
-    this.checkVersion();
+    this.getCurVersion();
   }
 
   ionViewWillExit() {
@@ -48,15 +50,23 @@ export class LoginPage {
     //this.events.unsubscribe('user:quit');
   }
 
-  thisVersionInt = 1;
-  thisVersionStr = "0.01";
+  clientVerInt = 1;
+  clientVerStr = "1.00";
+
+  curVerStr = "";
 
   getCurVersion() {
-    return "0.01";
+    this.service.getreq("/version").subscribe( response =>{
+      if (response != null)
+      {
+        this.curVerStr = response["version"];
+        this.checkVersion();
+      }
+    });
   }
 
   checkVersion() {
-    if (this.thisVersionStr != this.getCurVersion()) {
+    if (this.clientVerStr != this.curVerStr) {
       this.askToUpdate();
     }
   }
