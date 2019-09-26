@@ -84,7 +84,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-label stacked no-border-top>Nama Korban</ion-label>
+        <ion-label stacked no-border-top>Pelapor</ion-label>
         <ion-input formControlName="penggugat" type="text"></ion-input>
       </ion-item>
 
@@ -108,7 +108,7 @@
       <div>
         <ion-item text-wrap>
           <ion-label stacked no-border-top>Kronologi</ion-label>
-          <ion-textarea formControlName="kronologi" rows="5" style="height:100%" placeholder="Deskripsikan kasus..."></ion-textarea>
+          <ion-textarea formControlName="kronologi" rows="5" style="height:100%" placeholder="Deskripsikan kasus. Tuliskan dalam format 5W + 1H!"></ion-textarea>
         </ion-item>
       </div>
 
@@ -219,7 +219,7 @@
 
 <ion-footer>
   <div *ngIf="type==1" text-center>
-    <ion-card [color]="formKasus.valid?'primary':'danger'" (click)="formKasus.valid?createNewPost():''">
+    <ion-card [color]="formKasus.valid?'primary':'danger'" (click)="formKasus.valid?confirmCreatePost():''">
       <ion-card-content>
         <h2 *ngIf="formKasus.valid">Kirim</h2>
         <h2 *ngIf="!formKasus.valid">Isi formulir dengan lengkap</h2>
@@ -228,7 +228,7 @@
   </div>
 
   <div *ngIf="type==2" text-center>
-    <ion-card [color]="formKegiatan.valid?'primary':'danger'" (click)="formKegiatan.valid?createNewPost():''">
+    <ion-card [color]="formKegiatan.valid?'primary':'danger'" (click)="formKegiatan.valid?confirmCreatePost():''">
       <ion-card-content>
         <h2 *ngIf="formKegiatan.valid">Kirim</h2>
         <h2 *ngIf="!formKegiatan.valid">Isi formulir dengan lengkap</h2>

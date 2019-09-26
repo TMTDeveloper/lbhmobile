@@ -182,11 +182,21 @@ export class NewPostPage {
     { value: "Lain-lain", id: 3 }
   ];
 
+  kegiatanList_OLD = [
+    { value: "Peserta Acara", id: 1 }
+  ]
+
   kegiatanList = [
-    { value: "Peserta Acara", id: 1 },
-    { value: "Pelaksana Acara", id: 2 },
-    { value: "Acara Kerjasama", id: 3 },
-    { value: "Lain-lain", id: 4 }
+    { value: "Pelatihan", id: 1 },
+    { value: "Diskusi", id: 2 },
+    { value: "Seminar", id: 3 },
+    { value: "Pendampingan", id: 4 },
+    { value: "Mediasi", id: 5 },
+    { value: "Audiensi", id: 6 },
+    { value: "Pembicara", id: 7 },
+    { value: "Unjuk rasa", id: 8 },
+    { value: "Riset", id: 9 },
+    { value: "Lain-lain", id: 10 }
   ];
 
   propinsiList = [];
@@ -365,6 +375,29 @@ export class NewPostPage {
   }
 
   items1 = [];
+
+  confirmCreatePost()
+  {
+    let alert = this.alertCtrl.create({
+      title: "Kirimkan input data?",
+      subTitle: "Mohon periksa kebenaran data yang ditulis sebelum mengirim",
+      buttons: [{
+        text: 'Kirim',
+        handler: data => {
+          console.log('user confirmed create new post');
+          this.createNewPost();
+        }
+      },
+      {
+        text: 'Batal',
+        role: 'cancel',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    alert.present();
+  }
 
   createNewPost = async () => {
 
