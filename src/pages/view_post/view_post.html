@@ -7,7 +7,8 @@
       <ion-title>
         <div class="item item-avatar">
           <!-- <h2>{{judul}}</h2> -->
-          <h2 *ngIf="view=='post'">Data Kasus</h2>
+          <h2 *ngIf="view=='post' && type=='1'">Data Kasus</h2>
+          <h2 *ngIf="view=='post' && type=='2'">Data Kegiatan</h2>
           <h2 *ngIf="view=='comment'">Komentar</h2>
           <h2 *ngIf="view=='progress'">Perkembangan</h2>
         </div>

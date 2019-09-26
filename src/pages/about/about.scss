@@ -73,4 +73,8 @@ page-about {
         align-items: center;
         flex-direction: column;
     }
+
+    .select-text, .select-icon-inner{
+        display: none !important;
+    }
 }
