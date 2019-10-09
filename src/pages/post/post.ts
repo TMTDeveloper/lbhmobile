@@ -592,6 +592,7 @@ export class PostPage implements AfterViewInit {
 
     // set the query
     this.postQuery2["filter[where][type]"] = 2;
+    this.postQuery2["filter[where][organisasi]"] = this.creds.data.organisasi;
 
     // add the offset
     this.postQuery2["filter[skip]"] = this.items2.length;
@@ -658,6 +659,8 @@ export class PostPage implements AfterViewInit {
     // set the query
     this.postQueryClosed["filter[where][type]"] = 1;
     delete this.postQueryClosed["filter[where][posted_by]"];
+    this.postQueryClosed["filter[where][organisasi]"] = this.creds.data.organisasi;
+
     // add the offset
     this.postQueryClosed["filter[skip]"] = this.items3.length;
 
@@ -777,7 +780,7 @@ export class PostPage implements AfterViewInit {
   organisasiLabel = "";
 
   namaOrganisasi(organisasi) {
-    return this.organisasiList[organisasi].value_keyword;
+    return this.organisasiList[organisasi-1].value_keyword;
   }
 
   namaOrganisasi_OLD(organisasi) {
