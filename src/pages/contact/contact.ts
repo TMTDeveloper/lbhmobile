@@ -67,7 +67,7 @@ export class ContactPage {
         newItems.forEach(newItem => {
           // append the new posts to current array
 
-          this.allPosts.push(newItem);
+          if (newItem.includes("PST")) this.allPosts.push(newItem);
         });
 
         //console.log(this.allPosts.length);
