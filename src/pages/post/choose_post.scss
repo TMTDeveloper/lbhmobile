@@ -72,6 +72,10 @@ page-choose_post {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    @media only screen and (max-width: 350px) {
+        font-size: 10px;
+    }
+
     .cross-btn-1{
         border-top: 0px !important;
         border-right: 1px solid #ffffff !important;

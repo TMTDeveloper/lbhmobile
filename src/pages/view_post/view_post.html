@@ -390,7 +390,7 @@
   </div>
   <div *ngIf="view=='progress' && creds.data.role==1">
     <ion-toolbar>
-      <ion-textarea rows="1" type="text" class="form-control" placeholder="Tulis Perkembangan..."
+      <ion-textarea auto-grow="true" type="text" class="form-control" placeholder="Tulis Perkembangan..."
         [(ngModel)]="message2"></ion-textarea>
       <ion-buttons right>
         <button (click)="askSendProgress()" ion-button icon-only item-right class="send-chat-button">
