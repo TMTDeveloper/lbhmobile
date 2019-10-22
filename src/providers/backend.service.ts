@@ -22,8 +22,9 @@ export class MyCustomHttpUrlEncodingCodec extends HttpUrlEncodingCodec {
 export class BackendService {
   // baseurlxpay:string='http://202.158.20.141:5001/xpay-service/api/'
 
-  baseurl: string = "http://178.128.212.2:3003/";
-  //178.128.212.2:3003
+  baseurl: string = "http://68.183.191.201:3003/";
+  //178.128.212.2:3003 (digital ocean)
+  //68.183.191.201:3003 (server LBH)
   moni: boolean = false;
   constructor(
     public http: Http,

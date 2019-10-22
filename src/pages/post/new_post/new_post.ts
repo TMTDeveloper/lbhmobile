@@ -399,10 +399,19 @@ export class NewPostPage {
     alert.present();
   }
 
+  formatLineBreaks()
+  {
+    console.log(this.kronologi);
+  }
+
   createNewPost = async () => {
 
     let url;
     let paramsToSend;
+
+    // we format the line breaks
+    this.formatLineBreaks();
+
 
     // kasus
     if (this.type == 1) {

@@ -11,7 +11,9 @@ page-new_post {
     box-shadow: none !important;
   }
 
- 
+  p {
+    white-space: pre-line;
+  }
 
   ion-input {
     border-radius: 30px !important;
