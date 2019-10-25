@@ -13,6 +13,7 @@ import { AuthService } from "../../providers/auth-service";
 import { TabsPage } from "../tabs/tabs";
 import { Credentials } from "../../providers/credentials.holder";
 import { BackendService } from "../../providers/backend.service";
+import { CreditsPage } from "./credits";
 
 @Component({
   selector: "page-login",
@@ -166,5 +167,9 @@ export class LoginPage {
       ]
     });
     alert.present();
+  }
+
+  showCredits() {
+    this.nav.push(CreditsPage);
   }
 }

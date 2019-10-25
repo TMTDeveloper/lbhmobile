@@ -5,7 +5,7 @@ page-login {
     background: #ffffff;
 
     .logo-row {
-      padding-top: 15vh;
+      padding-top: 10vh;
       padding-bottom: 25px;
       min-height: 0vh;
       font-size: 3em;
@@ -79,6 +79,19 @@ page-login {
       color: #ffffff;
       font-size: 0.8em;
     }
+  }
+
+  .btn-size{
+    font-size: smaller;
+
+    margin-bottom: 50px;
+    background: #1abc9cbe;
+    border-radius: 30px !important;
+
+    display: block;
+    max-width: 100px;
+    max-height: 20px;
+    margin: auto;
   }
 
 }

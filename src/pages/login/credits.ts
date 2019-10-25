@@ -28,6 +28,11 @@ export class CreditsPage {
     public events: Events
   ) {}
 
+  backToLogin()
+  {
+    this.nav.pop();
+  }
+
   checkCookie()
   {
     // always check if has cookie to continue session

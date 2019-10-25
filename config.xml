@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="forum.lbh" version="1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>LBH Digital Platform</name>
-    <description>Digital Support for LBH Indonesia</description>
+    <name>SIP</name>
+    <description>Sistem Informasi Paralegal</description>
     <author email="rezazenaulia@gmail.com" href="http://github.com/tmtdeveloper">TMT Developer</author>
     <content src="index.html" />
     <access origin="*" />
@@ -20,7 +20,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="FadeSplashScreen" value="true" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="26" />
+    <preference name="android-minSdkVersion" value="18" />
     <preference name="android-targetSdkVersion" value="27" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
