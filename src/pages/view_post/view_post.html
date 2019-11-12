@@ -148,7 +148,7 @@
       </ion-item>
     </div>
 
-    <div *ngIf="images.length>0">
+    <div>
       <ion-navbar color="primary">
         <ion-title>
           Dokumen Pendukung
@@ -165,6 +165,16 @@
           <p>{{(doc.size/1000000).toFixed(2)+'MB'}}</p>
           <button ion-button clear item-end
             (click)="downloadAndOpenPdf(doc.filename,doc.originalfilename)">Download</button>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-list-header>
+          <button (click)="addFile()" ion-button outline item-end>Tambah Dokumen pendukung</button>
+        </ion-list-header>
+        <ion-item *ngFor="let item of uploads">
+          <ion-label>{{item.substr(item.lastIndexOf("/") + 1)}}</ion-label>
+          <button ion-button outline item-end>Hapus</button>
         </ion-item>
       </ion-list>
 

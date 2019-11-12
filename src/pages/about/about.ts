@@ -28,8 +28,8 @@ export class AboutPage {
   ) { }
 
   ngAfterViewInit() {
-    this.updateDokumen();
-    //this.getDocument();
+    this.updateDokumenAll();
+    //this.getDocumentAll();
     //console.log(this.cred.data);
   }
 
@@ -70,6 +70,34 @@ export class AboutPage {
     );
   }
 
+  updateDokumenAll() {
+    this.dokumenList = [];
+
+    let query = {
+      "filter[where][and][0][keyword]": "jenis_dokumen",
+      "filter[where][and][1][active]": "Y"
+    };
+
+    this.service.getReqNew("generals", query).subscribe(
+      response => {
+        if (response != null) {
+          // view the created page
+          //console.log(response);
+          let newList: any = response;
+          this.dokumenList = newList;
+          
+          this.getDocumentAll();
+        }
+      },
+      error => {
+        if (error != null) {
+          //console.log("failed to get dokumen!");
+          //console.log(error);
+        }
+      }
+    );
+  }
+
   setDocType(index) {
     this.documentType = index;
     this.getDocument();
@@ -89,6 +117,28 @@ export class AboutPage {
 
     this.service
       .postreq("findupload", { "where": { "no_post": "document", "type": this.documentType } })
+      .subscribe(response => {
+        if (response != null) {
+          //console.log(response);
+          this.documents = response;
+          this.result = JSON.stringify(response);
+          loader.dismiss();
+        }
+      });
+  }
+
+  getDocumentAll() {
+    const loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
+    });
+    loader.present();
+
+    this.documents = [];
+    //console.log(this.documentType);
+
+    this.service
+      .postreq("findupload", { "where": { "no_post": "document" }, "order":"id DESC", "limit":20 })
       .subscribe(response => {
         if (response != null) {
           //console.log(response);

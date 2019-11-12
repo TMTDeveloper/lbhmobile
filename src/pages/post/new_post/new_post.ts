@@ -503,8 +503,14 @@ export class NewPostPage {
     });
     loading.present();
     let alert = this.alertCtrl.create({
-      title: "Error",
-      subTitle: "Pengirimin formulir gagal",
+      title: "Pengirimin formulir gagal",
+      subTitle: "Coba mengirimkan lagi.",
+      buttons: ["Ok"]
+    });
+
+    let alertMediaUploadFailed = this.alertCtrl.create({
+      title: "Gagal menambahkan dokumen",
+      subTitle: "Silahkan menambahkan lagi di kasus.",
       buttons: ["Ok"]
     });
 
@@ -537,9 +543,14 @@ export class NewPostPage {
             }
           );
 
+          // upload image operation [ADD WARNING IF FAILED TO UPLOAD]
           if (this.uploads.length > 0) {
             this.uploadImage(response.no_post).then(response => {
               loading.dismiss();
+              this.viewCreatedPost(response);
+            }, error => {
+              loading.dismiss();
+              alertMediaUploadFailed.present();
               this.viewCreatedPost(response);
             });
           } else {

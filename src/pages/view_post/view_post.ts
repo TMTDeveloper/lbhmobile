@@ -11,7 +11,7 @@ import {
   DocumentViewer,
   DocumentViewerOptions
 } from "@ionic-native/document-viewer";
-import { FileTransfer } from "@ionic-native/file-transfer";
+import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer";
 import { FileOpener } from "@ionic-native/file-opener";
 import { BackendService } from "../../providers/backend.service";
 import { LoadingController } from "ionic-angular";
@@ -22,6 +22,8 @@ import { AppModule } from "../../app/app.module";
 import * as moment from "moment";
 import { Credentials } from "../../providers/credentials.holder";
 import { AndroidPermissions } from "@ionic-native/android-permissions";
+import { FileChooser } from "@ionic-native/file-chooser";
+import { FilePath } from "@ionic-native/file-path";
 
 @Component({
   selector: "page-view_post",
@@ -49,7 +51,9 @@ export class ViewPostPage {
     public navParams: NavParams,
     public creds: Credentials,
     public alert: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private fileChooser: FileChooser,
+    private filePath: FilePath
   ) {
     this.getUserData();
 
@@ -161,7 +165,7 @@ export class ViewPostPage {
     this.content.resize();
   }
 
-  formatNewline(text){
+  formatNewline(text) {
     let formatted = this.replaceAll(text, '\n', '<br\/>');
 
     return formatted;
@@ -170,7 +174,7 @@ export class ViewPostPage {
   replaceAll(str, find, replace) {
     return str.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
   }
-  
+
   escapeRegExp(str) {
     return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
   }
@@ -794,7 +798,7 @@ export class ViewPostPage {
     alert.present();
   }
 
-  approveProgress(development){
+  approveProgress(development) {
     // subscribe to patch request.
     // if fail, empty pembelajaran
     development.approved = "Y";
@@ -802,8 +806,8 @@ export class ViewPostPage {
     //console.log(development);
 
     let query = {
-      "where[no_post]":development.no_post,
-      "where[ind]":development.ind
+      "where[no_post]": development.no_post,
+      "where[ind]": development.ind
     }
 
     this.service.patchreqnew("developments", development, query).subscribe(
@@ -889,8 +893,7 @@ export class ViewPostPage {
     );
   }
 
-  showHint1()
-  {
+  showHint1() {
     let alert = this.alert.create({
       title: 'Laporan ini sedang menunggu penilaian pengacara.',
       buttons: [
@@ -902,8 +905,7 @@ export class ViewPostPage {
     alert.present();
   }
 
-  showHint2()
-  {
+  showHint2() {
     let alert = this.alert.create({
       title: 'Laporan ini sudah dinilai baik oleh pengacara.',
       buttons: [
@@ -915,8 +917,7 @@ export class ViewPostPage {
     alert.present();
   }
 
-  showHint3()
-  {
+  showHint3() {
     let alert = this.alert.create({
       title: 'Laporan ini sudah dinilai.',
       buttons: [
@@ -937,5 +938,95 @@ export class ViewPostPage {
     });
     loader.present();
     return loader;
+  }
+
+  addFile() {
+    this.fileChooser
+      .open()
+      .then(uri => {
+        // add the file uri
+        this.filePath.resolveNativePath(uri).then(filePath => {
+          // check file size (max 5mb)
+          // this.getFileSize(filePath).
+          // then(function(fileSize){
+          //    //console.log(fileSize);
+
+          //    if (fileSize<500000) this.uploads.push(filePath);
+          //    else this.alertMaxSize();
+          // }).
+          // catch(function(err){
+          //   console.error(err);
+          // });
+
+          // push
+          this.uploads.push(filePath);
+        });
+      })
+      .catch(e => {
+        // alert
+      });
+  }
+
+  uploads = [];
+  test: string;
+  testres: string;
+  optionsss: string;
+
+  async uploadImage(no_post) {
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    for (let element of this.uploads) {
+      var options = {
+        fileKey: "file",
+        fileName: element.substr(element.lastIndexOf("/") + 1),
+        chunkedMode: false,
+        mimeType: "multipart/form-data",
+        params: { no_post: no_post }
+      };
+      this.optionsss = JSON.stringify(options);
+      await fileTransfer
+        .upload(element, "http://178.128.212.2:3003/uploadpost", options)
+        .then(
+          res => {
+            this.testres = JSON.stringify(res);
+          },
+          error => {
+            this.test = JSON.stringify(error);
+          }
+        );
+    }
+  }
+
+  uploadFiles() {
+    let loading = this.loadingCtrl.create({
+      content: "Loading..."
+    });
+    loading.present();
+
+    let alertMediaUploadFailed = this.alert.create({
+      title: "Gagal menambahkan dokumen",
+      subTitle: "Silahkan menambahkan lagi di kasus.",
+      buttons: ["Ok"]
+    });
+
+    // upload image operation [ADD WARNING IF FAILED TO UPLOAD]
+    if (this.uploads.length > 0) {
+      this.uploadImage(this.post_id).then(response => {
+        loading.dismiss();
+        this.refreshImgList();
+      }, error => {
+        loading.dismiss();
+        alertMediaUploadFailed.present();
+      });
+    } else {
+      loading.dismiss();
+    }
+  }
+
+  refreshImgList() {
+    this.uploads = [];
+    this.images = [];
+
+    this.getFileAttachments();
   }
 }

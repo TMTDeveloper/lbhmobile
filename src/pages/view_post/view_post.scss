@@ -41,7 +41,7 @@ page-view_post {
         padding-top: 0px;
         padding-bottom: 0px;
         margin-top: -27px;
-        margin-bottom: -27px;
+        margin-bottom: -100px;
         // min-height: 50px;
         // height: 70px;
         // display: flex;
@@ -147,5 +147,9 @@ page-view_post {
     .yellow-button{
       color: yellow !important;
       border-color: yellow !important;
+    }
+
+    ion-content > .scroll-content{
+      margin-bottom: 227px !important;
     }
 }
