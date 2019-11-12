@@ -310,7 +310,7 @@
               <div outline color="secondary">
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
                 <p [ngStyle]="{ 'white-space': 'pre-wrap' }">{{msg.message}}</p>
-                <button *ngIf="role==1 && msg.approved=='N'" (click)="showHint1()" color="primary" ion-button outline item-start>Acc</button>
+                <button *ngIf="role==1 && msg.approved=='N'" class="yellow-button" (click)="showHint1()" color="primary" ion-button outline item-start>Acc</button>
                 <button *ngIf="role==1 && msg.approved=='Y'" (click)="showHint2()" color="secondary" ion-button outline item-start>Acc</button>
                 <button *ngIf="role==2 && msg.approved=='N'" (click)="askApproveProgress(msg)" color="danger" ion-button outline item-start>Acc</button>
                 <button *ngIf="role==2 && msg.approved=='Y'" (click)="showHint3()" color="secondary" ion-button outline item-start>Acc</button>
@@ -378,8 +378,10 @@
     </ion-card>
   </div>
   <div *ngIf="view=='comment'">
-    <ion-toolbar>
-      <input type="text" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message"
+    <ion-toolbar class="chat-toolbar">
+      <ion-textarea auto-grow="true" type="text" class="form-control" placeholder="Tulis Perkembangan..."
+        [(ngModel)]="message"></ion-textarea>
+      <input type="text" hidden="true" class="form-control" placeholder="Tulis Komentar..." [(ngModel)]="message"
         (keyup.enter)="send()">
       <ion-buttons right>
         <button (click)="send()" ion-button icon-only item-right class="send-chat-button">
@@ -389,7 +391,7 @@
     </ion-toolbar>
   </div>
   <div *ngIf="view=='progress' && creds.data.role==1">
-    <ion-toolbar>
+    <ion-toolbar class="chat-toolbar">
       <ion-textarea auto-grow="true" type="text" class="form-control" placeholder="Tulis Perkembangan..."
         [(ngModel)]="message2"></ion-textarea>
       <ion-buttons right>

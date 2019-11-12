@@ -135,4 +135,17 @@ page-view_post {
         }
       }
     }
+
+    .chat-toolbar{
+      height: 100px !important;
+    }
+
+    .form-control .text-input{
+      height: 70px !important;
+    }
+
+    .yellow-button{
+      color: yellow !important;
+      border-color: yellow !important;
+    }
 }

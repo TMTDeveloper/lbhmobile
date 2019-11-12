@@ -36,6 +36,12 @@ page-choose_post {
         padding-top: 10vh;
         padding-right: 5vw;
         padding-left: 5vw;
+
+        font-size: 15px !important;
+
+        @media only screen and (max-width: 350px) {
+            font-size: 10px !important;
+        }
     }
 
     .main-bg{
@@ -70,10 +76,6 @@ page-choose_post {
 
         font-size: 2em;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    @media only screen and (max-width: 350px) {
-        font-size: 10px;
     }
 
     .cross-btn-1{

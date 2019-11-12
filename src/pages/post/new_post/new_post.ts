@@ -333,13 +333,18 @@ export class NewPostPage {
         "filter[order]": "name asc"
       };
       this.kelurahanList = [];
+      let emptyLabel = { id: "0000000000", district_id: "0000000", name: "TIDAK TERSEDIA" };
       this.service.getReqNew("villages", query).subscribe(
         response => {
           if (response != null) {
             // view the created page
             //console.log(response);
             let newList: any = response;
+            console.log(response);
             this.kelurahanList = newList;
+            this.kelurahanList.reverse();
+            this.kelurahanList.push(emptyLabel);
+            this.kelurahanList.reverse();
           }
         },
         error => {
@@ -411,6 +416,9 @@ export class NewPostPage {
 
     // we format the line breaks
     this.formatLineBreaks();
+
+    // begin by uploading images first.
+    // if image upload fails, end operation.
 
 
     // kasus
