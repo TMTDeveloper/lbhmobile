@@ -170,12 +170,15 @@
 
       <ion-list>
         <ion-list-header>
-          <button (click)="addFile()" ion-button outline item-end>Tambah Dokumen pendukung</button>
+          <button *ngIf="role==1" (click)="addFile()" ion-button outline item-end>Tambah Dokumen pendukung</button>
         </ion-list-header>
-        <ion-item *ngFor="let item of uploads">
+        <ion-item *ngFor="let item of uploads; index as i">
           <ion-label>{{item.substr(item.lastIndexOf("/") + 1)}}</ion-label>
-          <button ion-button outline item-end>Hapus</button>
+          <button (click)="removeUpload(i)" ion-button outline item-end>Hapus</button>
         </ion-item>
+        <ion-list-header>
+          <button *ngIf="uploads.length>0" (click)="uploadFiles()" color="danger" ion-button outline item-end>Simpan</button>
+        </ion-list-header>
       </ion-list>
 
       <!-- <ion-slides>
@@ -239,7 +242,10 @@
           <ion-row>
             <ion-col>
               <div outline style="float:right; text-align: right;" color="primary">
-                <h3><b>{{msg.posted_name}}</b></h3>
+                <ion-item class="user-pic-right">
+                  <img src="assets/imgs/user_photo.jpg" color="blue">
+                </ion-item>
+                <h3 style="padding-top: 50px;"><b>{{msg.posted_name}}</b></h3>
                 <p>{{msg.message}}</p>
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
               </div>
@@ -266,6 +272,9 @@
             </ion-col> -->
             <ion-col>
               <div outline color="secondary">
+                <ion-item class="user-pic">
+                  <img src="assets/imgs/user_photo.jpg">
+                </ion-item>
                 <h3><b>{{msg.posted_name}}</b></h3>
                 <p> {{msg.message}} </p>
                 <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>

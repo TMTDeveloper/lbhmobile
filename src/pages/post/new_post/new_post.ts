@@ -683,8 +683,9 @@ export class NewPostPage {
         params: { no_post: no_post }
       };
       this.optionsss = JSON.stringify(options);
+      // old url = http://178.128.212.2:3003/uploadpost
       await fileTransfer
-        .upload(element, "http://178.128.212.2:3003/uploadpost", options)
+        .upload(element, "http://68.183.191.201:3003/uploadpost", options)
         .then(
           res => {
             this.testres = JSON.stringify(res);

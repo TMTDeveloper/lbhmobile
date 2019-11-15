@@ -12,7 +12,7 @@ import {
   DocumentViewer,
   DocumentViewerOptions
 } from "@ionic-native/document-viewer";
-import { FileTransfer } from "@ionic-native/file-transfer";
+import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer";
 import { FileOpener } from "@ionic-native/file-opener";
 import { BackendService } from "../../providers/backend.service";
 import { LoadingController } from "ionic-angular";
@@ -25,6 +25,8 @@ import { Credentials } from "../../providers/credentials.holder";
 import { AndroidPermissions } from "@ionic-native/android-permissions";
 
 import { SHA256 } from "crypto-js";
+import { FileChooser } from "@ionic-native/file-chooser";
+import { FilePath } from "@ionic-native/file-path";
 
 @Component({
   selector: "page-profile",
@@ -41,6 +43,8 @@ export class ProfilePage {
     private androidPermissions: AndroidPermissions,
     private document: DocumentViewer,
     private file: File,
+    public fileChooser: FileChooser,
+    public filePath: FilePath,
     private transfer: FileTransfer,
     public navCtrl: NavController,
     private opener: FileOpener,
@@ -52,15 +56,15 @@ export class ProfilePage {
     public events: Events,
     public toastCtrl: ToastController
   ) {
-      this.name = creds.data.name;
-      this.organisasi = creds.data.organisasi;
-      this.role = creds.data.role;
-      this.email = creds.data.email;
+    this.name = creds.data.name;
+    this.organisasi = creds.data.organisasi;
+    this.role = creds.data.role;
+    this.email = creds.data.email;
 
-      this.updateOrganisasi();
+    this.updateOrganisasi();
   }
 
-  roleIs(role){
+  roleIs(role) {
     if (role == 1) {
       return "Paralegal";
     }
@@ -108,10 +112,10 @@ export class ProfilePage {
   organisasiLabel = "";
 
   organisasiIs(organisasi) {
-    return this.organisasiList[organisasi-1].value_keyword;
+    return this.organisasiList[organisasi - 1].value_keyword;
   }
 
-  organisasiIs_OLD(organisasi){
+  organisasiIs_OLD(organisasi) {
     if (organisasi == 0) {
       return "LBH Jakarta";
     }
@@ -205,25 +209,112 @@ export class ProfilePage {
     alert.present();
   }
 
-  changePassword(newPassword:string){
+  changePassword(newPassword: string) {
     this.creds.data.password = SHA256(newPassword).toString().toUpperCase();
-    
+
     this.service
       .patchreq("users/" + this.creds.data.email, this.creds.data)
       .subscribe(response => {
         if (response != null) {
         }
       },
-      error => {
-      },
-      () => {
-        //console.log("success change pass");
-        this.promptRelog();
+        error => {
+        },
+        () => {
+          //console.log("success change pass");
+          this.promptRelog();
+        });
+  }
+
+  hasPic;
+
+  getPic() {
+    // try to get pic. if no results, hasPic = false
+  }
+
+  photo;
+
+  askChangePic() {
+    this.fileChooser
+      .open()
+      .then(uri => {
+        // add the file uri
+        this.filePath.resolveNativePath(uri).then(filePath => {
+          // check file size (max 5mb)
+          // this.getFileSize(filePath).
+          // then(function(fileSize){
+          //    //console.log(fileSize);
+
+          //    if (fileSize<500000) this.uploads.push(filePath);
+          //    else this.alertMaxSize();
+          // }).
+          // catch(function(err){
+          //   console.error(err);
+          // });
+
+          // push
+          this.photo = filePath;
+          this.confirmChangePic();
+        });
+      })
+      .catch(e => {
+        // alert
       });
   }
 
-  promptRelog()
-  {
+  confirmChangePic() {
+    let alert = this.alert.create({
+      subTitle: "Apakah anda ingin menggunakan foto ini?",
+      buttons: [
+        {
+          text: "Ya",
+          handler: () => {
+            this.changePic();
+          }
+        },
+        {
+          text: "Tidak",
+          role: "cancel",
+          handler: () => {
+            //console.log("Cancel logout");
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  test: string;
+  testres: string;
+  optionsss: string;
+
+  async changePic() {
+    // if hasPic, patch. else upload new
+
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    var options = {
+      fileKey: "file",
+      fileName: this.photo.substr(this.photo.lastIndexOf("/") + 1),
+      chunkedMode: false,
+      mimeType: "multipart/form-data",
+      params: { email: this.email }
+    };
+    this.optionsss = JSON.stringify(options);
+    // old url = http://178.128.212.2:3003/uploadpost
+    await fileTransfer
+      .upload(this.photo, "http://68.183.191.201:3003/uploadpost", options)
+      .then(
+        res => {
+          this.testres = JSON.stringify(res);
+        },
+        error => {
+          this.test = JSON.stringify(error);
+        }
+      );
+  }
+
+  promptRelog() {
     let alert = this.alert.create({
       title: 'Password berhasil diubah. Tolong masuk kembali.',
       buttons: [

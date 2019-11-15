@@ -985,7 +985,7 @@ export class ViewPostPage {
       };
       this.optionsss = JSON.stringify(options);
       await fileTransfer
-        .upload(element, "http://178.128.212.2:3003/uploadpost", options)
+        .upload(element, "http://68.183.191.201:3003/uploadpost", options)
         .then(
           res => {
             this.testres = JSON.stringify(res);
@@ -1021,6 +1021,10 @@ export class ViewPostPage {
     } else {
       loading.dismiss();
     }
+  }
+
+  removeUpload(index){
+    this.uploads.splice(index,1);
   }
 
   refreshImgList() {
