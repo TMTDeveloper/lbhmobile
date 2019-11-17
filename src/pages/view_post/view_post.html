@@ -243,7 +243,8 @@
             <ion-col>
               <div outline style="float:right; text-align: right;" color="primary">
                 <ion-item class="user-pic-right">
-                  <img src="assets/imgs/user_photo.jpg" color="blue">
+                  <!-- <img src="assets/imgs/user_photo.jpg" color="blue"> -->
+                  <img src="{{getUserPhoto(msg.posted_by)}}" onerror="this.src='assets/imgs/user.png';" color="blue">
                 </ion-item>
                 <h3 style="padding-top: 50px;"><b>{{msg.posted_name}}</b></h3>
                 <p>{{msg.message}}</p>
@@ -273,11 +274,14 @@
             <ion-col>
               <div outline color="secondary">
                 <ion-item class="user-pic">
-                  <img src="assets/imgs/user_photo.jpg">
+                  <!-- <img src="assets/imgs/user_photo.jpg"> -->
+                  <img src="{{getUserPhoto(msg.posted_by)}}" onerror="this.src='assets/imgs/user.png';" >
                 </ion-item>
-                <h3><b>{{msg.posted_name}}</b></h3>
+                <h2> <span *ngIf="!msg.message" class="time-display">Kasus dibuat pada: {{dateToTime(msg.date_created)}} </span></h2>
+                <h2> <span *ngIf="!msg.message" class="time-display">oleh: <b>{{msg.posted_name}}</b></span></h2>
+                <h3 *ngIf="msg.message"><b>{{msg.posted_name}}</b></h3>
                 <p> {{msg.message}} </p>
-                <h2> <span class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
+                <h2> <span *ngIf="msg.message" class="time-display">{{dateToTime(msg.date_created)}} </span></h2>
               </div>
             </ion-col>
           </ion-row>

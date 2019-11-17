@@ -25,7 +25,7 @@
     <div>
         <ion-title>
             <ion-item class="user-pic">
-                <img src="assets/imgs/user_photo.jpg">
+                <img src="{{getUserPhoto(email)}}" onerror="this.src='assets/imgs/user.png';" >
             </ion-item>
             
             <ion-item>

@@ -297,6 +297,8 @@ export class ViewPostPage {
             this.items1.reverse();
           });
 
+          this.getUserList(this.items1);
+
           //console.log(this.items1.length);
 
           // populate the list
@@ -334,6 +336,8 @@ export class ViewPostPage {
               this.items1.reverse();
             });
 
+            //this.getUserList(this.items1);
+
             //console.log(this.items1.length);
 
             // populate the list
@@ -345,6 +349,33 @@ export class ViewPostPage {
           }
         });
     }, this.timeOut);
+  }
+
+  userList = [];
+
+  getUserList(items){
+    // make a list of active users in this post
+    // used for getting profile pictures
+    // don't forget to purge this list when refreshing
+
+    items.forEach(item => {
+      // append the new posts to current array
+      if (this.userList.includes(item.posted_by)){
+        this.userList.push(item.posted_by);
+      }
+    });
+
+    //console.log("list of users");
+    //console.log(this.userList);
+  }
+
+  getUserPhoto(email){
+    // use url, if error, use default pic
+    let urlString;
+
+    urlString = "http://68.183.191.201:3003/downloadprofpic?email=" + email;
+
+    return urlString
   }
 
   askSendProgress() {

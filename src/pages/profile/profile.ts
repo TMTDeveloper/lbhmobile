@@ -226,10 +226,13 @@ export class ProfilePage {
         });
   }
 
-  hasPic;
+  getUserPhoto(email){
+    // use url, if error, use default pic
+    let urlString;
 
-  getPic() {
-    // try to get pic. if no results, hasPic = false
+    urlString = "http://68.183.191.201:3003/downloadprofpic?email=" + email;
+
+    return urlString
   }
 
   photo;
@@ -303,7 +306,7 @@ export class ProfilePage {
     this.optionsss = JSON.stringify(options);
     // old url = http://178.128.212.2:3003/uploadpost
     await fileTransfer
-      .upload(this.photo, "http://68.183.191.201:3003/uploadpost", options)
+      .upload(this.photo, "http://68.183.191.201:3003/uploadprofpic", options)
       .then(
         res => {
           this.testres = JSON.stringify(res);
