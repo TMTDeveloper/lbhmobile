@@ -62,7 +62,8 @@
       </ion-item>
 
       <ion-item>
-        <h2>Tanggal Acara</h2>
+        <h2 *ngIf="type=='1'">Tanggal Kejadian</h2>
+        <h2 *ngIf="type=='2'">Tanggal Acara</h2>
         <p>{{dateToDate(waktu)}}</p>
       </ion-item>
 
@@ -156,7 +157,7 @@
       </ion-navbar>
 
       <!-- the list of files -->
-      <ion-list *ngFor="let doc of images">
+      <ion-list *ngFor="let doc of images" class="doc-list">
         <ion-item>
           <!-- <ion-thumbnail item-start>
               <img src="assets/imgs/pdf75.png">
@@ -168,7 +169,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-list>
+      <ion-list class="extra-doc-list">
         <ion-list-header>
           <button *ngIf="role==1" (click)="addFile()" ion-button outline item-end>Tambah Dokumen pendukung</button>
         </ion-list-header>
@@ -233,7 +234,7 @@
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <ion-list text-wrap *ngFor="let msg of items1">
+    <ion-list text-wrap *ngFor="let msg of items1" class="msg-list">
       <ion-item *ngIf="msg.posted_name!=null" class="item-content">
 
         <!-- messages appearing on the right -->
@@ -275,7 +276,7 @@
               <div outline color="secondary">
                 <ion-item class="user-pic">
                   <!-- <img src="assets/imgs/user_photo.jpg"> -->
-                  <img src="{{getUserPhoto(msg.posted_by)}}" onerror="this.src='assets/imgs/user.png';" >
+                  <img src="{{src}}" onerror="this.src='assets/imgs/user.png';" >
                 </ion-item>
                 <h2> <span *ngIf="!msg.message" class="time-display">Kasus dibuat pada: {{dateToTime(msg.date_created)}} </span></h2>
                 <h2> <span *ngIf="!msg.message" class="time-display">oleh: <b>{{msg.posted_name}}</b></span></h2>

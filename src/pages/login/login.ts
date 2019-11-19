@@ -41,7 +41,9 @@ export class LoginPage {
   ionViewWillEnter() {
     // if in login page, back btn exits app
     this.events.subscribe('user:quit',
-      response => this.closeApp()
+      response => {
+        this.closeApp()
+      }
     );
     this.getCurVersion();
   }

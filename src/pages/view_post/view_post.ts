@@ -4,7 +4,8 @@ import {
   NavParams,
   Content,
   ToastController,
-  AlertController
+  AlertController,
+  Events
 } from "ionic-angular";
 import { File } from "@ionic-native/file";
 import {
@@ -53,7 +54,8 @@ export class ViewPostPage {
     public alert: AlertController,
     public toastCtrl: ToastController,
     private fileChooser: FileChooser,
-    private filePath: FilePath
+    private filePath: FilePath,
+    private events: Events
   ) {
     this.getUserData();
 
@@ -61,6 +63,14 @@ export class ViewPostPage {
     this.post_id = navParams.get("post_id");
     this.judul = navParams.get("judul");
     this.type = navParams.get("type");
+    
+    this.refreshMyPhoto();
+
+    this.events.subscribe("profpic-changed",
+    () =>{
+      // refresh photo
+      this.refreshMyPhoto();
+    })
   }
 
   @ViewChild(Content) content: Content;
@@ -76,10 +86,12 @@ export class ViewPostPage {
   }
 
   role;
+  email;
 
   getUserData() {
     this.userName = this.creds.data["name"];
     this.role = this.creds.data["role"];
+    this.email = this.creds.data["email"];
 
     //console.log(this.role);
   }
@@ -376,6 +388,12 @@ export class ViewPostPage {
     urlString = "http://68.183.191.201:3003/downloadprofpic?email=" + email;
 
     return urlString
+  }
+
+  src;
+
+  refreshMyPhoto(){
+    this.src = "http://68.183.191.201:3003/downloadprofpic?email=" + this.email + "&d=" + Math.random();
   }
 
   askSendProgress() {

@@ -62,6 +62,8 @@ export class ProfilePage {
     this.email = creds.data.email;
 
     this.updateOrganisasi();
+    
+    this.refreshMyPhoto();
   }
 
   roleIs(role) {
@@ -226,15 +228,6 @@ export class ProfilePage {
         });
   }
 
-  getUserPhoto(email){
-    // use url, if error, use default pic
-    let urlString;
-
-    urlString = "http://68.183.191.201:3003/downloadprofpic?email=" + email;
-
-    return urlString
-  }
-
   photo;
 
   askChangePic() {
@@ -310,11 +303,24 @@ export class ProfilePage {
       .then(
         res => {
           this.testres = JSON.stringify(res);
+          this.refreshMyPhoto();
+
+          // notify chat to use new photo
+          this.events.publish("profpic-changed");
         },
         error => {
           this.test = JSON.stringify(error);
         }
       );
+  }
+
+  src;
+
+  refreshMyPhoto(){
+    this.src = "http://68.183.191.201:3003/downloadprofpic?email=" + this.email + "&d=" + Math.random();
+
+    // notify chat to use new photo
+    this.events.publish("profpic-changed");
   }
 
   promptRelog() {

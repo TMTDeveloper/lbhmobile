@@ -31,10 +31,21 @@ page-view_post {
     .button-md{
       height:1.2em;
     }
-    
-    ion-list.list.list-md {
-        margin-top: 100px !important;
-        margin-bottom: 0px !important;
+
+    .doc-list{
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+      overflow-wrap: normal;
+    }
+
+    .msg-list{
+      margin-top: 100px !important;
+      margin-bottom: 0px !important;
+    }
+
+    .extra-doc-list{
+      margin-top: 20px !important;
+      margin-bottom: 0px !important;
     }
 
     .item-content {
@@ -155,8 +166,24 @@ page-view_post {
 
     .user-pic{
       width: 50px !important;
-      height: 50x !important;
+      height: 50px !important;
       padding: 0px !important;
+      margin: 0px !important;
+
+      .label{
+        width: 50px !important;
+        height: 50px !important;
+      }
+
+      .item-inner{
+        padding: 0px !important;
+      }
+
+      img {
+        width: 50px !important;
+        height: 50px !important;
+        object-fit: cover;
+      }
     }
 
     .user-pic-right{
